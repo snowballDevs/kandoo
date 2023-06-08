@@ -5,7 +5,7 @@ const connectDB = async () => {
       const conn = await mongoose.connect(process.env.DB_STRING, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        dbName: 'kandoo'
+        dbName: 'kandoo' // sets collection name
       });
   
       console.log(`MongoDB Connected: ${conn.connection.host}`);

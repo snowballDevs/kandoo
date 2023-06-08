@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express()
+const PORT = process.env.PORT || 8000
 const mongoose = require('mongoose');
 const cors = require('cors')
-const PORT = process.env.PORT || 8000
 const logger = require('morgan')
 
 const connectDB = require('./config/database')
@@ -23,8 +23,8 @@ app.use(express.json());
 app.use(logger('dev'))
 
 // test routes
-app.get('/' , (req,res) => {
-  res.json('Home')
+app.get('/' , async (req,res) => {
+  res.json('hello')
 })
 app.get('/test', (req,res) => {
   res.json('Testing 123')
