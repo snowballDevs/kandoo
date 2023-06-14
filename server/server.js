@@ -1,18 +1,18 @@
 const express = require('express');
 const app = express()
-const PORT = process.env.PORT || 8000
+// use .env file in config folder
+require('dotenv').config({ path: './config/.env' });
+const PORT = process.env.SERVER_PORT || 5000
 const mongoose = require('mongoose');
 const cors = require('cors')
 const logger = require('morgan')
-
 const connectDB = require('./config/database')
 
 
-// use .env file in config folder
-require('dotenv').config({ path: './config/.env' });
-
 //connect to database
 connectDB()
+
+
 
 app.use(cors());
 
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(logger('dev'))
 
 // test routes
-app.get('/' , async (req,res) => {
+app.get('/da' , (req,res) => {
   res.json('hello')
 })
 app.get('/test', (req,res) => {
@@ -31,6 +31,4 @@ app.get('/test', (req,res) => {
 })
 
 
-app.listen(PORT, () => {
-  console.log("Server is running, you better catch it!");
-});
+app.listen(PORT, () => console.log(`Server is running on ${PORT}, you better catch it!`));
