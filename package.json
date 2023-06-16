@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\" ",
-        "lint": "eslint . --ext .js,.jsx"
+        "lint": "eslint . --ext .js,.jsx",
+        "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json,html}' --config ./.prettierrc"
     },
     "author": "",
     "license": "ISC",

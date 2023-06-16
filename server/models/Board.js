@@ -27,9 +27,9 @@ const BoardSchema = new mongoose.Schema({
     },
 
     createdAt: {
-        type: Date, //Expected output: "Fri, 02 Feb 1996 03:04:05 GMT"
+        type: Date, // Expected output: "Fri, 02 Feb 1996 03:04:05 GMT"
         default: Date.now,
     },
 });
 
-module.exports = mongoose.model('Board', BoardSchema); //TODO: change "board"
+module.exports = mongoose.model('Board', BoardSchema); // TODO: change "board"
