@@ -6,6 +6,9 @@ const PORT = process.env.SERVER_PORT || 5000
 const mongoose = require('mongoose');
 const cors = require('cors')
 const logger = require('morgan')
+const User = require('./models/user');
+const Board = require("./models/Board"); 
+
 const connectDB = require('./config/database')
 const User = require('./models/user');
 const Board = require("./models/Board"); 
