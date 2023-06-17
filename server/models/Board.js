@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
   
 const commentSchema = new mongoose.Schema({
@@ -44,34 +44,32 @@ const BoardSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: "User",
   },
+    board_name: {
+        type: String,
+        require: true,
+    },
+    category_stages: {
+        type: Array,
+        required: true,
+    },
 
-  board_name: {
-    type: String,
-    require: true,
-  },
+    likes: {
+      type: Number,
+      required: true,
+      default: 0
+    },
 
-  category_stages: {
-    type: Array,
-    required: true,
-  },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
 
-  likes: {
-    type: Number,
-    required: true,
-    default: 0
-  },
+    task: taskSchema,
 
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-
-  task: taskSchema,
-  
-  createdAt: {
-    type: Date, //Expected output: "Fri, 02 Feb 1996 03:04:05 GMT"
-    default: Date.now,
-  },
+    createdAt: {
+      type: Date, //Expected output: "Fri, 02 Feb 1996 03:04:05 GMT"
+      default: Date.now,
+    },
 });
 
 module.exports = mongoose.model("Board", BoardSchema);
