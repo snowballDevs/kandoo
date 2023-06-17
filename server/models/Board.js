@@ -67,9 +67,9 @@ const BoardSchema = new mongoose.Schema({
     task: taskSchema,
 
     createdAt: {
-      type: Date, //Expected output: "Fri, 02 Feb 1996 03:04:05 GMT"
-      default: Date.now,
+        type: Date, // Expected output: "Fri, 02 Feb 1996 03:04:05 GMT"
+        default: Date.now,
     },
 });
 
-module.exports = mongoose.model("Board", BoardSchema);
+module.exports = mongoose.model('Board', BoardSchema); // TODO: change "board"
