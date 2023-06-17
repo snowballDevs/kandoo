@@ -4,12 +4,11 @@
 
 ## Related Issue
 
-- [ ] Is this related to a specific issue? Is so please specify:
-
+-   [ ] Is this related to a specific issue? Is so please specify:
 
 ## Type of Changes
 
-Use a check for  ✓ the following type of changes: 
+Use a check for ✓ the following type of changes:
 
 |     | Type                       |
 | --- | -------------------------- |
@@ -36,8 +35,8 @@ Use a check for  ✓ the following type of changes:
 
 ## Checklist:
 
-- [ ] This PR is up to date with the development branch, and merge conflicts have been resolved
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] My changes generate no new warnings
+-   [ ] This PR is up to date with the development branch, and merge conflicts have been resolved
+-   [ ] My code follows the style guidelines of this project
+-   [ ] I have performed a self-review of my own code
+-   [ ] I have commented my code, particularly in hard-to-understand areas
+-   [ ] My changes generate no new warnings
