@@ -1,7 +1,18 @@
+import { useAuthContext } from "../contexts/AuthContext/authContext";
+
 const Header = () => {
+
+    const {login, logout , isAuthenticated} = useAuthContext();
+
     const Links = [
         {name: 'BOARDS', link: 'landingPage'},
     ]
+
+    if(isAuthenticated){
+        Links.push({name: 'LOGOUT', onClick: logout})
+    }else{
+        Links.push({name: 'LOGIN', onClick: login})
+    }
     
     return (
         <nav className='navbar bg-indigo-600'>
@@ -25,7 +36,7 @@ const Header = () => {
                         {Links.map(link => {
                             return (
                                 <li key={link.name}>
-                                    <button className="btn btn-sm btn-ghost" >{link.name}</button>
+                                    <button className="btn btn-sm btn-ghost" onClick={link.onClick ? link.onClick : null}>{link.name}</button>
                                 </li>
                             )
                         })}
