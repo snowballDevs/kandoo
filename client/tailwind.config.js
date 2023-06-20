@@ -2,7 +2,11 @@
 export default {
     content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
     theme: {
-        extend: {},
+        extend: {
+            gridTemplateColumns: {
+                fluid: 'repeat(auto-fit, minmax(256px, 1fr))',
+            },
+        },
     },
     plugins: [require('daisyui')], // eslint-disable-line global-require
 };
