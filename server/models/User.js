@@ -1,35 +1,40 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-  userName: { type: String, unique: true },
-    
-  email: { 
-    type: String,
-     unique: true },
+    userName: {
+        type: String,
+        unique: true,
+    },
 
-  password: {
-    type: String,
-    required: true},
+    email: {
+        type: String,
+        unique: true,
+    },
+
+    password: {
+        type: String,
+        required: true,
+    },
 
     boards: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Board",
     },
 
-  profile_picture: {
-    type: String,
-    required: false,
-  },
+    profile_picture: {
+        type: String,
+        required: false,
+    },
 
-  first_name: {
-    type: String,
-    required: true,
-  },
+    first_name: {
+        type: String,
+        required: true,
+    },
 
-  last_name: {
-    type: String,
-    required: true,
-  },
+    last_name: {
+        type: String,
+        required: true,
+    },
 });
 
 // // Password hash middleware.

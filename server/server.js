@@ -1,31 +1,24 @@
 const express = require('express');
-const app = express()
-// use .env file in config folder
-require('dotenv').config({ path: './config/.env' });
-const PORT = process.env.SERVER_PORT || 5000
-const mongoose = require('mongoose');
-const cors = require('cors')
-const logger = require('morgan')
+const cors = require('cors');
+const logger = require('morgan');
+const connectDB = require('./config/database');
+require('dotenv').config({path: './config/.env'});
+
+const PORT = process.env.SERVER_PORT || 5000;
+const app = express();
 const User = require('./models/user');
 const Board = require("./models/Board"); 
 
-const connectDB = require('./config/database')
-const User = require('./models/user');
-const Board = require("./models/Board"); 
-
-
-//connect to database
-connectDB()
-
-
+// connect to database
+connectDB();
 
 app.use(cors());
 
 // body parsing
 app.use(express.json());
 
-//logging
-app.use(logger('dev'))
+// logging
+app.use(logger('dev'));
 
 // test routes
 app.get('/da' , (req,res) => {
