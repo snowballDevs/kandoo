@@ -14,4 +14,5 @@ const LandingPage = () => (
         </div>
     </div>
 );
+document.body.style.overflow = "hidden"
 export default LandingPage;
