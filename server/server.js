@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')
+const MongoStore = require('connect-mongo');
 const cors = require('cors');
 const logger = require('morgan');
 const connectDB = require('./config/database');
@@ -62,6 +62,14 @@ app.post('/sign-up', async (req, res) => {
         return next(err);
     }
 });
+
+app.post(
+    '/log-in',
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/test',
+    })
+)
 
 app.listen(PORT, () =>
     console.log(`Server is running on ${PORT}, you better catch it!`)
