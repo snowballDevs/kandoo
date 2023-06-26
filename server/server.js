@@ -1,4 +1,7 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const session = require('express-session');
 const cors = require('cors');
 const logger = require('morgan');
 const connectDB = require('./config/database');
@@ -10,7 +13,14 @@ const app = express();
 // connect to database
 connectDB();
 
+// Passport config
+require("./config/passport")(passport);
+
 app.use(cors());
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // body parsing
 app.use(express.json());
@@ -19,7 +29,7 @@ app.use(express.json());
 app.use(logger('dev'));
 
 // test routes
-app.get('/da', (req, res) => {
+app.get('/', (req, res) => {
     res.json('hello');
 });
 app.get('/test', (req, res) => {
