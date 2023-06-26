@@ -1,6 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 module.exports = (passport) => {
@@ -15,10 +15,10 @@ module.exports = (passport) => {
                             message: `Email ${email} does not exist.`,
                         });
                     }
-                    if(!user.password) {
-                      return done(null, false, {
-                        message: 'Password is required',
-                      });
+                    if (!user.password) {
+                        return done(null, false, {
+                            message: 'Password is required',
+                        });
                     }
                     // compare
                     bcrypt.compare(password, user.password, (err, match) => {
@@ -40,8 +40,17 @@ module.exports = (passport) => {
     );
 
     // session setup
+
+    passport.serializeUser((user, done) => {
+        // store only the users ID in the session
+        // Allows us to identify user across requests
+        console.log(user);
+        done(null, user.id);
+    });
+
     passport.deserializeUser(async function (id, done) {
         try {
+            console.log(id);
             // retrieve user object from the data base using the stored ID
             const user = await User.findById(id);
             done(null, user);
@@ -49,12 +58,4 @@ module.exports = (passport) => {
             done(err);
         }
     });
-
-    passport.serializeUser((user, done) => {
-        // store only the users ID in the session
-        // Allows us to identify user across requests
-        done(null, user.id);
-      });
-
-
 };

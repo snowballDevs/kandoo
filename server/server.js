@@ -48,7 +48,7 @@ app.get('/test', (req, res) => {
     res.json('Testing 123');
 });
 
-app.post('/sign-up', async (req, res) => {
+app.post('/sign-up', async (req, res, next) => {
     try {
         const user = await User.create({
             email: req.body.email,
@@ -69,7 +69,7 @@ app.post(
         successRedirect: '/',
         failureRedirect: '/test',
     })
-)
+);
 
 app.listen(PORT, () =>
     console.log(`Server is running on ${PORT}, you better catch it!`)
