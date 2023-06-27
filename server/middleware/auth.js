@@ -1,16 +1,15 @@
 module.exports = {
-    ensureAuth: function (req, res, next) {
+    // ensureAuth is  to verify if the user is already authenticated and should have or not access to the route.
+    ensureAuth(req, res, next) {
         if (req.isAuthenticated()) {
             return next();
-        } else {
-            res.redirect('/');
         }
+        return res.redirect('/');
     },
-    ensureGuest: function (req, res, next) {
+    ensureGuest(req, res, next) {
         if (!req.isAuthenticated()) {
             return next();
-        } else {
-            res.redirect('/dashboard');
         }
+        return res.redirect('/dashboard');
     },
 };

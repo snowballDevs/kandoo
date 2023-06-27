@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -33,6 +32,9 @@ app.use(
         resave: false,
         saveUninitialized: false,
         store: MongoStore.create({mongoUrl: process.env.DB_STRING}),
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24, // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec)
+        },
     })
 );
 
@@ -40,12 +42,19 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+    console.log(req.session);
+    console.log(req.user);
+    next();
+});
+
 // test routes
 app.get('/', (req, res) => {
     res.json('hello');
 });
 app.get('/test', (req, res) => {
     res.json('Testing 123');
+    req.logOut(() => console.log('User logged out'));
 });
 
 app.post('/sign-up', async (req, res, next) => {
@@ -57,7 +66,7 @@ app.post('/sign-up', async (req, res, next) => {
 
         console.log(user);
 
-        res.redirect('/');
+        return res.redirect('/');
     } catch (err) {
         return next(err);
     }
