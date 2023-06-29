@@ -13,6 +13,7 @@ You'll need to install the following dependencies to make this work:
 * Vite
 * Nodemon/NodeJS
 * DaisyUI
+* ESLint
 
 
 ### Installation
@@ -23,6 +24,7 @@ A step by step guide that will tell you how to get the development environment u
 $ Install node.js
 $ Install vite
 $ Include server port & connection in .env file
+$ To start project: concurrently "cd server && npm run dev" "cd client && npm run dev"
 ```
 
 ## Usage
