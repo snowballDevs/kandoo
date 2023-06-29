@@ -13,28 +13,41 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
 
-    first_name: {
+    firstName: {
         type: String,
+        required: true,
     },
 
-    last_name: {
+    lastName: {
         type: String,
+        required: true,
     },
 });
 
-// every time before a password is saved, hash the password.
-UserSchema.pre('save', async function save(next) {
-    const user = this;
-    if (!user.isModified('password')) {
-        return next();
+UserSchema.statics.signup = async function (
+    email,
+    password,
+    firstName,
+    lastName
+) {
+    // validation
+
+    const exists = await this.findOne({email});
+
+    if (exists) {
+        throw Error('Email already in use');
     }
-    try {
-        const hash = await bcrypt.hash(this.password, 10);
-        this.password = hash;
-        return next();
-    } catch (err) {
-        return next(err);
-    }
-});
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+
+    const user = await this.create({
+        email,
+        password: hash,
+        firstName,
+        lastName,
+    });
+
+    return user;
+};
 
 module.exports = mongoose.model('User', UserSchema);
