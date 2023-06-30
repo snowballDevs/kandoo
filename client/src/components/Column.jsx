@@ -1,8 +1,7 @@
-import React from "react";
 import Task from "./Task";
 
-const Column = ({ column }) => {
-  return (
+const Column = ({ column }) => 
+   (
     <div className="bg-gray-200 rounded p-4 shadow">
       <h2 className="text-xl font-bold text-black">{column.title}</h2>
       <div className="mt-4 space-y-4">
@@ -12,6 +11,6 @@ const Column = ({ column }) => {
       </div>
     </div>
   );
-};
+
 
 export default Column;

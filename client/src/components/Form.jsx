@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 
 const Form = () => {
@@ -15,26 +14,28 @@ const Form = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm mx-auto">
       <div className="mb-4">
-        <label htmlFor="name" className="block text-white-700 font-bold mb-2">
+        <label  htmlFor="name" className="block text-white-700 font-bold mb-2">
           Name:
-        </label>
-        <input
+          <input
           type="text"
           id="name"
           className="w-full border border-gray-300 p-2 rounded-md"
           {...register('name')}
         />
+        </label>
+      
       </div>
       <div className="mb-4">
         <label htmlFor="email" className="block text-white-700 font-bold mb-2">
           Email:
-        </label>
-        <input
+          <input
           type="email"
           id="email"
           className="w-full border border-gray-300 p-2 rounded-md"
           {...register('email')}
         />
+        </label>
+        
       </div>
       <button
         type="submit"

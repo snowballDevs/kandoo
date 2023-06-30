@@ -1,5 +1,3 @@
-import React from "react";
-
 const Task = ({ task }) => {
   const { title, priority, description } = task;
 

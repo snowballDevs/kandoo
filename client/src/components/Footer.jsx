@@ -1,6 +1,6 @@
 
-const Footer = () => {
-  return (
+const Footer = () => 
+   (
     <footer  
     style={{
       position: 'fixed',
@@ -14,6 +14,6 @@ const Footer = () => {
       <p>&copy; 2023 - Kandoo</p>
     </footer>
   );
-};
+;
 
 export default Footer;

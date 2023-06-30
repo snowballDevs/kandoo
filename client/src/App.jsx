@@ -1,14 +1,13 @@
 
 import './App.css'
-import LandingPage from './features/LandingPage.jsx'
+import LandingPage from './features/LandingPage'
 import Footer from "./components/Footer";
 import Header from './components/Header'
 import Form from './components/Form';
 import KanbanBoard from './components/KanbanBoard';
 
 
-function App() {
-  return (
+const App = () => (
     <div>
        <Header/>  
        <LandingPage />
@@ -20,6 +19,5 @@ function App() {
       </div>
        <Footer />
     </div>
-  );
-}
+  )
 export default App;
