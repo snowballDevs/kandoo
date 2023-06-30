@@ -1,16 +1,20 @@
 import { useState } from 'react'
 
-const useModal = () => {
+export default function useModal () {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalContent, setModalContent] = useState('this is a modal dialog')
   
-  const handleModal = (content =false) => {
-    setIsModalOpen(!isModalOpen)
-    if(content) {
-      setModalContent(content)
-    }
+  const handleModal = () => {
+    setIsModalOpen(prevState => !prevState)
+    // console.log(isModalOpen)
   }
-  return {isModalOpen, handleModal, modalContent}
-}
 
-export default useModal;
+  const handleClose = () => {
+    setIsModalOpen(false)
+  }
+
+  const handleOpen = () => {
+    setIsModalOpen(true)
+  }
+
+  return {isModalOpen, handleModal, handleClose, handleOpen, setIsModalOpen}
+}
