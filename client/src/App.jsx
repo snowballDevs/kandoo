@@ -3,6 +3,8 @@ import './App.css'
 import LandingPage from './features/LandingPage.jsx'
 import Footer from "./components/Footer";
 import Header from './components/Header'
+import Form from './components/Form';
+import KanbanBoard from './components/KanbanBoard';
 
 
 function App() {
@@ -14,6 +16,7 @@ function App() {
        <div className="container mx-auto mt-8 mb-16">
         <h1 className="text-2xl text-center font-bold mb-4">Form Example</h1>
         <Form />
+        <KanbanBoard />
       </div>
        <Footer />
     </div>
