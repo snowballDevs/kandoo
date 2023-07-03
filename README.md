@@ -1,5 +1,7 @@
 # Kandoo
 
+![image](https://i.imgur.com/roOg6Dx.jpg)
+
 Kandoo is an interactive planning app that allows collaboration and planning, in the style of a kanban board. 
 
 ## Getting Started
@@ -32,9 +34,9 @@ $ To start project: concurrently "cd server && npm run dev" "cd client && npm ru
 A few examples of useful commands and/or tasks.
 
 ```
-$ First example
-$ Second example
-$ And keep this in mind
+$ 
+$ 
+$ 
 ```
 
 ## Deployment
@@ -58,12 +60,11 @@ Additional notes on how to deploy this on a live or release system. Explaining t
 
 Kandoo was built by the international development group, SnowballDevs. Contributors are as follows:
 
-* github link
-* github link
-* github link
-* github link
-* github link
-* github link
+* https://github.com/mjbramich
+* https://github.com/IntelliJinceTech
+* https://github.com/isomer04
+* https://github.com/AitchGrasso
+* https://github.com/Michelle-932
 
 ## Attribution & License
 
