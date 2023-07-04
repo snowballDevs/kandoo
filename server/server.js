@@ -54,28 +54,6 @@ app.use(passport.session());
 // Setup Routes For Which The Server Is Listening
 app.use('/', mainRoutes);
 
-// test routes
-
-app.get('/test', (req, res) => {
-    req.session.user = {
-        id: 123456,
-    };
-    req.session.save((err) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(req.session.user);
-        }
-    });
-});
-
-app.post(
-    '/log-in',
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/test',
-    })
-);
 
 app.listen(PORT, () =>
     console.log(`Server is running on ${PORT}, you better catch it!`)
