@@ -1,14 +1,11 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
-    userName: {
-        type: String,
-        unique: true,
-    },
-
     email: {
         type: String,
         unique: true,
+        required: true,
     },
 
     password: {
@@ -16,48 +13,41 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
 
-    board_id: {
-        type: Number,
-        required: true,
-    },
-
-    profile_picture: {
-        type: String,
-        required: false,
-    },
-
-    first_name: {
+    firstName: {
         type: String,
         required: true,
     },
 
-    last_name: {
+    lastName: {
         type: String,
         required: true,
     },
 });
 
-// // Password hash middleware.
- 
-// UserSchema.pre('save', function save(next) {
-//   const user = this
-//   if (!user.isModified('password')) { return next() }
-//   bcrypt.genSalt(10, (err, salt) => {
-//     if (err) { return next(err) }
-//     bcrypt.hash(user.password, salt, (err, hash) => {
-//       if (err) { return next(err) }
-//       user.password = hash
-//       next()
-//     })
-//   })
-// })
+UserSchema.statics.signup = async function (
+    email,
+    password,
+    firstName,
+    lastName
+) {
+    // validation
 
-// // Helper method for validating user's password.
+    const exists = await this.findOne({email});
 
-// UserSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-//   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-//     cb(err, isMatch)
-//   })
-// }
+    if (exists) {
+        throw Error('Email already in use');
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
 
-module.exports = mongoose.model("User", UserSchema);
+    const user = await this.create({
+        email,
+        password: hash,
+        firstName,
+        lastName,
+    });
+
+    return user;
+};
+
+module.exports = mongoose.model('User', UserSchema);
