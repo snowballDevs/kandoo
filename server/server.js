@@ -54,7 +54,6 @@ app.use(passport.session());
 // Setup Routes For Which The Server Is Listening
 app.use('/', mainRoutes);
 
-
 app.listen(PORT, () =>
     console.log(`Server is running on ${PORT}, you better catch it!`)
 );
