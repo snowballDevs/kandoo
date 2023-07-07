@@ -1,6 +1,3 @@
-// todos: keep state/submission within the board form - board form submission will later on be submitted to the database
-// todos: setup postman POST route for this form 
-
 import { useState } from "react"
 
 const BoardForm = () =>{
@@ -19,11 +16,31 @@ const BoardForm = () =>{
         console.log(event.target.value)
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
+      // prevent refreshing the form
       event.preventDefault()
-      // const {name, value} = event.target.value
-      
+      // console.log(formData)
+      try {
+        const jsonPayload = JSON.stringify(formData);
+        const response = await fetch('http://localhost:5173/boardFormSubmit', {
+          method: 'POST', 
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonPayload,
+      });
 
+        // handle response
+        if(response.ok) {
+          const result = await response.json();
+          console.log('API response: ', result)
+        } else {
+          throw new Error('API request failed: ', response.status)
+        }
+      } catch (error) {
+        console.error('Error: ', error.message)
+      }
+    
     }
     
     return (
