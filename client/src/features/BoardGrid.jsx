@@ -1,16 +1,11 @@
+import {useContext} from 'react'
 import Card from '../components/BoardCard';
-import NewCard from '../components/NewBoardCard';
-import {useState} from 'react'
-
-// const handleCards = () => {
-  //   setCards(oldCards => (
-    //     ...oldCards,
-    
-    //   ))
-    // }
+import { ModalContext } from '../contexts/ModalContext/ModalContext';
+import BoardForm from "./BoardForm";
     
     const BoardGrid = () => {
-    const [cards, setCards] = useState([])
+      // this should capture an array of objects(boards)
+      const {handleModal, isModalOpen} = useContext(ModalContext);
 
     return (
     <div className='px-6 max-w-7xl mx-auto'>
@@ -20,12 +15,12 @@ import {useState} from 'react'
             <Card />
             <Card />
             <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <NewCard />
+            <div>
+              <button type='button' className="btn" onClick={handleModal}>open modal</button>
+              {isModalOpen 
+                ? <BoardForm />
+                : <div>Modal not showing</div>}
+            </div>
         </div>
     </div>
     )
