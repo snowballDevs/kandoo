@@ -44,35 +44,39 @@ const BoardForm = () =>{
     }
     
     return (
-      <div >
-        <div className='fixed -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2'>
-        <form className="modal-box" onSubmit={handleSubmit}>
-          <label htmlFor='boardName'>
-            Name your board: 
+        <div className='fixed -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 min-w-[75%] ' >
+        <form className="modal-box mx-auto form-control w-full" onSubmit={handleSubmit}>
+          <label htmlFor='boardName' className="label label-text block mb-2 font-bold text-lg">
+            {/* <span className="label-text">Name your board: </span> */}
+            Name your Board:
               <input 
                 id='boardName' 
                 type="text" 
                 name="boardName" 
                 value={formData.boardName} 
                 onChange={handleChange}
+                className="input w-full max-w-xs block mt-2 border-indigo-600"
               />
           </label>
-          <label htmlFor="boardDescription">
+          <label htmlFor="boardDescription" className="label label-text block mb-2 font-bold text-lg">
+            What is your board all about?
             <textarea 
               id="boardDescription" 
               name="boardDescription"
               value={formData.boardDescription}
               onChange={handleChange}
-              placeholder="short board description!"
+              placeholder="type here!"
+              className="block w-full text-sm border-2 rounded-lg border-indigo-800 pl-2 font-normal"
             />
           </label>
-          <label htmlFor="boardCategory">
+          <label htmlFor="boardCategory" className="label label-text block mb-2 font-bold text-lg">
             Category: 
             <select 
               name="boardCategory" 
               id="boardCategory" 
               value= {formData.boardCategory}
               onChange={handleChange}
+              className="block select border-indigo-600 mt-2"
             >
               <option value="">-- Choose --</option>
               <option value="home">Home</option>
@@ -80,10 +84,12 @@ const BoardForm = () =>{
               <option value="enterprise">Enterprise</option>
             </select>
           </label>
-          <button type='submit'>Submit</button>
+          <button type='submit' className="btn btn-outline border-2 border-indigo-800">Submit</button>
+        </form>
+        <form method="dialog" className="modal-backdrop">
+          <button type="button" className="">Close</button>
         </form>
         </div>
-      </div>
     )
 }
 

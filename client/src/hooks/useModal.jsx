@@ -5,7 +5,6 @@ export default function useModal () {
   
   const handleModal = () => {
     setIsModalOpen(prevState => !prevState)
-    // console.log(isModalOpen)
   }
 
   const handleClose = () => {

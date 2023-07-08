@@ -18,9 +18,10 @@ import BoardForm from "./BoardForm";
             <div>
               <button type='button' className="btn" onClick={handleModal}>open modal</button>
               {isModalOpen 
-                ? <BoardForm />
-                : <div>Modal not showing</div>}
+                ? <BoardForm className="modal-box"/>
+                : null}
             </div>
+            
         </div>
     </div>
     )
