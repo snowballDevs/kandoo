@@ -21,7 +21,7 @@ const BoardForm = ({handleClose}) =>{
       event.preventDefault()
       try {
         const jsonPayload = JSON.stringify(formData);
-        const response = await fetch('http://localhost:8888/boardFormSubmit', {
+        const response = await fetch('http://localhost:8888/boardFormSubmit', { // to be changed later on with axios
           method: 'POST', 
           headers: {
             'Content-Type': 'application/json',
