@@ -17,7 +17,14 @@ connectDB();
 // Passport config
 require('./config/passport')(passport);
 
-app.use(cors());
+// Enable CORS with specific origin
+app.use(
+    cors({
+        // need this while in development, since front/backend are running on seperate origins
+        origin: 'http://localhost:5173',
+        credentials: true,
+    })
+);
 
 // body parsing
 app.use(express.json());
@@ -29,14 +36,15 @@ app.use(logger('dev'));
 app.use(
     session({
         secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: false,
+        resave: true,
+        saveUninitialized: true,
         store: MongoStore.create({
             mongoUrl: process.env.DB_STRING,
             dbName: 'kandoo',
         }),
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24, // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec)
+            maxAge: 1000 * 60 * 60 * 24, // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec),
+            // secure: true  !!!when in production will need to uncomment this!!!
         },
     })
 );

@@ -45,6 +45,7 @@ module.exports = (passport) => {
     });
 
     passport.deserializeUser(async (id, done) => {
+ 
         try {
             // retrieve user object from the data base using the stored ID
             const user = await User.findById(id);
