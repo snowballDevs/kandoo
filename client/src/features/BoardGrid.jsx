@@ -16,7 +16,7 @@ import BoardForm from "./BoardForm";
             <Card />
             <Card />
             <div>
-              <button type='button' className="btn" onClick={handleModal}>open modal</button>
+              <button type='button' className="btn" onClick={handleModal}>Create New Board</button>
               {isModalOpen 
                 ? <BoardForm handleClose={handleClose} className="modal-box"/>
                 : null}
