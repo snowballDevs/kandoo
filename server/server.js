@@ -8,7 +8,7 @@ const connectDB = require('./config/database');
 const mainRoutes = require('./routes/main');
 require('dotenv').config({path: './config/.env'});
 
-const PORT = process.env.SERVER_PORT || 5000;
+const PORT = process.env.SERVER_PORT || 8888;
 const app = express();
 
 // connect to database
@@ -54,6 +54,11 @@ app.use(passport.session());
 // Setup Routes For Which The Server Is Listening
 app.use('/', mainRoutes);
 
+
+app.post('/boardFormSubmit', (req, res) => {
+  console.log(req.body)
+  res.json('board form submit :) ')
+})
 
 app.listen(PORT, () =>
     console.log(`Server is running on ${PORT}, you better catch it!`)
