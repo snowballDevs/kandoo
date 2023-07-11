@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const BoardForm = () =>{
+const BoardForm = ({handleClose}) =>{
     const [formData, setFormData] = useState({
       boardName:"",
       boardDescription: "",
@@ -19,10 +19,9 @@ const BoardForm = () =>{
     const handleSubmit = async (event) => {
       // prevent refreshing the form
       event.preventDefault()
-      // console.log(formData)
       try {
         const jsonPayload = JSON.stringify(formData);
-        const response = await fetch('http://localhost:5173/boardFormSubmit', {
+        const response = await fetch('http://localhost:8888/boardFormSubmit', {
           method: 'POST', 
           headers: {
             'Content-Type': 'application/json',
@@ -31,16 +30,16 @@ const BoardForm = () =>{
       });
 
         // handle response
-        if(response.ok) {
-          const result = await response.json();
-          console.log('API response: ', result)
-        } else {
-          throw new Error('API request failed: ', response.status)
+          if(response.ok) {
+            const result = await response.json();
+            console.log('API response: ', result)
+          } else {
+            throw new Error('API request failed: ', response.status)
+          }
+        } catch (error) {
+          console.error('Error: ', error.message)
         }
-      } catch (error) {
-        console.error('Error: ', error.message)
-      }
-    
+      handleClose()
     }
     
     return (

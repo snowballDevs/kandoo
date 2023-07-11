@@ -56,6 +56,7 @@ app.use('/', mainRoutes);
 
 
 app.post('/boardFormSubmit', (req, res) => {
+  console.log(req.body)
   res.json('board form submit :) ')
 })
 

@@ -5,7 +5,7 @@ import BoardForm from "./BoardForm";
     
     const BoardGrid = () => {
       // this should capture an array of objects(boards)
-      const {handleModal, isModalOpen} = useContext(ModalContext);
+      const {handleModal, isModalOpen, handleClose} = useContext(ModalContext);
 
     return (
     <div className='px-6 max-w-7xl mx-auto'>
@@ -18,10 +18,9 @@ import BoardForm from "./BoardForm";
             <div>
               <button type='button' className="btn" onClick={handleModal}>open modal</button>
               {isModalOpen 
-                ? <BoardForm className="modal-box"/>
+                ? <BoardForm handleClose={handleClose} className="modal-box"/>
                 : null}
             </div>
-            
         </div>
     </div>
     )
