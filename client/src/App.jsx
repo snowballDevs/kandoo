@@ -1,23 +1,77 @@
 
 import './App.css'
+import {useEffect, useState} from 'react';
+import {useAuthContext} from './contexts/AuthContext/authContext';
+import {useRoutingContext} from './contexts/RoutingContext/routingContext';
 import LandingPage from './features/LandingPage'
 import Footer from "./components/Footer";
 import Header from './components/Header'
 import Form from './components/Form';
 import KanbanBoard from './components/KanbanBoard';
+import Dashboard from './features/Dashboard';
 
 
-const App = () => (
+
+// const App = () => {
+//     const {isAuthenticated} = useAuthContext();
+//     const {currentPage} = useRoutingContext();
+
+//     return (
+//         <div>
+//             <Header />
+//             {isAuthenticated && currentPage === 'landingPage' ? (
+//                 <Dashboard />
+//           ) : (
+//             <LandingPage />
+//           )}
+//           <Footer />
+//         </div>
+//     )
+// };
+
+const App = () => {
+  const {  isAuthenticated } = useAuthContext();
+  const { currentPage, setCurrentPage } = useRoutingContext();
+  const [clickedCardId, setClickedCardId] = useState(null)
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setCurrentPage('landingPage');
+    } else if (isAuthenticated && currentPage === 'landingPage') {
+      setCurrentPage('dashboard');
+    } else if (isAuthenticated && currentPage === 'dashboard' && clickedCardId) {
+      setCurrentPage('kanbanBoard');
+    }
+  }, [isAuthenticated, currentPage, setCurrentPage, clickedCardId]);
+
+  return (
     <div>
-       <Header/>  
-       <LandingPage />
+    <Header />
+    {currentPage === 'landingPage' && <LandingPage />}
+    {currentPage === 'dashboard' && (
+      <Dashboard clickedCardId={clickedCardId} setClickedCardId={setClickedCardId} />
+    )}
+    {currentPage === 'kanbanBoard' && (
+      <KanbanBoard clickedCardId={clickedCardId} setClickedCardId={setClickedCardId} />
+    )}
+    <Footer />
+  </div>
+  );
+};
 
-       <div className="container mx-auto mt-8 mb-16">
-        <h1 className="text-2xl text-center font-bold mb-4">Form Example</h1>
-        <Form />
-        <KanbanBoard />
-      </div>
-       <Footer />
-    </div>
-  )
+// ISOMER EDIT
+  // return (
+  //   <div>
+  //      <Header/>  
+  //      <LandingPage />
+
+  //      <div className="container mx-auto mt-8 mb-16">
+  //       <h1 className="text-2xl text-center font-bold mb-4">Form Example</h1>
+  //       <Form />
+  //       <KanbanBoard />
+  //     </div>
+  //      <Footer />
+  //   </div>
+  //   )};
+
 export default App;
