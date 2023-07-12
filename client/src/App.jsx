@@ -10,29 +10,12 @@ import Form from './components/Form';
 import KanbanBoard from './components/KanbanBoard';
 import Dashboard from './features/Dashboard';
 
-
-
-// const App = () => {
-//     const {isAuthenticated} = useAuthContext();
-//     const {currentPage} = useRoutingContext();
-
-//     return (
-//         <div>
-//             <Header />
-//             {isAuthenticated && currentPage === 'landingPage' ? (
-//                 <Dashboard />
-//           ) : (
-//             <LandingPage />
-//           )}
-//           <Footer />
-//         </div>
-//     )
-// };
-
 const App = () => {
   const {  isAuthenticated } = useAuthContext();
   const { currentPage, setCurrentPage } = useRoutingContext();
-  const [clickedCardId, setClickedCardId] = useState(null)
+  const [clickedCardId, setClickedCardId] = useState(null) // State for card ID 
+
+// UseEffect wil only change if values inside UseEffect changes
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -46,32 +29,21 @@ const App = () => {
 
   return (
     <div>
-    <Header />
-    {currentPage === 'landingPage' && <LandingPage />}
-    {currentPage === 'dashboard' && (
-      <Dashboard clickedCardId={clickedCardId} setClickedCardId={setClickedCardId} />
-    )}
-    {currentPage === 'kanbanBoard' && (
-      <KanbanBoard clickedCardId={clickedCardId} setClickedCardId={setClickedCardId} />
-    )}
-    <Footer />
-  </div>
+      <Header />
+      {currentPage === 'landingPage' && <LandingPage />}
+      {currentPage === 'dashboard' && (
+        <Dashboard clickedCardId={clickedCardId} setClickedCardId={setClickedCardId} />
+      )}
+      {currentPage === 'kanbanBoard' && (
+        <KanbanBoard />
+      )}
+      <div className="container mx-auto mt-8 mb-16">
+        <h1 className="text-2xl text-center font-bold mb-4">Form Example</h1>
+        <Form />
+      </div>
+      <Footer />
+    </div>
   );
 };
-
-// ISOMER EDIT
-  // return (
-  //   <div>
-  //      <Header/>  
-  //      <LandingPage />
-
-  //      <div className="container mx-auto mt-8 mb-16">
-  //       <h1 className="text-2xl text-center font-bold mb-4">Form Example</h1>
-  //       <Form />
-  //       <KanbanBoard />
-  //     </div>
-  //      <Footer />
-  //   </div>
-  //   )};
 
 export default App;
