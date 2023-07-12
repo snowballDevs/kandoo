@@ -14,7 +14,7 @@ const App = () => {
     const {currentPage, setCurrentPage} = useRoutingContext();
     const [clickedCardId, setClickedCardId] = useState(null); // State for card ID
 
-    // UseEffect wil only change if values inside UseEffect changes
+    // UseEffect will only change if values inside UseEffect changes
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -51,5 +51,6 @@ const App = () => {
         </div>
     );
 };
+
 
 export default App;
