@@ -1,10 +1,10 @@
 ## Description
 
-This pull request adds the README.md file. Contributed by user Michelle-932
+[Provide a brief overview of the changes made in this PR. Be sure to mention any key functionality, improvements, or bug fixes.]
 
 ## Related Issue
 
--   [✓ ] Is this related to a specific issue? Is so please specify:
+-   [ ] Is this related to a specific issue? Is so please specify:
 
 ## Type of Changes
 
@@ -13,7 +13,7 @@ Use a check for ✓ the following type of changes:
 |     | Type                       |
 | --- | -------------------------- |
 |     | :bug: Bug fix              |
-| ✓   | :sparkles: New feature     |
+|     | :sparkles: New feature     |
 |     | :hammer: Refactoring       |
 |     | :100: Add tests            |
 |     | :link: Update dependencies |
@@ -23,7 +23,6 @@ Use a check for ✓ the following type of changes:
 
 ### Before
 
-N/A
 
 [If applicable, include a picture of the behavior before the changes were made. I.e. a screenshot of the behavior before the changes were made.]
 
@@ -33,15 +32,13 @@ N/A
 
 ## Testing Steps / QA Criteria
 
-N/A
-
 [Describe the steps taken to test upcoming changes. Describe any additional testing that needs to be done beyond the steps outlined above. This might include manual testing, exploratory testing, or other types of testing that can't be easily automated.]
 
 ## Checklist:
 
 -   [ ] This PR is up to date with the development branch, and merge conflicts have been resolved
--   [✓ ] My code follows the style guidelines of this project
+-   [ ] My code follows the style guidelines of this project
 -   [ ] I have executed npm run lint and resolved any outstanding errors. 
--   [✓ ] I have performed a self-review of my own code
+-   [ ] I have performed a self-review of my own code
 -   [ ] I have commented my code, particularly in hard-to-understand areas
--   [✓ ] My changes generate no new warnings
+-   [ ] My changes generate no new warnings
