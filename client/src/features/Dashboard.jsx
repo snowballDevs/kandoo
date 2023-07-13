@@ -1,9 +1,7 @@
 import BoardGrid from './BoardGrid';
-import Header from '../components/Header';
 
-const Dashboard = () => (
+const Dashboard = ({clickedCardId, setClickedCardId}) => (
     <div>
-        <Header />
         <div className='p-10'>
             <div className='flex flex-col text-center'>
                 <p className='text-lg'>
@@ -12,7 +10,10 @@ const Dashboard = () => (
                 <h1 className='text-4xl font-bold'>Your Projects</h1>
             </div>
         </div>
-        <BoardGrid />
+        <BoardGrid
+            clickedCardId={clickedCardId}
+            setClickedCardId={setClickedCardId}
+        />
     </div>
 );
 

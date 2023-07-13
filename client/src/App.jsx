@@ -1,32 +1,40 @@
-import {useEffect, useState} from 'react';
 import './App.css';
+import { useState} from 'react';
+// import {useAuthContext} from './contexts/AuthContext/authContext';
+import {useRoutingContext} from './contexts/RoutingContext/routingContext';
 import LandingPage from './features/LandingPage';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import Form from './components/Form';
+// import Form from './components/Form';
 import KanbanBoard from './components/KanbanBoard';
-import dataService from './services/dataService';
-import {useAuthContext} from './contexts/AuthContext/authContext';
+import Dashboard from './features/Dashboard';
 
 const App = () => {
-    const {isAuthenticated} = useAuthContext();
-
-    console.log(isAuthenticated);
+    // const {isAuthenticated} = useAuthContext();
+    const {currentPage} = useRoutingContext();
+    const [clickedCardId, setClickedCardId] = useState(null); // State for card ID
 
     return (
         <div>
             <Header />
-            <LandingPage />
-            <h1>{isAuthenticated}</h1>
-            <div className='container mx-auto mt-8 mb-16'>
+            {currentPage === 'landingPage' && <LandingPage />}
+            {currentPage === 'dashboard' && (
+                <Dashboard
+                    clickedCardId={clickedCardId}
+                    setClickedCardId={setClickedCardId}
+                />
+            )}
+            {currentPage === 'kanbanBoard' && <KanbanBoard />}
+            {/* <div className='container mx-auto mt-8 mb-16'>
                 <h1 className='text-2xl text-center font-bold mb-4'>
                     Form Example
                 </h1>
                 <Form />
-                <KanbanBoard />
-            </div>
+            </div> */}
             <Footer />
         </div>
     );
 };
+
+
 export default App;

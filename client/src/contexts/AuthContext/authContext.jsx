@@ -1,5 +1,7 @@
 import {createContext, useContext, useState, useMemo, useEffect} from 'react';
 import dataService from '../../services/dataService';
+import { useRoutingContext } from '../RoutingContext/routingContext';
+
 // Create a named context
 const AuthContext = createContext();
 
@@ -10,6 +12,7 @@ const useAuthContext = () => useContext(AuthContext);
 // a provider is a component that allows you to share context with its nested components
 const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const {setCurrentPage} = useRoutingContext(); // temp
 
     useEffect(() => {
         async function getUser() {
@@ -36,6 +39,7 @@ const AuthProvider = ({children}) => {
                 password: '12345678',
             });
 
+            setCurrentPage('dashboard')
             console.log(response);
             setIsAuthenticated(true);
             console.log(isAuthenticated);
@@ -47,6 +51,7 @@ const AuthProvider = ({children}) => {
 
     const logout = () => {
         setIsAuthenticated(false);
+        setCurrentPage('landingPage')
     };
 
     // useMemo is a Hook that lets you cache the result of a calculation between re-renders.
