@@ -1,4 +1,5 @@
-import {createContext, useContext, useState, useMemo} from 'react';
+import {createContext, useContext, useState, useMemo, useEffect} from 'react';
+import dataService from '../../services/dataService';
 import { useRoutingContext } from '../RoutingContext/routingContext';
 
 // Create a named context
@@ -13,10 +14,39 @@ const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const {setCurrentPage} = useRoutingContext(); // temp
 
-    const login = () => {
-        setIsAuthenticated(true);
-        setCurrentPage('dashboard')
+    useEffect(() => {
+        async function getUser() {
+            try {
+                const data = await dataService.getUser();
+                if (data.isLoggedIn) {
+                    console.log('HI');
+                    setIsAuthenticated(true);
+                }
+                console.log(data);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        getUser();
+    }, []);
 
+    const login = async () => {
+        console.log('Clicked');
+
+        try {
+            const response = await dataService.login({
+                email: 'ivy@gmail.com',
+                password: '12345678',
+            });
+
+            setCurrentPage('dashboard')
+            console.log(response);
+            setIsAuthenticated(true);
+            console.log(isAuthenticated);
+        } catch (err) {
+            console.log(err);
+            return;
+        }
     };
 
     const logout = () => {

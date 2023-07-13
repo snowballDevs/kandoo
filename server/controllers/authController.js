@@ -4,15 +4,17 @@ const User = require('../models/User');
 
 module.exports = {
     getUser: (req, res) => {
+        console.log(req.isAuthenticated());
         if (req.isAuthenticated()) {
             console.log(req.user);
             return res.json({isLoggedIn: true, user: req.user});
         }
-
+        console.log('Not signed in');
         return res.json({isLoggedIn: false});
     },
 
     login: (req, res, next) => {
+        console.log(req.body);
         passport.authenticate('local', (err, user, info) => {
             if (err) {
                 // Handle authentication error
@@ -23,9 +25,16 @@ module.exports = {
                 return res.status(401).json({message: info.message});
             }
 
-            console.log(req.session);
-            // Authentication and login successful
-            return res.status(200).json({message: 'Login successful'});
+            req.login(user, (err) => {
+                if (err) {
+                    // Handle login error
+                    return next(err);
+                }
+
+                console.log(user);
+                // Authentication and login successful
+                return res.status(200).json({message: 'Login successful'});
+            });
         })(req, res, next);
     },
 
