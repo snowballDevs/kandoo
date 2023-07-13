@@ -1,10 +1,14 @@
 import {useState} from 'react';
+import { useRoutingContext } from '../contexts/RoutingContext/routingContext';
+
 
 const Card = ({setClickedCardId}) => {
     const [cardId, setCardId] = useState(null);
+    const {setCurrentPage} = useRoutingContext();
 
     function handleCardClick() {
         setClickedCardId(cardId);
+        setCurrentPage('kanbanBoard');
     }
 
     // Generate a unique ID for each card, remove after testing
