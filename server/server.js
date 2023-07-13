@@ -10,6 +10,7 @@ require('dotenv').config({path: './config/.env'});
 
 const PORT = process.env.SERVER_PORT || 8888;
 const app = express();
+const User = require('./models/User');
 
 // connect to database
 connectDB();
@@ -25,20 +26,19 @@ app.use(express.json());
 // logging
 app.use(logger('dev'));
 
-// Setup Sessions - stored in MongoDB
 app.use(
-    session({
-        secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: false,
-        store: MongoStore.create({
-            mongoUrl: process.env.DB_STRING,
-            dbName: 'kandoo',
-        }),
-        cookie: {
-            maxAge: 1000 * 60 * 60 * 24, // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec)
-        },
-    })
+  session({
+      secret: 'keyboard cat',
+      resave: false,
+      saveUninitialized: false,
+      store: MongoStore.create({
+          mongoUrl: process.env.DB_STRING,
+          dbName: 'kandoo',
+      }),
+      cookie: {
+          maxAge: 1000 * 60 * 60 * 24, // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec)
+      },
+  })
 );
 
 // Passport middleware
@@ -54,7 +54,6 @@ app.use(passport.session());
 // Setup Routes For Which The Server Is Listening
 app.use('/', mainRoutes);
 
-
 app.post('/boardFormSubmit', (req, res) => {
   console.log(req.body)
   res.json('board form submit :) ')
@@ -63,3 +62,4 @@ app.post('/boardFormSubmit', (req, res) => {
 app.listen(PORT, () =>
     console.log(`Server is running on ${PORT}, you better catch it!`)
 );
+
