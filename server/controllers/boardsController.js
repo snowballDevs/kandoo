@@ -12,8 +12,10 @@ module.exports = {
         const boards = await Board.find({users: userId})
 
         return res.json({boards})
+        
       } catch (error) {
         console.error(error)
+        return false
       }
     },
 
