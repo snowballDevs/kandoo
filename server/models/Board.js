@@ -15,11 +15,11 @@ const commentSchema = new mongoose.Schema({
 });
 
 const taskSchema = new mongoose.Schema({
-    task_name: {type: String, required: false},
+    taskName: {type: String, required: false},
 
     assigned_user_ids: {type: Array, required: false},
 
-    board_id: {type: mongoose.Schema.Types.ObjectID, ref: 'Board'},
+    boardId: {type: mongoose.Schema.Types.ObjectID, ref: 'Board'},
 
     due_date: {type: Date, required: false},
 
@@ -33,28 +33,23 @@ const taskSchema = new mongoose.Schema({
 
     task_detail: {type: String, required: false},
 
-    comments: commentSchema,
+    comments: [commentSchema],
 });
 
 const BoardSchema = new mongoose.Schema({
-    user_ids: {
+    users: [{
         // pull array of users in board controller
-        type: [mongoose.Schema.Types.ObjectId],
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-    },
-    board_name: {
+    }],
+    boardName: {
         type: String,
         require: true,
     },
-    category_stages: {
+
+    categoryStages: {
         type: Array,
         required: true,
-    },
-
-    likes: {
-        type: Number,
-        required: true,
-        default: 0,
     },
 
     createdBy: {
@@ -62,7 +57,12 @@ const BoardSchema = new mongoose.Schema({
         ref: 'User',
     },
 
-    task: taskSchema,
+    description: {
+        type: String,
+        required: true,
+    },
+
+    tasks: [taskSchema],
 
     createdAt: {
         type: Date, // Expected output: "Fri, 02 Feb 1996 03:04:05 GMT"
@@ -70,4 +70,7 @@ const BoardSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('Board', BoardSchema); // TODO: change "board"
+module.exports = {
+    Board: mongoose.model('Board', BoardSchema), // TODO: change "board"
+    Task: mongoose.model('Task', taskSchema)
+}

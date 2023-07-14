@@ -6,11 +6,12 @@ const cors = require('cors');
 const logger = require('morgan');
 const connectDB = require('./config/database');
 const mainRoutes = require('./routes/main');
+const boardRoutes = require('./routes/boards')
 require('dotenv').config({path: './config/.env'});
 
 const PORT = process.env.SERVER_PORT || 8888;
 const app = express();
-const User = require('./models/User');
+// const User = require('./models/User');
 
 // connect to database
 connectDB();
@@ -61,6 +62,7 @@ app.use(passport.session());
 
 // Setup Routes For Which The Server Is Listening
 app.use('/', mainRoutes);
+app.use('/boards', boardRoutes);
 
 app.listen(PORT, () =>
     console.log(`Server is running on ${PORT}, you better catch it!`)
