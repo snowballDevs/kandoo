@@ -35,8 +35,8 @@ const AuthProvider = ({children}) => {
 
         try {
             const response = await dataService.login({
-                email: 'ivy@gmail.com',
-                password: '12345678',
+                email: 'charcharcodes@gmail.com',
+                password: 'goooglygook',
             });
 
             setCurrentPage('dashboard')
@@ -45,7 +45,7 @@ const AuthProvider = ({children}) => {
             console.log(isAuthenticated);
         } catch (err) {
             console.log(err);
-            return;
+            
         }
     };
 
