@@ -11,7 +11,7 @@ require('dotenv').config({path: './config/.env'});
 
 const PORT = process.env.SERVER_PORT || 8888;
 const app = express();
-// const User = require('./models/User');
+const User = require('./models/User');
 
 // connect to database
 connectDB();
