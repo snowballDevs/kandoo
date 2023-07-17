@@ -9,10 +9,10 @@ router.get('/', tasksController.getTasks)
 // Create Task
 router.post('/createTask', tasksController.createTask)
 
-// Update Task
-router.put('/updateTask', tasksController.updateTask)
+// // Update Task
+// router.put('/updateTask', tasksController.updateTask)
 
-// Delete Task
-router.delete('/deleteTask', tasksController.deleteTask)
+// // Delete Task
+// router.delete('/deleteTask', tasksController.deleteTask)
 
 module.exports = router;
