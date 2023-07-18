@@ -2,7 +2,10 @@ const express = require('express');
 
 const router = express.Router()
 const boardsController = require('../controllers/boardsController')
+const tasksController = require('../controllers/tasksController')
 const {ensureAuth} = require('../middleware/auth')
+// const taskRoutes = require('./tasks')
+// const commentRoutes = require('./comments')
 
 // Getting all the boards
 router.get('/', boardsController.getAllBoards)
@@ -15,6 +18,11 @@ router.post('/createBoard', ensureAuth, boardsController.createBoard)
 // Delete a board
 router.delete('/deleteBoard/:id', ensureAuth, boardsController.deleteBoard)
 
-router.get('/populateBoard/:id', boardsController.populateBoard)
+router.delete('/:boardId/tasks/:taskId/deleteTask', tasksController.deleteTask)
+router.put('/:boardId/tasks/:taskId/updateTask', tasksController.updateTask)
+router.post('/:boardId/tasks/createTask', tasksController.createTask)
+router.get('/:boardId/tasks/', tasksController.getTasks)
+// router.use('/:boardId/tasks/', taskRoutes)
+// router.use('/:boardId/tasks/:taskId/comments', commentRoutes)
 
 module.exports = router;

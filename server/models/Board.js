@@ -17,7 +17,7 @@ const commentSchema = new mongoose.Schema({
 const taskSchema = new mongoose.Schema({
     taskName: {type: String, required: false},
 
-    assigned_user_ids: {type: Array, required: false},
+    assignedUserIds: {type: Array, required: false},
 
     boardId: {type: mongoose.Schema.Types.ObjectID, ref: 'Board'},
 

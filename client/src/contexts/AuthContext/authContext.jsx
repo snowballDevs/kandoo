@@ -28,7 +28,7 @@ const AuthProvider = ({children}) => {
             }
         }
         getUser();
-    }, []);
+    }, [isAuthenticated]);
 
     const login = async () => {
         console.log('Clicked');
