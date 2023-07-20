@@ -3,12 +3,13 @@ const mongoose = require('mongoose');
 const commentSchema = new mongoose.Schema({
     commentDate: {type: Date, default: Date.now},
 
-    description: {type: String, required: true},
+    comment_detail: {type: String, required: true},
 
     // this is changed from the user schema object - this is for MVP milestone, favoring flat comment structure rather than being able to reply to other comments
     createdBy: {type: String, required: true}, 
 
-    likes: {type: Number, default: 0},
+    task_id: {type: mongoose.Schema.Types.ObjectID, ref: 'Task'},
+
 });
 
 const taskSchema = new mongoose.Schema({
@@ -68,5 +69,7 @@ const BoardSchema = new mongoose.Schema({
 });
 
 module.exports = {
-    Board: mongoose.model('Board', BoardSchema),
-};
+    Board: mongoose.model('Board', BoardSchema), // TODO: change "board"
+    Task: mongoose.model('Task', taskSchema),
+    Comment: mongoose.model('Comment', commentSchema)
+}
