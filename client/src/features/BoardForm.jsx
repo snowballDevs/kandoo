@@ -3,7 +3,7 @@ import { useState } from "react"
 const BoardForm = ({handleClose}) =>{
     const [formData, setFormData] = useState({
       boardName:"",
-      boardDescription: "",
+      description: "",
       boardCategory:"",
     })
 
@@ -21,12 +21,13 @@ const BoardForm = ({handleClose}) =>{
       event.preventDefault()
       try {
         const jsonPayload = JSON.stringify(formData);
-        const response = await fetch('http://localhost:8888/boardFormSubmit', { // to be changed later on with axios
+        const response = await fetch('http://localhost:8888/boards/createBoard/', { // to be changed later on with axios
           method: 'POST', 
           headers: {
             'Content-Type': 'application/json',
           },
           body: jsonPayload,
+          credentials: "include",
       });
 
         // handle response
@@ -57,12 +58,12 @@ const BoardForm = ({handleClose}) =>{
                 className="input w-full max-w-xs block mt-2 border-indigo-600"
               />
           </label>
-          <label htmlFor="boardDescription" className="label label-text block mb-2 font-bold text-lg">
+          <label htmlFor="description" className="label label-text block mb-2 font-bold text-lg">
             What is your board all about?
             <textarea 
-              id="boardDescription" 
-              name="boardDescription"
-              value={formData.boardDescription}
+              id="description" 
+              name="description"
+              value={formData.description}
               onChange={handleChange}
               placeholder="type here!"
               className="block w-full text-sm border-2 rounded-lg border-indigo-800 pl-2 font-normal"

@@ -28,15 +28,15 @@ const AuthProvider = ({children}) => {
             }
         }
         getUser();
-    }, []);
+    }, [isAuthenticated]);
 
     const login = async () => {
         console.log('Clicked');
 
         try {
             const response = await dataService.login({
-                email: 'ivy@gmail.com',
-                password: '12345678',
+                email: 'charcharcodes@gmail.com',
+                password: 'goooglygook',
             });
 
             setCurrentPage('dashboard');
