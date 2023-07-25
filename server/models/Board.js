@@ -71,6 +71,5 @@ const BoardSchema = new mongoose.Schema({
 });
 
 module.exports = {
-    Board: mongoose.model('Board', BoardSchema), // TODO: change "board"
-    Task: mongoose.model('Task', taskSchema)
+    Board: mongoose.model('Board', BoardSchema)
 }

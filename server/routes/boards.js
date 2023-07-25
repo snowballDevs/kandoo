@@ -21,7 +21,7 @@ router.delete('/deleteBoard/:id', ensureAuth, boardsController.deleteBoard)
 router.delete('/:boardId/tasks/:taskId/deleteTask', tasksController.deleteTask)
 router.put('/:boardId/tasks/:taskId/updateTask', tasksController.updateTask)
 router.post('/:boardId/tasks/createTask', tasksController.createTask)
-router.get('/:boardId/tasks/', tasksController.getTasks)
+// router.get('/:boardId/tasks/', tasksController.getTasks)
 // router.use('/:boardId/tasks/', taskRoutes)
 // router.use('/:boardId/tasks/:taskId/comments', commentRoutes)
 
