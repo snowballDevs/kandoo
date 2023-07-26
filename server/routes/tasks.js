@@ -1,9 +1,6 @@
 const express = require('express');
-
 const router = express.Router({mergeParams: true});
 const tasksController = require('../controllers/tasksController');
-const {route} = require('./boards');
-
 
 // router.route allows us to define multiple HTTP methods for the same route
 

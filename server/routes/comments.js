@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express.Router({mergeParams: true}); // needed so that the router can access parameters defined in parent router
 
+const router = express.Router({mergeParams: true}); // needed so that the router can access parameters defined in parent router
 const commentsController = require('../controllers/commentsController');
 
 // prettier-ignore

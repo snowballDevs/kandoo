@@ -92,6 +92,7 @@ module.exports = {
         try {
             const {boardId, taskId, commentId} = req.params;
 
+
             // const board = await Board.findById(boardId)
             console.log(boardId);
 
