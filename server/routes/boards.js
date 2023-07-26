@@ -18,8 +18,13 @@ router.post('/createBoard', ensureAuth, boardsController.createBoard)
 // Delete a board
 router.delete('/deleteBoard/:id', ensureAuth, boardsController.deleteBoard)
 
+// Delete Task
 router.delete('/:boardId/tasks/:taskId/deleteTask', tasksController.deleteTask)
+
+// Update Task
 router.put('/:boardId/tasks/:taskId/updateTask', tasksController.updateTask)
+
+// Create Task
 router.post('/:boardId/tasks/createTask', tasksController.createTask)
 // router.get('/:boardId/tasks/', tasksController.getTasks)
 // router.use('/:boardId/tasks/', taskRoutes)

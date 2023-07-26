@@ -45,12 +45,12 @@ module.exports = {
     }
   },
 
-  // updateTask
+    // updateTask
 
-  updateTask: async (req, res) => {
-    try {
-      const { boardId, taskId } = req.params
-      const {taskName,priority} = req.body
+    updateTask: async (req, res) => {
+        try {
+            const {boardId, taskId} = req.params;
+            const {taskName, priority} = req.body;
 
       // const board = await Board.findById(boardId)
       console.log(boardId)

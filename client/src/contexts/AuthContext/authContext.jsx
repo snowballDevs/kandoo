@@ -35,8 +35,8 @@ const AuthProvider = ({children}) => {
 
         try {
             const response = await dataService.login({
-                email: 'charcharcodes@gmail.com',
-                password: 'goooglygook',
+                email: 'ivy@gmail.com',
+                password: '12345678',
             });
 
             setCurrentPage('dashboard');
