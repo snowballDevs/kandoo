@@ -3,7 +3,11 @@ const express = require('express');
 const router = express.Router();
 const tasksController = require('../controllers/tasksController');
 
+<<<<<<< HEAD
 // // Get Tasks
+=======
+// Get Tasks 
+>>>>>>> 575e6ae (refactored and corrected task routes and controller)
 // router.get('/', tasksController.getTasks)
 
 // // Create Task

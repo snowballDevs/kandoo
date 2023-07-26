@@ -26,9 +26,13 @@ router.put('/:boardId/tasks/:taskId/updateTask', tasksController.updateTask)
 
 // Create Task
 router.post('/:boardId/tasks/createTask', tasksController.createTask)
+<<<<<<< HEAD
 
 // Get Tasks
 router.get('/:boardId/tasks/', tasksController.getTasks)
+=======
+// router.get('/:boardId/tasks/', tasksController.getTasks)
+>>>>>>> 575e6ae (refactored and corrected task routes and controller)
 // router.use('/:boardId/tasks/', taskRoutes)
 // router.use('/:boardId/tasks/:taskId/comments', commentRoutes)
 
