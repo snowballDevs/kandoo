@@ -1,9 +1,9 @@
-// const express = require('express');
+const express = require('express');
 
-// const router = express.Router();
-// const commentsController = require('../controllers/commentsController')
+const router = express.Router();
+const commentsController = require('../controllers/commentsController')
 
-// // Get Comments 
+// Get Comments 
 // router.get('/', commentsController.getComments)
 
 // // Create Comment
@@ -15,4 +15,4 @@
 // // Delete Comment
 // router.delete('/deleteComment', commentsController.deleteComment)
 
-// module.exports = router;
+module.exports = router;

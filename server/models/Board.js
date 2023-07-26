@@ -1,25 +1,20 @@
 const mongoose = require('mongoose');
-  
+
 const commentSchema = new mongoose.Schema({
-    comment_date: {type: Date, default: Date.now},
+    commentDate: {type: Date, default: Date.now},
 
-    task_detail: {type: String, required: true},
+    description: {type: String, required: true},
 
-    created_by: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    // this is changed from the user schema object - this is for MVP milestone, favoring flat comment structure rather than being able to reply to other comments
+    createdBy: {type: String, required: true}, 
 
-    task_id: {type: mongoose.Schema.Types.ObjectID, ref: 'Task'},
-
-    reply_user_id: {type: Array, required: false},
-
-    reply_date: {type: Date, required: Date.now},
+    likes: {type: Number, default: 0},
 });
 
 const taskSchema = new mongoose.Schema({
     taskName: {type: String, required: false},
 
     assignedUserIds: {type: Array, required: false},
-
-    boardId: {type: mongoose.Schema.Types.ObjectID, ref: 'Board'},
 
     due_date: {type: Date, required: false},
 
@@ -37,11 +32,13 @@ const taskSchema = new mongoose.Schema({
 });
 
 const BoardSchema = new mongoose.Schema({
-    users: [{
-        // pull array of users in board controller
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    }],
+    users: [
+        {
+            // pull array of users in board controller
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
+    ],
     boardName: {
         type: String,
         require: true,
@@ -71,5 +68,5 @@ const BoardSchema = new mongoose.Schema({
 });
 
 module.exports = {
-    Board: mongoose.model('Board', BoardSchema)
-}
+    Board: mongoose.model('Board', BoardSchema),
+};
