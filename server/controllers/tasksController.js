@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const {Task, Board} = require('../models/Board');
 
 module.exports = {
@@ -58,6 +59,24 @@ module.exports = {
   //       return res.json(tasks)
   //     }
 
+=======
+const { Board}  = require('../models/Board')
+
+module.exports = {
+  // ! we are commenting out getTasks because we may be able to pass tasks down in react state to render them out.
+  // getTasks: async (req, res) => {
+  //   try {
+  //     const { boardId } = req.params
+  //     // const board = await Board.findById(boardId)
+  //     console.log(boardId)
+  //     const board = await Board.findById(boardId)
+
+  //     if(board){
+  //       const {tasks} = board
+  //       return res.json(tasks)
+  //     }
+
+>>>>>>> 575e6ae (refactored and corrected task routes and controller)
   //   } catch (error) {
   //     console.error(error)
   //     return false

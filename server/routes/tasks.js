@@ -1,22 +1,18 @@
 const express = require('express');
 
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 const tasksController = require('../controllers/tasksController');
 
-<<<<<<< HEAD
-// // Get Tasks
-=======
-// Get Tasks 
->>>>>>> 575e6ae (refactored and corrected task routes and controller)
-// router.get('/', tasksController.getTasks)
 
-// // Create Task
-// router.post('/createTask', tasksController.createTask)
+// router.route allows us to define multiple HTTP methods for the same route
 
-// // Update Task
-// router.put('/updateTask', tasksController.updateTask)
+// prettier-ignore
+router.route('/')
+    .post(tasksController.createTask);
 
-// // Delete Task
-// router.delete('/deleteTask', tasksController.deleteTask)
+// prettier-ignore
+router.route('/:taskId')
+    .put(tasksController.updateTask)
+    .delete(tasksController.deleteTask);
 
 module.exports = router;
