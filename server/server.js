@@ -6,7 +6,9 @@ const cors = require('cors');
 const logger = require('morgan');
 const connectDB = require('./config/database');
 const mainRoutes = require('./routes/main');
-const boardRoutes = require('./routes/boards')
+const boardRoutes = require('./routes/boards');
+const taskRoutes = require('./routes/tasks');
+const commentRoutes = require('./routes/comments');
 require('dotenv').config({path: './config/.env'});
 
 const PORT = process.env.SERVER_PORT || 8888;
@@ -62,8 +64,9 @@ app.use(passport.session());
 // Setup Routes For Which The Server Is Listening
 app.use('/', mainRoutes);
 app.use('/boards', boardRoutes);
+app.use('/boards/:boardId/tasks', taskRoutes);
+app.use('/boards/:boardId/tasks/:taskId/comments', commentRoutes);
 
 app.listen(PORT, () =>
     console.log(`Server is running on ${PORT}, you better catch it!`)
 );
-

@@ -91,7 +91,7 @@ module.exports = {
     likeComment: async (req, res) => {
         try {
             const {boardId, taskId, commentId} = req.params;
-            const {likes} = req.body;
+
 
             // const board = await Board.findById(boardId)
             console.log(boardId);

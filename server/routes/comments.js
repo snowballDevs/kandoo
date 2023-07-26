@@ -1,26 +1,16 @@
 const express = require('express');
 
-const router = express.Router();
+const router = express.Router({mergeParams: true}); // needed so that the router can access parameters defined in parent router
 const commentsController = require('../controllers/commentsController');
 
-// Get Comments
-// router.get('/', commentsController.getComments)
+// prettier-ignore
+router.route('/')
+    .post(commentsController.createComment);
 
-// Create Comment
-router.post('/:commentId/createComment', commentsController.createComment);
+// prettier-ignore
+router.route('/:commentId')
+    .put(commentsController.updateComment)
+    .patch(commentsController.likeComment)
+    .delete(commentsController.deleteComment);
 
-// Update Comment
-router.put('/:commentId/updateComment', commentsController.updateComment);
-
-// Like Comment
-router.put('/:commentId/likeComment', commentsController.likeComment);
-
-// Delete Comment
-router.delete('/:commentId/deleteComment', commentsController.deleteComment);
-
-// // Delete Comment
-// router.delete(
-//   '/:boardId/tasks/:taskId/comments/:commentId/deleteComment',
-//     commentsController.deleteComment
-// );
 module.exports = router;
