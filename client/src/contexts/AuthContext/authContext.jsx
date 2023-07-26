@@ -1,6 +1,6 @@
 import {createContext, useContext, useState, useMemo, useEffect} from 'react';
 import dataService from '../../services/dataService';
-import { useRoutingContext } from '../RoutingContext/routingContext';
+import {useRoutingContext} from '../RoutingContext/routingContext';
 
 // Create a named context
 const AuthContext = createContext();
@@ -35,23 +35,22 @@ const AuthProvider = ({children}) => {
 
         try {
             const response = await dataService.login({
-                email: 'charcharcodes@gmail.com',
-                password: 'goooglygook',
+                email: 'ivy@gmail.com',
+                password: '12345678',
             });
 
-            setCurrentPage('dashboard')
+            setCurrentPage('dashboard');
             console.log(response);
             setIsAuthenticated(true);
             console.log(isAuthenticated);
         } catch (err) {
             console.log(err);
-            
         }
     };
 
     const logout = () => {
         setIsAuthenticated(false);
-        setCurrentPage('landingPage')
+        setCurrentPage('landingPage');
     };
 
     // useMemo is a Hook that lets you cache the result of a calculation between re-renders.
