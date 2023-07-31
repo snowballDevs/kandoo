@@ -1,8 +1,7 @@
 import {useState} from 'react';
-import { useRoutingContext } from '../contexts/RoutingContext/routingContext';
+import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 
-
-const Card = ({setClickedCardId}) => {
+const Card = ({key, name, desc}) => {
     const [cardId, setCardId] = useState(null);
     const {setCurrentPage} = useRoutingContext();
 
@@ -26,9 +25,9 @@ const Card = ({setClickedCardId}) => {
         >
             <div className='flex flex-col gap-4'>
                 <h3 className='font-bold text-xl truncate leading-tight'>
-                    Board
+                    {name}
                 </h3>
-                <p className='text-s truncate'>Work in progress</p>
+                <p className='text-s truncate'>{desc}</p>
             </div>
         </div>
     );
