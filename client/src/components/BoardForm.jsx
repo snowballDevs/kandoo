@@ -1,9 +1,13 @@
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import dataService from '../services/dataService';
-import useModal from '../hooks/useModal';
+import {ModalContext} from '../contexts/ModalContext/ModalContext';
+import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 
 const BoardForm = () => {
-    const {handleClose} = useModal();
+    const {handleModal, isModalOpen, handleClose, handleOpen} =
+        useContext(ModalContext);
+
+    const {setCurrentPage} = useRoutingContext();
 
     const [formData, setFormData] = useState({
         boardName: '',
@@ -28,10 +32,11 @@ const BoardForm = () => {
             if (response.status >= 200 && response.status < 300) {
                 console.log('Request Successful', response);
             }
+            handleClose();
+            setCurrentPage('kanbanBoard');
         } catch (error) {
             console.error('Error: ', error.message);
         }
-        handleClose();
     };
     return (
         <>
