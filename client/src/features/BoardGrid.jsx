@@ -31,17 +31,17 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
         }
     };
 
-    const onDelete = async (id) => {
+    const onDelete = async (e, id) => {
+        e.stopPropagation();
         const deletedBoard = await dataService.deleteBoard(id);
         console.log(deletedBoard);
         await getBoards();
     };
 
     function navigateToBoard(e) {
-        e.stopPropagation();
         console.log(e);
         console.log('Hello');
-        const {id} = e.target;
+        const {id} = e.currentTarget;
         console.log(id);
         const board = boards.filter((board) => board._id === id);
         console.log(board);

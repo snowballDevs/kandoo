@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import dataService from '../services/dataService';
-import {on} from '../../../server/models/User';
 
 const Card = ({name, desc, id, onDelete, onClick}) => {
     const [cardId, setCardId] = useState(null);
@@ -20,7 +19,7 @@ const Card = ({name, desc, id, onDelete, onClick}) => {
             <button
                 className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
                 type='button'
-                onClick={() => onDelete(id)}
+                onClick={(e) => onDelete(e, id)}
             >
                 x
             </button>
