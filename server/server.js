@@ -39,7 +39,7 @@ app.use(
     session({
         secret: 'keyboard cat',
         resave: true,
-        saveUninitialized: true,
+        saveUninitialized: false,
         store: MongoStore.create({
             mongoUrl: process.env.DB_STRING,
             dbName: 'kandoo',
