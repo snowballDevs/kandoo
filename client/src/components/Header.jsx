@@ -2,7 +2,7 @@ import {useAuthContext} from '../contexts/AuthContext/authContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import PageHeading from './PageHeading';
 
-const Header = () => {
+const Header = ({boardName}) => {
     const {login, logout, isAuthenticated} = useAuthContext();
 
     const {currentPage} = useRoutingContext();
@@ -60,7 +60,7 @@ const Header = () => {
             </nav>
 
             {currentPage !== 'landingPage' && (
-                <PageHeading currentPage={currentPage} />
+                <PageHeading currentPage={currentPage} boardName={boardName} />
             )}
         </header>
     );

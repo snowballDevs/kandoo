@@ -17,7 +17,6 @@ const App = () => {
 
     return (
         <div>
-            <Header />
             {currentPage === 'landingPage' && <LandingPage />}
             {currentPage === 'dashboard' && (
                 <Dashboard

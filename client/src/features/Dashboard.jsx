@@ -1,8 +1,10 @@
+import Header from '../components/Header';
 import BoardGrid from './BoardGrid';
 
 const Dashboard = ({clickedCardId, setClickedCardId}) => {
     return (
         <div>
+            <Header />
             <div className='p-10'>
                 <div className='flex flex-col text-center'>
                     <p className='text-lg'>
