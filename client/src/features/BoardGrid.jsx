@@ -3,14 +3,17 @@ import Card from '../components/BoardCard';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import BoardForm from './BoardForm';
 import Modal from '../components/Modal';
-import Form from '../components/BoardForm';
+import CreateBoardForm from '../components/CreateBoardForm';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
+import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
 import dataService from '../services/dataService';
 
 const BoardGrid = ({clickedCardId, setClickedCardId}) => {
     // this should capture an array of objects(boards)
     const {handleModal, isModalOpen, handleClose, handleOpen} =
         useContext(ModalContext);
+
+    const {setSelectedBoard} = useSelectedBoardContext();
 
     const {setCurrentPage} = useRoutingContext();
 
@@ -39,13 +42,12 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
     };
 
     function navigateToBoard(e) {
-        console.log(e);
-        console.log('Hello');
         const {id} = e.currentTarget;
         console.log(id);
-        const board = boards.filter((board) => board._id === id);
+        const board = boards.find((board) => board._id === id);
         console.log(board);
-
+        setSelectedBoard(board);
+        setCurrentPage('workspace');
         // need to add the current Board ?
     }
 
@@ -69,7 +71,7 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
                 </div>
 
                 <Modal>
-                    <Form />
+                    <CreateBoardForm />
                 </Modal>
             </div>
         </div>
