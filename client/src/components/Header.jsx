@@ -51,7 +51,8 @@ const Header = ({boardName}) => {
                             {Links.map((link) => (
                                 <li key={link.name}>
                                     <button
-                                        type='button'
+                                        data-modal="modal-login"
+                                    type='button'
                                         className='btn btn-sm btn-ghost'
                                         onClick={
                                             link.onClick ? link.onClick : null
