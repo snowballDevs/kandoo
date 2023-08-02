@@ -10,6 +10,7 @@ import KanbanBoard from './components/KanbanBoard';
 import Dashboard from './features/Dashboard';
 import Workspace from './features/Workspace';
 
+
 const App = () => {
     const {isAuthenticated} = useAuthContext();
     const {currentPage} = useRoutingContext();
@@ -17,14 +18,29 @@ const App = () => {
 
     return (
         <div>
+            <Header />
+
+            {/* {isAuthenticated ? <Dashboard /> : <LandingPage />} */}
+
             {currentPage === 'landingPage' && <LandingPage />}
             {currentPage === 'dashboard' && (
+                <Dashboard/>)}
+            {currentPage === 'kanbanBoard' && <KanbanBoard />}
+            {/* <div className='container mx-auto mt-8 mb-16'>
+                <h1 className='text-2xl text-center font-bold mb-4'>
+                    Form Example
+                </h1>
+                <Form />
+            </div> */}
+
+            {/* {currentPage === 'landingPage' && <LandingPage />}
+            {currentPage === 'dashboard' && (
                 <Dashboard
-                    clickedCardId={clickedCardId}
-                    setClickedCardId={setClickedCardId}
-                />
-            )}
-            {currentPage === 'workspace' && <Workspace />}
+                    // clickedCardId={clickedCardId}
+                    // setClickedCardId={setClickedCardId}
+                /> */}
+            {/* )} */}
+            {/* {currentPage === 'kanbanBoard' && <KanbanBoard />} */}
             {/* <div className='container mx-auto mt-8 mb-16'>
                 <h1 className='text-2xl text-center font-bold mb-4'>
                     Form Example

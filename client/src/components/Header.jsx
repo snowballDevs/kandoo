@@ -3,6 +3,7 @@ import {useAuthContext} from '../contexts/AuthContext/authContext'
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import PageHeading from './PageHeading';
+import {ModalContext} from '../contexts/ModalContext/ModalContext';
 
 const Header = ({boardName}) => {
 
