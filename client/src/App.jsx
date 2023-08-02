@@ -8,7 +8,7 @@ import Header from './components/Header';
 // import Form from './components/Form';
 import KanbanBoard from './components/KanbanBoard';
 import Dashboard from './features/Dashboard';
-
+import Workspace from './features/Workspace';
 
 const App = () => {
     const {isAuthenticated} = useAuthContext();
@@ -23,8 +23,12 @@ const App = () => {
 
             {currentPage === 'landingPage' && <LandingPage />}
             {currentPage === 'dashboard' && (
-                <Dashboard/>)}
-            {currentPage === 'kanbanBoard' && <KanbanBoard />}
+                <Dashboard
+                    clickedCardId={clickedCardId}
+                    setClickedCardId={setClickedCardId}
+                />
+            )}
+            {currentPage === 'workspace' && <Workspace />}
             {/* <div className='container mx-auto mt-8 mb-16'>
                 <h1 className='text-2xl text-center font-bold mb-4'>
                     Form Example
@@ -50,6 +54,5 @@ const App = () => {
         </div>
     );
 };
-
 
 export default App;
