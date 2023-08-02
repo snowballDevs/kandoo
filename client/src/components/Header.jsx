@@ -4,7 +4,7 @@ import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import PageHeading from './PageHeading';
 
-const Header = () => {
+const Header = ({boardName}) => {
 
     const {handleModal, isModalOpen, handleClose, handleOpen} =
     useContext(ModalContext);
@@ -66,7 +66,7 @@ const Header = () => {
             </nav>
 
             {currentPage !== 'landingPage' && (
-                <PageHeading currentPage={currentPage} />
+                <PageHeading currentPage={currentPage} boardName={boardName} />
             )}
         </header>
     );

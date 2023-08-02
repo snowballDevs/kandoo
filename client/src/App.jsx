@@ -17,10 +17,6 @@ const App = () => {
 
     return (
         <div>
-            <Header />
-
-            {/* {isAuthenticated ? <Dashboard /> : <LandingPage />} */}
-
             {currentPage === 'landingPage' && <LandingPage />}
             {currentPage === 'dashboard' && (
                 <Dashboard

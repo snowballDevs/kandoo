@@ -6,7 +6,7 @@ const commentSchema = new mongoose.Schema({
     description: {type: String, required: true},
 
     // this is changed from the user schema object - this is for MVP milestone, favoring flat comment structure rather than being able to reply to other comments
-    createdBy: {type: String, required: true}, 
+    createdBy: {type: String, required: true},
 
     likes: {type: Number, default: 0},
 });
@@ -26,7 +26,7 @@ const taskSchema = new mongoose.Schema({
 
     tags: {type: Array, required: false},
 
-    task_detail: {type: String, required: false},
+    taskDetail: {type: String, required: false},
 
     comments: [commentSchema],
 });

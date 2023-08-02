@@ -41,15 +41,13 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
         await getBoards();
     };
 
-    function navigateToBoard(e) {
+    const navigateToBoard = (e) => {
         const {id} = e.currentTarget;
-        console.log(id);
         const board = boards.find((board) => board._id === id);
         console.log(board);
         setSelectedBoard(board);
         setCurrentPage('workspace');
-        // need to add the current Board ?
-    }
+    };
 
     return (
         <div className='px-6 max-w-7xl mx-auto'>
