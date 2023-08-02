@@ -1,6 +1,12 @@
-import {useAuthContext} from '../contexts/AuthContext/authContext';
+import { useContext } from 'react';
+import {useAuthContext} from '../contexts/AuthContext/authContext'
+import {ModalContext} from '../contexts/ModalContext/ModalContext';
 
 const Header = () => {
+
+    const {handleModal, isModalOpen, handleClose, handleOpen} =
+    useContext(ModalContext);
+
     const {login, logout, isAuthenticated} = useAuthContext();
 
     const Links = [{name: 'BOARDS', link: 'landingPage'}];
@@ -8,7 +14,7 @@ const Header = () => {
     if (isAuthenticated) {
         Links.push({name: 'LOGOUT', onClick: logout});
     } else {
-        Links.push({name: 'LOGIN', onClick: login});
+        Links.push({name: 'LOGIN', onClick: handleOpen});
     }
 
     return (
@@ -39,6 +45,7 @@ const Header = () => {
                         {Links.map((link) => (
                             <li key={link.name}>
                                 <button
+                                    data-modal="modal-login"
                                     type='button'
                                     className='btn btn-sm btn-ghost'
                                     onClick={link.onClick ? link.onClick : null}
