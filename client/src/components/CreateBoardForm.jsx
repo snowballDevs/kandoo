@@ -2,12 +2,15 @@ import {useState, useContext} from 'react';
 import dataService from '../services/dataService';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
+import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
 
 const BoardForm = () => {
     const {handleModal, isModalOpen, handleClose, handleOpen} =
         useContext(ModalContext);
 
     const {setCurrentPage} = useRoutingContext();
+
+    const {setSelectedBoard} = useSelectedBoardContext();
 
     const [formData, setFormData] = useState({
         boardName: '',
@@ -31,9 +34,11 @@ const BoardForm = () => {
             // handle response
             if (response.status >= 200 && response.status < 300) {
                 console.log('Request Successful', response);
+                const {board} = response.data;
+                setSelectedBoard(board);
+                setCurrentPage('workspace');
+                handleClose();
             }
-            handleClose();
-            setCurrentPage('kanbanBoard');
         } catch (error) {
             console.error('Error: ', error.message);
         }
