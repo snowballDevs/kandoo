@@ -1,6 +1,13 @@
+import {useContext} from 'react'
+import { ModalContext } from "../contexts/ModalContext/ModalContext"
+import RegisterForm from "./RegisterForm";
+import LoginForm from '../components/LoginForm';
 import Header from '../components/Header';
-// home page or dashboard page depending on authentication status
-const LandingPage = () => (
+
+const LandingPage = () => {
+  const {handleOpen, isModalOpen} = useContext(ModalContext)
+
+return (
     <div>
         <Header />
         <div className='hero min-h-screen bg-base-200'>
@@ -10,12 +17,16 @@ const LandingPage = () => (
                     <p className='py-6'>
                         Organize your team goals and deploy faster
                     </p>
-                    <button type='button' className='btn btn-primary'>
+                    <button type='button' className='btn btn-primary' data-modal="modal-register" onClick={handleOpen}>
                         Get Started
                     </button>
+                    {/* {isModalOpen && <RegisterForm  />} */}
+                    {isModalOpen && <LoginForm  />}
                 </div>
             </div>
         </div>
     </div>
-);
+
+)
+};
 export default LandingPage;

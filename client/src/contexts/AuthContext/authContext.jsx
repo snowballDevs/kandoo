@@ -18,9 +18,13 @@ const AuthProvider = ({children}) => {
         async function getUser() {
             try {
                 const data = await dataService.getUser();
-                if (data.isLoggedIn) {
+
+                if (data.data.isLoggedIn) {
                     console.log('HI');
                     setIsAuthenticated(true);
+                    setCurrentPage('dashboard');
+                } else {
+                    setCurrentPage('landingPage');
                 }
                 console.log(data);
             } catch (err) {
@@ -30,14 +34,11 @@ const AuthProvider = ({children}) => {
         getUser();
     }, [isAuthenticated]);
 
-    const login = async () => {
+    const login = async (data) => {
         console.log('Clicked');
 
         try {
-            const response = await dataService.login({
-                email: 'ivy@gmail.com',
-                password: '12345678',
-            });
+            const response = await dataService.login(data);
 
             setCurrentPage('dashboard');
             console.log(response);
@@ -48,14 +49,22 @@ const AuthProvider = ({children}) => {
         }
     };
 
-    const logout = () => {
-        setIsAuthenticated(false);
-        setCurrentPage('landingPage');
+    const logout = async () => {
+        console.log('Clicked');
+
+        try {
+            const response = await dataService.logout();
+            console.log(response);
+            setIsAuthenticated(false);
+            setCurrentPage('landingPage');
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     // useMemo is a Hook that lets you cache the result of a calculation between re-renders.
     const authValue = useMemo(
-        () => ({isAuthenticated, login, logout}),
+        () => ({isAuthenticated, setIsAuthenticated, login, logout}),
         [isAuthenticated]
     );
 
