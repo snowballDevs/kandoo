@@ -4,6 +4,7 @@ import dataService from '../services/dataService';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import { useAuthContext } from '../contexts/AuthContext/authContext';
+import Modal from "./Modal"
 
 const LoginForm = () => {
     const {isModalOpen, handleClose} = useContext(ModalContext);
@@ -43,6 +44,7 @@ const LoginForm = () => {
         }
     };
     return (
+      <Modal>
         <div>
             <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
                 <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
@@ -106,6 +108,7 @@ const LoginForm = () => {
                 </div>
             </div>
         </div>
+        </Modal>
     );
 };
 

@@ -20,8 +20,8 @@ return (
                 <button type='button' className='btn btn-primary' data-modal="modal-register" onClick={handleOpen}>
                     Get Started
                 </button>
-                {isModalOpen && <RegisterForm  />}
-                {/* {isModalOpen && <LoginForm  />} */}
+                {/* {isModalOpen && <RegisterForm  />} */}
+                {isModalOpen && <LoginForm  />}
             </div>
         </div>
     </div>
