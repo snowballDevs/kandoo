@@ -23,10 +23,12 @@ module.exports = {
         try {
             const {boardId} = req.params;
             console.log(req.params);
+            const {taskName, priority, taskDetail} = req.body;
 
             const task = {
-                taskName: req.body.taskName,
-                priority: 10,
+                taskName,
+                priority,
+                taskDetail,
             };
             const board = await Board.findById(boardId);
 
