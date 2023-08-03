@@ -19,7 +19,6 @@ const App = () => {
 
     return (
         <div>
-            <Header />
 
             {/* {isAuthenticated ? <Dashboard /> : <LandingPage />} */}
 
