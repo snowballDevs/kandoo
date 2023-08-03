@@ -3,9 +3,6 @@ import { ModalContext } from "../contexts/ModalContext/ModalContext"
 import RegisterForm from "./RegisterForm";
 import LoginForm from '../components/LoginForm';
 import Header from '../components/Header';
-// home page or dashboard page depending on authentication status
-
-
 
 const LandingPage = () => {
   const {handleOpen, isModalOpen} = useContext(ModalContext)
@@ -24,8 +21,8 @@ return (
                         Get Started
                     </button>
                     {/* {isModalOpen && <RegisterForm  />} */}
-                {isModalOpen && <LoginForm  />}
-            </div>
+                    {isModalOpen && <LoginForm  />}
+                </div>
             </div>
         </div>
     </div>
