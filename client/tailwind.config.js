@@ -8,5 +8,5 @@ export default {
             },
         },
     },
-    plugins: [require('daisyui')], // eslint-disable-line global-require
+    plugins: [require('daisyui'), require('@tailwindcss/forms')], // eslint-disable-line global-require
 };
