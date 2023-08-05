@@ -2,6 +2,7 @@ import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
 import dataService from '../services/dataService';
 import {MdDelete, MdModeEdit} from 'react-icons/md';
+import formatDate from '../utils/formatDate';
 const WorkspaceHeader = ({boardInfo}) => {
     const {setCurrentPage} = useRoutingContext();
 
@@ -26,7 +27,7 @@ const WorkspaceHeader = ({boardInfo}) => {
                         {boardInfo.boardName}
                     </h1>
                     <h2 className='text-gray-700 mb-4 text-sm dark:text-gray-400'>
-                        Created: {boardInfo.createdAt}
+                        Created: {formatDate(boardInfo.createdAt)}
                     </h2>
                     <p className='text-gray-500 dark:text-gray-300 line-clamp-2'>
                         {boardInfo.description}
