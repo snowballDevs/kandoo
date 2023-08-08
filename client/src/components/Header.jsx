@@ -1,8 +1,13 @@
+import {useContext} from 'react';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
+import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import PageHeading from './PageHeading';
 
 const Header = ({boardName}) => {
+    const {handleModal, isModalOpen, handleClose, handleOpen} =
+        useContext(ModalContext);
+
     const {login, logout, isAuthenticated} = useAuthContext();
 
     const {currentPage} = useRoutingContext();
@@ -12,7 +17,7 @@ const Header = ({boardName}) => {
     if (isAuthenticated) {
         Links.push({name: 'LOGOUT', onClick: logout});
     } else {
-        Links.push({name: 'LOGIN', onClick: login});
+        Links.push({name: 'LOGIN', onClick: handleOpen});
     }
 
     return (
@@ -44,6 +49,7 @@ const Header = ({boardName}) => {
                             {Links.map((link) => (
                                 <li key={link.name}>
                                     <button
+                                        data-modal='modal-login'
                                         type='button'
                                         className='btn btn-sm btn-ghost'
                                         onClick={
@@ -60,7 +66,7 @@ const Header = ({boardName}) => {
             </nav>
 
             {currentPage !== 'landingPage' && (
-                <PageHeading currentPage={currentPage} boardName={boardName} />
+                <PageHeading currentPage={currentPage} />
             )}
         </header>
     );
