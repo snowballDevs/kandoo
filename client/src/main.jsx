@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <SelectedBoardProvider>
                     <ModalProvider>
                         <App />
-                        <Footer />
+                        {/* <Footer /> */}
                     </ModalProvider>
                 </SelectedBoardProvider>
             </AuthProvider>
