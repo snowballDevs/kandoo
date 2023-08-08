@@ -13,6 +13,8 @@ function DataService() {
 
     this.login = (data) => instance.post(`/login`, data);
 
+    this.signup = (data) => instance.post('./signup', data);
+
     // Board
     this.getBoards = () => instance.get(`/boards`);
 

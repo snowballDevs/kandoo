@@ -1,8 +1,15 @@
 import {useContext, useEffect} from 'react';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 
-const Modal = ({children}) => {
+const Modal = ({children, closeAllAuthModals, registerFormStatus, loginFormStatus}) => {
     const {isModalOpen, handleClose} = useContext(ModalContext);
+
+    const closeAll = () => {
+      if(registerFormStatus || loginFormStatus){
+        closeAllAuthModals()
+      }
+      handleClose()
+    }
 
     useEffect(() => {
         console.log('Rendered');
@@ -11,6 +18,9 @@ const Modal = ({children}) => {
             console.log(event);
             if (event.code === 'Escape') {
                 handleClose();
+                if(registerFormStatus || loginFormStatus) {
+                  closeAllAuthModals();
+                }
             }
         }
         document.addEventListener('keydown', handleEscapeKey);
@@ -20,13 +30,13 @@ const Modal = ({children}) => {
             console.log('removed');
             document.removeEventListener('keydown', handleEscapeKey);
         };
-    }, [handleClose]);
+    }, [handleClose, closeAllAuthModals]);
 
     return (
         <dialog className='modal' open={isModalOpen}>
             <div className='modal-box'>
                 <button
-                    onClick={handleClose}
+                    onClick={closeAll}
                     className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
                     type='button'
                 >
@@ -36,7 +46,7 @@ const Modal = ({children}) => {
             </div>
             <div
                 className='modal-backdrop bg-slate-400 opacity-50'
-                onClick={handleClose}
+                onClick={closeAll}
                 role='button'
                 tabIndex={0}
                 aria-hidden='true'
