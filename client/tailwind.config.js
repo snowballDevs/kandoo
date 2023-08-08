@@ -10,6 +10,6 @@ export default {
     },
     plugins: [require('daisyui'), require('@tailwindcss/forms')], // eslint-disable-line global-require
     daisyui: {
-      themes:["light"]
+      themes:["light","dark"]
     }
 };
