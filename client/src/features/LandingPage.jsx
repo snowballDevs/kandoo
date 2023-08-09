@@ -21,7 +21,7 @@ const LandingPage = () => {
 
     return (
         <div>
-            <Header />
+            <Header formDisplay={handleFormChange} />
             <div className='hero min-h-screen bg-base-200'>
                 <div className='hero-content text-center'>
                     <div className='max-w-md'>

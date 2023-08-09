@@ -4,20 +4,27 @@ import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import PageHeading from './PageHeading';
 
-const Header = ({boardName}) => {
+const Header = ({formDisplay}) => {
     const {handleModal, isModalOpen, handleClose, handleOpen} =
         useContext(ModalContext);
 
-    const {login, logout, isAuthenticated} = useAuthContext();
+    const {logout, isAuthenticated} = useAuthContext();
 
-    const {currentPage} = useRoutingContext();
+    const {currentPage, setCurrentPage} = useRoutingContext();
 
-    const Links = [{name: 'BOARDS', link: 'landingPage'}];
+    const Links = [
+        {name: 'DASHBOARD', onClick: () => setCurrentPage('dashboard')},
+    ];
+
+    const handleLogin = (login) => {
+        handleOpen();
+        formDisplay(login);
+    };
 
     if (isAuthenticated) {
         Links.push({name: 'LOGOUT', onClick: logout});
     } else {
-        Links.push({name: 'LOGIN', onClick: handleOpen});
+        Links.push({name: 'LOGIN', onClick: () => handleLogin('login')});
     }
 
     return (
