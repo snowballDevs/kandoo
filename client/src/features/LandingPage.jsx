@@ -7,29 +7,20 @@ import Modal from '../components/Modal';
 
 const LandingPage = () => {
     const {handleOpen, isModalOpen, handleModal} = useContext(ModalContext);
-    const [isRegisterOpen, setIsRegisterOpen] = useState(false)
-    const [isLoginOpen, setIsLoginOpen] = useState(false)
-    
-    const openRegisterModal = () => {
-      setIsRegisterOpen(true)
-      // setIsLoginOpen(false)
-      console.log(`Register SignUp Opened`)
-    }
 
-    const openLoginModal = () => {
-      setIsLoginOpen(true)
-      setIsRegisterOpen(false)
-    }
+    const [displayedForm, setDisplayedForm] = useState('register');
 
-    const closeModals = () => {
-      setIsRegisterOpen(false)
-      setIsLoginOpen(false)
-    }
+    const handleLoginForm = () => {
+        setDisplayedForm('login');
+    };
+
+    const handleRegisterForm = () => {
+        setDisplayedForm('register');
+    };
 
     const clickHandler = (event) => {
-      handleOpen()
-      openRegisterModal()
-    }
+        handleOpen();
+    };
 
     return (
         <div>
@@ -54,9 +45,12 @@ const LandingPage = () => {
                     </div>
                 </div>
             </div>
-            <Modal closeAllAuthModals={closeModals} registerFormStatus={isRegisterOpen} loginFormStatus={isLoginOpen}>
-                {isRegisterOpen && <RegisterForm onClose={closeModals} onLoginClick={openLoginModal}/>}
-                {isLoginOpen && <LoginForm  isOpen={isLoginOpen} onClose={closeModals}/>}
+            <Modal>
+                {displayedForm === 'register' ? (
+                    <RegisterForm formDisplay={handleLoginForm} />
+                ) : (
+                    <LoginForm formDisplay={handleRegisterForm} />
+                )}
             </Modal>
         </div>
     );
