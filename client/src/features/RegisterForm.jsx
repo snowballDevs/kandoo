@@ -1,11 +1,18 @@
-import {useState} from 'react';
-import Modal from '../components/Modal';
+import {useState, useContext} from 'react';
+import dataService from '../services/dataService'
+import { useAuthContext } from '../contexts/AuthContext/authContext';
+import { useRoutingContext } from '../contexts/RoutingContext/routingContext';
+import {ModalContext} from '../contexts/ModalContext/ModalContext'
 
-const RegisterForm = () => {
+const RegisterForm = ({onLoginClick, onClose,}) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
+    const {handleClose} = useContext(ModalContext);
+    const {setIsAuthenticated} = useAuthContext();
+
+    const {setCurrentPage} = useRoutingContext();
 
     const handleChange = (event) => {
         const {name, value} = event.target;
@@ -18,8 +25,22 @@ const RegisterForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        try {
+          const response = await dataService.signup(formData)
+          if(response.status >= 200 && response.status < 300) {
+            console.log('Registration successful: ', response)
+            setCurrentPage('dashboard')
+            setIsAuthenticated(true)
+            handleClose()
+          }
+        } catch (error) {
+          console.error('Error message: ', error.message)
+        }
+
         console.log(event);
     };
+
+    
 
     return (
         <div>
@@ -35,7 +56,7 @@ const RegisterForm = () => {
                 <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
                     <img
                         className='mx-auto h-10 w-auto'
-                        src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
+                        src='/KandooLogoW.png'
                         alt='Your Company'
                     />
                     <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-400'>
@@ -102,23 +123,13 @@ const RegisterForm = () => {
                         </div>
 
                         <div>
-                            <div className='flex items-center justify-between'>
+                            <div className=' items-center justify-between'>
                                 <label
                                     htmlFor='password'
                                     className='block text-sm font-medium leading-6 text-gray-400'
                                 >
                                     Password
-                                </label>
-                                <div className='text-sm'>
-                                    <a
-                                        href='#'
-                                        className='font-semibold text-indigo-600 hover:text-indigo-500'
-                                    >
-                                        Forgot password?
-                                    </a>
-                                </div>
-                            </div>
-                            <div className='mt-2'>
+                                    <div className='mt-2'>
                                 <input
                                     id='password'
                                     name='password'
@@ -126,9 +137,12 @@ const RegisterForm = () => {
                                     onChange={handleChange}
                                     autoComplete='current-password'
                                     required
-                                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                    className='mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                                 />
                             </div>
+                                </label>
+                            </div>
+                            
                         </div>
 
                         <div>
@@ -141,14 +155,9 @@ const RegisterForm = () => {
                         </div>
                     </form>
 
-                    <p className='mt-10 text-center text-sm text-gray-500'>
+                    <p className='mt-10 text-center text-sm text-gray-500 {}' >
                         Already a member?{' '}
-                        <a
-                            href='#'
-                            className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500'
-                        >
-                            Login now
-                        </a>
+                        <button type='button' className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500' onClick={onLoginClick} >Login now</button>
                     </p>
                 </div>
             </div>
