@@ -6,7 +6,7 @@ import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
 import Modal from './Modal';
 
-const LoginForm = ({formDisplay}) => {
+const LoginForm = () => {
     const {isModalOpen, handleClose} = useContext(ModalContext);
 
     const {setIsAuthenticated} = useAuthContext();
@@ -37,9 +37,8 @@ const LoginForm = ({formDisplay}) => {
                 console.log('Request Successful', response);
                 setCurrentPage('dashboard');
                 setIsAuthenticated(true);
+                handleClose();
             }
-            handleClose();
-            formDisplay();
         } catch (error) {
             console.error('Error: ', error.message);
         }

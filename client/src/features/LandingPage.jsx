@@ -10,16 +10,13 @@ const LandingPage = () => {
 
     const [displayedForm, setDisplayedForm] = useState('register');
 
-    const handleLoginForm = () => {
-        setDisplayedForm('login');
+    const handleFormChange = (newForm) => {
+        setDisplayedForm(newForm);
     };
 
-    const handleRegisterForm = () => {
-        setDisplayedForm('register');
-    };
-
-    const clickHandler = (event) => {
+    const handleClick = (event) => {
         handleOpen();
+        handleFormChange('register');
     };
 
     return (
@@ -37,8 +34,7 @@ const LandingPage = () => {
                         <button
                             type='button'
                             className='btn btn-primary'
-                            data-modal='modal-register'
-                            onClick={clickHandler}
+                            onClick={handleClick}
                         >
                             Get Started
                         </button>
@@ -47,9 +43,9 @@ const LandingPage = () => {
             </div>
             <Modal>
                 {displayedForm === 'register' ? (
-                    <RegisterForm formDisplay={handleLoginForm} />
+                    <RegisterForm formDisplay={handleFormChange} />
                 ) : (
-                    <LoginForm formDisplay={handleRegisterForm} />
+                    <LoginForm formDisplay={handleFormChange} />
                 )}
             </Modal>
         </div>

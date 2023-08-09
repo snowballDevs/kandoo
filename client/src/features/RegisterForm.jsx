@@ -159,7 +159,7 @@ const RegisterForm = ({formDisplay, onClose}) => {
                         <button
                             type='button'
                             className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500'
-                            onClick={formDisplay}
+                            onClick={() => formDisplay('login')}
                         >
                             Login now
                         </button>
