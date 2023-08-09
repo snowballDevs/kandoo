@@ -1,14 +1,15 @@
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import dataService from '../services/dataService'
 import { useAuthContext } from '../contexts/AuthContext/authContext';
 import { useRoutingContext } from '../contexts/RoutingContext/routingContext';
+import {ModalContext} from '../contexts/ModalContext/ModalContext'
 
 const RegisterForm = ({onLoginClick, onClose,}) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
-
+    const {handleClose} = useContext(ModalContext);
     const {setIsAuthenticated} = useAuthContext();
 
     const {setCurrentPage} = useRoutingContext();
@@ -30,6 +31,7 @@ const RegisterForm = ({onLoginClick, onClose,}) => {
             console.log('Registration successful: ', response)
             setCurrentPage('dashboard')
             setIsAuthenticated(true)
+            handleClose()
           }
         } catch (error) {
           console.error('Error message: ', error.message)

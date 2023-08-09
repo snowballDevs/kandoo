@@ -5,6 +5,7 @@ const Modal = ({children, closeAllAuthModals, registerFormStatus, loginFormStatu
     const {isModalOpen, handleClose} = useContext(ModalContext);
 
     const closeAll = () => {
+      console.log('running closeAll function')
       if(registerFormStatus || loginFormStatus){
         closeAllAuthModals()
       }
@@ -30,7 +31,7 @@ const Modal = ({children, closeAllAuthModals, registerFormStatus, loginFormStatu
             console.log('removed');
             document.removeEventListener('keydown', handleEscapeKey);
         };
-    }, [handleClose, closeAllAuthModals]);
+    }, [handleClose]);
 
     return (
         <dialog className='modal' open={isModalOpen}>
