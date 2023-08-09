@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import Footer from './components/Footer';
 import {AuthProvider} from './contexts/AuthContext/authContext';
 import {RoutingProvider} from './contexts/RoutingContext/routingContext';
 import {ModalProvider} from './contexts/ModalContext/ModalContext';
@@ -15,7 +14,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <SelectedBoardProvider>
                     <ModalProvider>
                         <App />
-                        {/* <Footer /> */}
                     </ModalProvider>
                 </SelectedBoardProvider>
             </AuthProvider>

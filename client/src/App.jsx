@@ -3,9 +3,9 @@ import {useAuthContext} from './contexts/AuthContext/authContext';
 import {useState} from 'react';
 import {useRoutingContext} from './contexts/RoutingContext/routingContext';
 import LandingPage from './features/LandingPage';
-import Footer from './components/Footer';
 import Dashboard from './features/Dashboard';
 import Workspace from './features/Workspace';
+import Footer from './components/Footer';
 
 const App = () => {
     const {isAuthenticated} = useAuthContext();
@@ -60,6 +60,7 @@ const App = () => {
                 </h1>
                 <Form />
             </div> */}
+            
             <Footer />
         </div>
     );
