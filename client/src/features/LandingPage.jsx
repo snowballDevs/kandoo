@@ -1,4 +1,4 @@
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import RegisterForm from './RegisterForm';
 import LoginForm from '../components/LoginForm';
@@ -6,11 +6,22 @@ import Header from '../components/Header';
 import Modal from '../components/Modal';
 
 const LandingPage = () => {
-    const {handleOpen, isModalOpen} = useContext(ModalContext);
+    const {handleOpen} = useContext(ModalContext);
+
+    const [displayedForm, setDisplayedForm] = useState('register');
+
+    const handleFormChange = (newForm) => {
+        setDisplayedForm(newForm);
+    };
+
+    const handleClick = () => {
+        handleOpen();
+        handleFormChange('register');
+    };
 
     return (
         <div>
-            <Header />
+            <Header formDisplay={handleFormChange} />
             <div className='hero min-h-screen bg-base-200'>
                 <div className='hero-content text-center'>
                     <div className='max-w-md'>
@@ -23,17 +34,19 @@ const LandingPage = () => {
                         <button
                             type='button'
                             className='btn btn-primary'
-                            data-modal='modal-register'
-                            onClick={handleOpen}
+                            onClick={handleClick}
                         >
                             Get Started
                         </button>
-                        {/* {isModalOpen && <RegisterForm  />} */}
                     </div>
                 </div>
             </div>
             <Modal>
-                <LoginForm />
+                {displayedForm === 'register' ? (
+                    <RegisterForm formDisplay={handleFormChange} />
+                ) : (
+                    <LoginForm formDisplay={handleFormChange} />
+                )}
             </Modal>
         </div>
     );
