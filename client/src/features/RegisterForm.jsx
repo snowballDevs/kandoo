@@ -1,15 +1,17 @@
-import {useState, useContext} from 'react';
-import dataService from '../services/dataService'
-import { useAuthContext } from '../contexts/AuthContext/authContext';
-import { useRoutingContext } from '../contexts/RoutingContext/routingContext';
-import {ModalContext} from '../contexts/ModalContext/ModalContext'
+import {useContext, useState} from 'react';
+import dataService from '../services/dataService';
+import {useAuthContext} from '../contexts/AuthContext/authContext';
+import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
+import {ModalContext} from '../contexts/ModalContext/ModalContext';
 
-const RegisterForm = ({onLoginClick, onClose,}) => {
+const RegisterForm = ({formDisplay}) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
+
     const {handleClose} = useContext(ModalContext);
+
     const {setIsAuthenticated} = useAuthContext();
 
     const {setCurrentPage} = useRoutingContext();
@@ -26,21 +28,19 @@ const RegisterForm = ({onLoginClick, onClose,}) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-          const response = await dataService.signup(formData)
-          if(response.status >= 200 && response.status < 300) {
-            console.log('Registration successful: ', response)
-            setCurrentPage('dashboard')
-            setIsAuthenticated(true)
-            handleClose()
-          }
+            const response = await dataService.signup(formData);
+            if (response.status >= 200 && response.status < 300) {
+                console.log('Registration successful: ', response);
+                handleClose();
+                setCurrentPage('dashboard');
+                setIsAuthenticated(true);
+            }
         } catch (error) {
-          console.error('Error message: ', error.message)
+            console.error('Error message: ', error.message);
         }
 
         console.log(event);
     };
-
-    
 
     return (
         <div>
@@ -130,19 +130,18 @@ const RegisterForm = ({onLoginClick, onClose,}) => {
                                 >
                                     Password
                                     <div className='mt-2'>
-                                <input
-                                    id='password'
-                                    name='password'
-                                    type='password'
-                                    onChange={handleChange}
-                                    autoComplete='current-password'
-                                    required
-                                    className='mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                                />
-                            </div>
+                                        <input
+                                            id='password'
+                                            name='password'
+                                            type='password'
+                                            onChange={handleChange}
+                                            autoComplete='current-password'
+                                            required
+                                            className='mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                        />
+                                    </div>
                                 </label>
                             </div>
-                            
                         </div>
 
                         <div>
@@ -155,9 +154,15 @@ const RegisterForm = ({onLoginClick, onClose,}) => {
                         </div>
                     </form>
 
-                    <p className='mt-10 text-center text-sm text-gray-500 {}' >
+                    <p className='mt-10 text-center text-sm text-gray-500 {}'>
                         Already a member?{' '}
-                        <button type='button' className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500' onClick={onLoginClick} >Login now</button>
+                        <button
+                            type='button'
+                            className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500'
+                            onClick={() => formDisplay('login')}
+                        >
+                            Login now
+                        </button>
                     </p>
                 </div>
             </div>

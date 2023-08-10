@@ -1,16 +1,8 @@
 import {useContext, useEffect} from 'react';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 
-const Modal = ({children, closeAllAuthModals, registerFormStatus, loginFormStatus}) => {
+const Modal = ({children}) => {
     const {isModalOpen, handleClose} = useContext(ModalContext);
-
-    const closeAll = () => {
-      console.log('running closeAll function')
-      if(registerFormStatus || loginFormStatus){
-        closeAllAuthModals()
-      }
-      handleClose()
-    }
 
     useEffect(() => {
         console.log('Rendered');
@@ -19,9 +11,6 @@ const Modal = ({children, closeAllAuthModals, registerFormStatus, loginFormStatu
             console.log(event);
             if (event.code === 'Escape') {
                 handleClose();
-                if(registerFormStatus || loginFormStatus) {
-                  closeAllAuthModals();
-                }
             }
         }
         document.addEventListener('keydown', handleEscapeKey);
@@ -37,7 +26,7 @@ const Modal = ({children, closeAllAuthModals, registerFormStatus, loginFormStatu
         <dialog className='modal' open={isModalOpen}>
             <div className='modal-box'>
                 <button
-                    onClick={closeAll}
+                    onClick={handleClose}
                     className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
                     type='button'
                 >
@@ -47,7 +36,7 @@ const Modal = ({children, closeAllAuthModals, registerFormStatus, loginFormStatu
             </div>
             <div
                 className='modal-backdrop bg-slate-400 opacity-50'
-                onClick={closeAll}
+                onClick={handleClose}
                 role='button'
                 tabIndex={0}
                 aria-hidden='true'
