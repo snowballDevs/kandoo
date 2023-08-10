@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import Modal from '../components/Modal';
 
 const LandingPage = () => {
-    const {handleOpen, isModalOpen, handleModal} = useContext(ModalContext);
+    const {handleOpen} = useContext(ModalContext);
 
     const [displayedForm, setDisplayedForm] = useState('register');
 
@@ -14,7 +14,7 @@ const LandingPage = () => {
         setDisplayedForm(newForm);
     };
 
-    const handleClick = (event) => {
+    const handleClick = () => {
         handleOpen();
         handleFormChange('register');
     };

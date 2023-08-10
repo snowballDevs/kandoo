@@ -5,8 +5,7 @@ import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import PageHeading from './PageHeading';
 
 const Header = ({formDisplay}) => {
-    const {handleModal, isModalOpen, handleClose, handleOpen} =
-        useContext(ModalContext);
+    const {handleOpen} = useContext(ModalContext);
 
     const {logout, isAuthenticated} = useAuthContext();
 

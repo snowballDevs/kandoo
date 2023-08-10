@@ -4,10 +4,9 @@ import dataService from '../services/dataService';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
-import Modal from './Modal';
 
 const LoginForm = () => {
-    const {isModalOpen, handleClose} = useContext(ModalContext);
+    const {handleClose} = useContext(ModalContext);
 
     const {setIsAuthenticated} = useAuthContext();
 
