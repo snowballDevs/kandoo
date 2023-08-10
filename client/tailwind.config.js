@@ -7,17 +7,18 @@ export default {
                 fluid: 'repeat(auto-fit, minmax(320px, 1fr))',
             },
             colors: {
-                primaryLight: '#e9e9e5',
-                secondaryLight: '#051e36',
-                tertiaryLight: '#61A0AF',
-                dangerLight: '#e63946',
-                warningLight: '#f89e54',
+                whiteLight: '#ffffff',
+                primaryLight: '#ebebeb', //fmrly e9e9e5
+                secondaryLight: '#051e36', //fmrly 051e36
+                tertiaryLight: '#219ebc', //fmrly 61a0af
+                dangerLight: '#e63946', 
+                warningLight: '#fb8500', //fmrly f89e54
                 successLight: '#aafb9d',
-                infoLight: '#96C9DC',
+                infoLight: '#8ecae6', //fmrly 96c9dc
                 flashy: '#a132e7',
                 pinkLight: '#ec4899',
                 redLight: '#ef4444',
-                yellowLight: '#eab308',
+                yellowLight: '#ffb703', //fmrly eab308
             },
         },
     },
