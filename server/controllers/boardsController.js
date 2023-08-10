@@ -25,7 +25,7 @@ module.exports = {
             const board = await Board.create({
                 users: [user],
                 boardName,
-                categoryStages: ['Todo', 'In Progress', 'Done'],
+                column: ['Todo', 'In Progress', 'Done'],
                 description,
                 createdBy: user,
             });
