@@ -22,6 +22,15 @@ function DataService() {
 
     this.deleteBoard = (boardId) => instance.delete(`/boards/${boardId}`);
 
+    // Column
+    this.createTask = (data) => instance.post(`boards/${boardId}/tasks`, data);
+
+    this.updateTask = (data) =>
+        instance.put(`/boards/${boardId}/tasks/${taskId}`, data);
+
+    this.deleteTask = () =>
+        instance.delete(`/boards/${boardId}/tasks/${taskId}`);
+
     // Task
     this.createTask = (data) => instance.post(`boards/${boardId}/tasks`, data);
 

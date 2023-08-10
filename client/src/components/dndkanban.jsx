@@ -295,7 +295,6 @@ const KanbanBoard = ({ boardInfo }) => {
                 min-w-[350px]
                 cursor-pointer
                 rounded-lg
-                bg-slate-800
                 border-2
                 border-columnBackgroundColor
                 p-4
