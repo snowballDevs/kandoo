@@ -1,3 +1,4 @@
+// import clsx from 'clsx';
 import {useContext, useState} from 'react';
 import {ModalContext} from '../../contexts/ModalContext/ModalContext';
 import WorkspaceSlideOver from '../WorkspaceSlideOver';
@@ -20,6 +21,15 @@ const TaskCard = ({
     const [mouseIsOver, setMouseIsOver] = useState(false);
     const [editMode, setEditMode] = useState(false);
 
+    const getPriorityColor = () => {
+        const priorityColorMap = {
+            high: 'red-200',    // Change 'high' to the actual priority value
+            medium: 'yellow-200', // Change 'medium' to the actual priority value
+        };
+        return priorityColorMap[priority] || 'blue-200'; // Default to low priority color 
+    };
+    
+
     if (editMode) {
         return (
             <div className='bg-mainBackgroundColor px-2 py-4 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative'>
@@ -41,8 +51,15 @@ const TaskCard = ({
         );
     }
 
+    const taskStyle = {
+        backgroundColor: 'whiteLight',
+        borderLeft: `5px solid ${getPriorityColor()}`,
+    };
+
+
     return (
         <div>
+
             <WorkspaceSlideOver
                 key={task._id}
                 taskId={task._id}
@@ -58,8 +75,10 @@ const TaskCard = ({
                 task={task}
                 priority={priority}
             />
+            
+            {/* task -- if you try to change the template literals, they will stop working until you re-type them. Idk why. --Michelle */}
             <div
-                className='bg-secondaryLight px-2 py-4  items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative task'
+                className={`px-2 py-4 items-center flex text-left hover:ring-1 hover:ring hover:ring-pinkLight cursor-grab relative task border-l-4 border-${getPriorityColor()}`}
                 onMouseEnter={() => {
                     setMouseIsOver(true);
                 }}
@@ -67,11 +86,17 @@ const TaskCard = ({
                     setMouseIsOver(false);
                 }}
                 onClick={() => handleSlideOver()}
+
+                style={{
+                    backgroundColor: 'white',
+                    borderLeft: `5px solid ${getPriorityColor()}`,
+                }}
             >
-                <p className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-white'>
+                <p className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-black'>
                     {taskName}
                 </p>
             </div>
+           
         </div>
     );
 };
