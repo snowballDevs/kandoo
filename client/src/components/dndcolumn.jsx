@@ -11,6 +11,7 @@ const Column = ({
   updateColumn,
   createTask,
   tasks,
+  taskComment,
   deleteTask,
   updateTask,
 }) => {
@@ -104,6 +105,7 @@ const Column = ({
             <TaskCard
               key={task.id}
               task={task}
+              taskComment={taskComment}
               deleteTask={deleteTask}
               updateTask={updateTask}
             />
