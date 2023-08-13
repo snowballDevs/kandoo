@@ -6,6 +6,7 @@ const columnsController = require('../controllers/columnsController');
 
 // prettier-ignore
 router.route('/')
+    .get(columnsController.getColumns)
     .post(columnsController.createColumn);
 
 // prettier-ignore

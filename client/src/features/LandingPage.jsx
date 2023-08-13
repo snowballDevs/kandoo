@@ -26,7 +26,7 @@ const LandingPage = () => {
                 <div className='hero-content text-center'>
                     <div className='max-w-md'>
                         <h1 className='text-5xl font-bold text-secondaryLight'>
-                            Projects.
+                            Projects.{' '}
                             <span className='text-transparent bg-gradient-to-r from-pinkLight via-redLight to-yellowLight bg-clip-text'>
                                 Together.
                             </span>
@@ -36,7 +36,7 @@ const LandingPage = () => {
                         </p>
                         <button
                             type='button'
-                            className='btn btn-primary bg-flashy text-primaryLight border-primaryLight'
+                            className='btn bg-flashy text-primaryLight border-primaryLight'
                             onClick={handleClick}
                         >
                             Get Started

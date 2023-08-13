@@ -3,13 +3,12 @@ const mongoose = require('mongoose');
 const commentSchema = new mongoose.Schema({
     commentDate: {type: Date, default: Date.now},
 
-    comment_detail: {type: String, required: true},
+    description: {type: String, required: true},
 
     // this is changed from the user schema object - this is for MVP milestone, favoring flat comment structure rather than being able to reply to other comments
     createdBy: {type: String, required: true},
 
-    task_id: {type: mongoose.Schema.Types.ObjectID, ref: 'Task'},
-
+    likes: {type: Number, default: 0},
 });
 
 const taskSchema = new mongoose.Schema({
@@ -23,7 +22,7 @@ const taskSchema = new mongoose.Schema({
 
     priority: {type: Number, required: false},
 
-    column: {type: String, required: false},
+    // column: {columnSchema},
 
     tags: {type: Array, required: false},
 
@@ -33,11 +32,10 @@ const taskSchema = new mongoose.Schema({
 });
 
 const columnSchema = new mongoose.Schema({
-    title: {type: String, required:true},
-    
-    tasks: [taskSchema],
+  title: {type: String, required:true},
+  
+  tasks: [taskSchema],
 })
-
 
 const BoardSchema = new mongoose.Schema({
     users: [
@@ -52,6 +50,8 @@ const BoardSchema = new mongoose.Schema({
         require: true,
     },
 
+    columns: [columnSchema],
+
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -62,8 +62,6 @@ const BoardSchema = new mongoose.Schema({
         required: true,
     },
 
-    columns: [columnSchema],
-
     createdAt: {
         type: Date, // Expected output: "Fri, 02 Feb 1996 03:04:05 GMT"
         default: Date.now,
@@ -71,5 +69,5 @@ const BoardSchema = new mongoose.Schema({
 });
 
 module.exports = {
-    Board: mongoose.model('Board', BoardSchema)
-}
+    Board: mongoose.model('Board', BoardSchema),
+};

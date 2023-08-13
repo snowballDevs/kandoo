@@ -23,11 +23,10 @@ module.exports = {
         try {
             const {boardId} = req.params;
             console.log(req.params);
-            const {columnName, columnDetail} = req.body;
+            const {title} = req.body;
 
             const column = {
-                columnName,
-                columnDetail,
+                title,
             };
             const board = await Board.findById(boardId);
 
@@ -49,14 +48,14 @@ module.exports = {
     updateColumn: async (req, res) => {
         try {
             const {boardId, columnId} = req.params;
-            const {columnName, columnOrder} = req.body; // column order???
+            const {title} = req.body; // took out column order
             // const board = await Board.findById(boardId)
             console.log(boardId);
 
             const updatedColumn = {
                 // may need to use spread operator to get all of the task properties
-                columnName,
-                columnOrder,
+                title,
+                // columnOrder,
             };
 
             const board = await Board.findById(boardId);
