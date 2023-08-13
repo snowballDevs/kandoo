@@ -1,9 +1,4 @@
-import PlusIcon from '../assets/icons/PlusIcon';
 import {useContext, useMemo, useState, useEffect} from 'react';
-import {ModalContext} from '../contexts/ModalContext/ModalContext';
-import Modal from '../components/Modal';
-// import { Column, Id, Task } from "../types";
-import Column from './dndcolumn';
 import {
     DndContext,
     //   DragEndEvent,
@@ -16,6 +11,11 @@ import {
 } from '@dnd-kit/core';
 import {SortableContext, arrayMove} from '@dnd-kit/sortable';
 import {createPortal} from 'react-dom';
+import PlusIcon from '../assets/icons/PlusIcon';
+import {ModalContext} from '../contexts/ModalContext/ModalContext';
+import Modal from "./Modal";
+// import { Column, Id, Task } from "../types";
+import Column from './dndcolumn';
 import TaskCard from './dndtaskcard';
 
 const defaultCols = [

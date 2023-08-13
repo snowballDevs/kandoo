@@ -1,6 +1,6 @@
 import './App.css';
-import {useAuthContext} from './contexts/AuthContext/authContext';
 import {useState} from 'react';
+import {useAuthContext} from './contexts/AuthContext/authContext';
 import {useRoutingContext} from './contexts/RoutingContext/routingContext';
 import LandingPage from './features/LandingPage';
 import Footer from './components/Footer';
@@ -13,7 +13,7 @@ const App = () => {
     // const [clickedCardId, setClickedCardId] = useState(null); // State for card ID
 
     return (
-        <div>
+        <div className='bg-primaryLight min-h-screen'>
 
 
             {/* {isAuthenticated ? <Dashboard /> : <LandingPage />} */}

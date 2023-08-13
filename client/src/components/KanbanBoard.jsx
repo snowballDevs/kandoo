@@ -1,4 +1,5 @@
 import Column from './Column';
+
 const KanbanBoard = ({boardInfo}) => {
     const {column, tasks} = boardInfo;
     console.log(boardInfo);

@@ -24,7 +24,7 @@ const Modal = ({children}) => {
 
     return (
         <dialog className='modal' open={isModalOpen}>
-            <div className='modal-box'>
+            <div className='modal-box bg-primaryLight text-secondaryLight'>
                 <button
                     onClick={handleClose}
                     className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'

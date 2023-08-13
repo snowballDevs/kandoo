@@ -22,18 +22,21 @@ const LandingPage = () => {
     return (
         <div>
             <Header formDisplay={handleFormChange} />
-            <div className='hero min-h-screen bg-base-200'>
+            <div className='hero min-h-screen bg-primaryLight'>
                 <div className='hero-content text-center'>
                     <div className='max-w-md'>
-                        <h1 className='text-5xl font-bold'>
-                            Projects. Together.
+                        <h1 className='text-5xl font-bold text-secondaryLight'>
+                            Projects.
+                            <span className='text-transparent bg-gradient-to-r from-pinkLight via-redLight to-yellowLight bg-clip-text'>
+                                Together.
+                            </span>
                         </h1>
-                        <p className='py-6'>
+                        <p className='py-6 text-secondaryLight'>
                             Organize your team goals and deploy faster
                         </p>
                         <button
                             type='button'
-                            className='btn btn-primary'
+                            className='btn btn-primary bg-flashy text-primaryLight border-primaryLight'
                             onClick={handleClick}
                         >
                             Get Started

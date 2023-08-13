@@ -1,7 +1,7 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import TrashIcon from "../assets/icons/TrashIcon";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
+import TrashIcon from "../assets/icons/TrashIcon";
 import PlusIcon from "../assets/icons/PlusIcon";
 import TaskCard from "./dndtaskcard";
 
@@ -17,9 +17,7 @@ const Column = ({
 }) => {
   const [editMode, setEditMode] = useState(false);
 
-  const tasksIds = useMemo(() => {
-    return tasks.map((task) => task.id);
-  }, [tasks]);
+  const tasksIds = useMemo(() => tasks.map((task) => task.id), [tasks]);
 
   const {
     setNodeRef,
@@ -48,7 +46,7 @@ const Column = ({
         ref={setNodeRef}
         style={style}
         className="bg-columnBackgroundColor opacity-40 border-2 border-pink-500 w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
-      ></div>
+       />
     );
   }
 

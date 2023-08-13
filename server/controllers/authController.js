@@ -6,7 +6,7 @@ module.exports = {
     getUser: (req, res) => {
         console.log(req.isAuthenticated());
         if (req.isAuthenticated()) {
-            console.log(req.user);
+            console.log('responding from server, the user is: ',req.user);
             return res.json({isLoggedIn: true, user: req.user});
         }
         console.log('Not signed in');

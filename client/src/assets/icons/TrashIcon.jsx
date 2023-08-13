@@ -1,6 +1,4 @@
-function TrashIcon() {
-
-    return (
+const TrashIcon = () => (
         <div>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -17,6 +15,6 @@ function TrashIcon() {
                 />
             </svg>
         </div>
-    )}
+    )
 
 export default TrashIcon;

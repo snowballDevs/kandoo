@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from 'react';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
-import Modal from '../components/Modal';
+import TaskModal from "./TaskModal";
 import TrashIcon from '../assets/icons/TrashIcon';
 import Task from './Task';
 
@@ -115,7 +115,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
                 {task.content}
             </p>
 
-            <Modal>
+            <TaskModal>
                 <Task
                     key={task.id}
                     taskName={taskName}
@@ -125,7 +125,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
                     deleteTask={deleteTask}
                     updateTask={updateTask}
                 />
-            </Modal>
+            </TaskModal>
 
             {mouseIsOver && (
                 <button

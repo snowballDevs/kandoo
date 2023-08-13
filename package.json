@@ -24,6 +24,8 @@
     "private": true,
     "dependencies": {
         "@dnd-kit/utilities": "^3.2.1",
+        "@headlessui/react": "^1.7.16",
+        "@heroicons/react": "^2.0.18",
         "react-hook-form": "^7.45.1",
         "react-icons": "^4.10.1"
     }
