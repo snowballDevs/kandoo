@@ -54,7 +54,7 @@ const Column = ({
     <div
       ref={setNodeRef}
       style={style}
-      className="bg-columnBackgroundColor w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
+      className="bg-primaryLight w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col shadow-lg "
     >
       {/* Column title */}
       <div
@@ -63,16 +63,21 @@ const Column = ({
         onClick={() => {
           setEditMode(true);
         }}
-        className="bg-mainBackgroundColor text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold border-columnBackgroundColor border-4 flex items-center justify-between"
+        className="bg-primaryLight text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold border-primaryLight border-4 flex items-center justify-between "
       >
         <div className="flex gap-2">
-          <div className="flex justify-center items-center bg-columnBackgroundColor px-2 py-1 text-sm rounded-full">
-            0
+          <div className="flex justify-center items-center bg-infoLight py-0 px-6 text-sm rounded-full ring-2 ">
+            {tasks.length}
           </div>
-          {!editMode && column.title}
+          {!editMode && (
+            <div className="hover:ring-secondaryLight rounded px-1 py-2 hover:ring-2">
+            {column.title}
+            </div>
+            
+          )}
           {editMode && (
             <input
-              className="bg-black focus:border-rose-500 border rounded outline-none px-2"
+              className="bg-primaryLight focus:border-redLight border rounded outline-none px-2"
               value={column.title}
               onChange={(e) => updateColumn(column.id, e.target.value)}
               autoFocus
@@ -90,7 +95,8 @@ const Column = ({
           onClick={() => {
             deleteColumn(column.id);
           }}
-          className="stroke-gray-500 hover:stroke-white hover:bg-columnBackgroundColor rounded px-1 py-2"
+          className="stroke-gray-500 hover:stroke-white hover:bg-dangerLight
+          rounded px-1 py-2"
         >
           <TrashIcon />
         </button>
@@ -112,7 +118,7 @@ const Column = ({
       </div>
       {/* Column footer */}
       <button
-        className="flex gap-2 items-center border-columnBackgroundColor border-2 rounded-md p-4 border-x-columnBackgroundColor hover:bg-mainBackgroundColor hover:text-rose-500 active:bg-black"
+        className="flex gap-2 items-center border-columnBackgroundColor border-2 rounded-md p-4 border-x-columnBackgroundColor hover:bg-mainBackgroundColor hover:bg-warningLight"
         onClick={() => {
           createTask(column.id);
         }}
