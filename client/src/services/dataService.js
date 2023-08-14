@@ -23,41 +23,41 @@ function DataService() {
     this.deleteBoard = (boardId) => instance.delete(`/boards/${boardId}`);
 
     // Column
-    this.createTask = (data) => instance.post(`boards/${boardId}/tasks`, data);
+    this.createColumn = (data) => instance.post(`boards/${boardId}/columns`, data);
 
-    this.updateTask = (data) =>
-        instance.put(`/boards/${boardId}/tasks/${taskId}`, data);
+    this.updateColumn = (data) =>
+        instance.put(`/boards/${boardId}/columns/${columnId}`, data);
 
-    this.deleteTask = () =>
-        instance.delete(`/boards/${boardId}/tasks/${taskId}`);
+    this.deleteColumn = () =>
+        instance.delete(`/boards/${boardId}/columns/${columnId}`);
 
     // Task
-    this.createTask = (data) => instance.post(`boards/${boardId}/tasks`, data);
+    this.createTask = (data) => instance.post(`/boards/${boardId}/columns/${columnId}/tasks`, data);
 
     this.updateTask = (data) =>
-        instance.put(`/boards/${boardId}/tasks/${taskId}`, data);
+        instance.put(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, data);
 
     this.deleteTask = () =>
-        instance.delete(`/boards/${boardId}/tasks/${taskId}`);
+        instance.delete(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
 
     // Comments
     this.createComment = (data) =>
-        instance.post(`/boards/${boardId}/tasks/${taskId}/comments`, data);
+        instance.post(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments`, data);
 
     this.updateComment = (data) =>
         instance.put(
-            `/boards/${boardId}/tasks/${taskId}/comments/${commentId}`,
+            `/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments/${commentId}`,
             data
         );
 
     this.likeComment = (data) =>
         instance.patch(
-            `/boards/${boardId}/tasks/${taskId}/comments/${commentId}`
+            `/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments/${commentId}`
         );
 
     this.deleteComment = (data) =>
         instance.delete(
-            `/boards/${boardId}/tasks/${taskId}/comments/${commentId}`
+            `/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments/${commentId}`
         );
 }
 

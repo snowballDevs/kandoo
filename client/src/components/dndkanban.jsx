@@ -17,6 +17,7 @@ import Modal from "./Modal";
 // import { Column, Id, Task } from "../types";
 import Column from './dndcolumn';
 import TaskCard from './dndtaskcard';
+import dataService from '../services/dataService'
 
 const defaultCols = [
     {
@@ -114,39 +115,40 @@ const KanbanBoard = ({boardInfo}) => {
 
     const [boards, setBoards] = useState([]);
 
-    useEffect(() => {
-        getBoards();
-    }, []);
+ 
 
 
     // get column
-    const getBoards = async () => {
+    const getColumns = async () => {
         try {
             console.log('Sending Request');
-            const response = await dataService.getBoards();
+            const response = await dataService.getColumns();
             console.log(response);
-            setBoards(response.data.boards);
+            setColumns(response.data.board.column); //find one board ID
         } catch (err) {
             console.log(err);
         }
     };
 
+    useEffect(() => {
+        getColumns();
+    }, []);
+
     // delete column
     const onDelete = async (e, id) => {
         e.stopPropagation();
-        const deletedBoard = await dataService.deleteBoard(id);
-        console.log(deletedBoard);
-        await getBoards();
+        const deletedColumn = await dataService.deleteColumn(id);
+        console.log(deletedColumn);
+        await getColumns();
     };
 
     // Open Task Modal
-    const navigateToTask = (e) => {
-      const {id} = e.currentTarget;
-      const board = boards.find((board) => board._id === id);
-      console.log(board);
-      setSelectedBoard(board);
-      setCurrentPage('workspace');
-  };
+//     const navigateToTask = (e) => {
+//       const {id} = e.currentTarget;
+//       const board = boards.find((board) => board._id === id);
+//       console.log(board);
+//       setSelectedBoard(board);
+//   };
 
 
     // const { column, tasks } = boardInfo;
@@ -307,6 +309,7 @@ const KanbanBoard = ({boardInfo}) => {
           overflow-x-auto 
           overflow-y-hidden 
           px-[40px]
+          bg-tertiaryLight
           '
         >
             <DndContext
@@ -347,7 +350,7 @@ const KanbanBoard = ({boardInfo}) => {
                 border-2
                 border-columnBackgroundColor
                 p-4
-                ring-rose-500
+                ring-pinkLight
                 hover:ring-2
                 flex
                 gap-2

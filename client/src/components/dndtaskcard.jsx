@@ -55,7 +55,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
         flex text-left 
         rounded-xl 
         border-2 
-        border-rose-500 
+        border-pinklight
         cursor-grab relative
       '
             />
@@ -69,7 +69,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
                 style={style}
                 {...attributes}
                 {...listeners}
-                className='bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative'
+                className='bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative'
             >
                 <textarea
                     className='
@@ -98,7 +98,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
             {...attributes}
             {...listeners}
             onClick={toggleEditMode}
-            className='bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative task'
+            className='bg-secondaryLight p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative task'
             onMouseEnter={() => {
                 setMouseIsOver(true);
             }}
@@ -107,7 +107,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
             }}
         >
             <p
-                className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap'
+                className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-white'
                 onClick={handleModal}
             >
                 {' '}
@@ -119,9 +119,9 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
                 <Task
                     key={task.id}
                     taskName={taskName}
-                    taskDetail={taskDetail}
-                    taskPriority={taskPriority}
-                    taskComment={taskComment}
+                    taskDetail={task.content}
+                    taskPriority={task.priority}
+                    taskComment={task.comment}
                     deleteTask={deleteTask}
                     updateTask={updateTask}
                 />
@@ -132,7 +132,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
                     onClick={() => {
                         deleteTask(task.id);
                     }}
-                    className='stroke-white absolute right-4 top-1/2 -translate-y-1/2 bg-columnBackgroundColor p-2 rounded opacity-60 hover:opacity-100'
+                    className='stroke-white hover:stroke-slate-100 absolute right-4 top-1/2 -translate-y-1/2 bg-dangerLight p-2 rounded opacity-100 hover:opacity-100'
                 >
                     <TrashIcon />
                 </button>
