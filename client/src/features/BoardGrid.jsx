@@ -51,6 +51,15 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
 
     return (
         <div className='px-6 max-w-7xl mx-auto'>
+            <div className='flex justify-center pb-8'>
+                <button
+                    type='button'
+                    className='btn bg-flashy text-primaryLight border-primaryLight'
+                    onClick={handleModal}
+                >
+                    Create New Board
+                </button>
+            </div>
             <div className='grid grid-cols-fluid justify-items-center gap-6 '>
                 {boards.map((board) => (
                     <Card
@@ -62,11 +71,6 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
                         onDelete={onDelete}
                     />
                 ))}
-                <div>
-                    <button type='button' className='btn' onClick={handleModal}>
-                        Create New Board
-                    </button>
-                </div>
 
                 <Modal>
                     <CreateBoardForm />

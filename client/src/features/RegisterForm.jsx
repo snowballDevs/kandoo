@@ -52,28 +52,28 @@ const RegisterForm = ({formDisplay}) => {
         <body class="h-full">
         ```
       */}
-            <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-6 lg:px-8'>
-                <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
+            <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-6 lg:px-8 bg-primaryLight text-secondaryLight'>
+                <div className='sm:mx-auto sm:w-full sm:max-w-sm '>
                     <img
                         className='mx-auto h-10 w-auto'
                         src='/KandooLogoW.png'
                         alt='Your Company'
                     />
-                    <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-400'>
+                    <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight'>
                         Register for a new account
                     </h2>
                 </div>
 
                 <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
                     <form
-                        className='space-y-6'
+                        className='space-y-6 '
                         action='#'
                         onSubmit={handleSubmit}
                     >
                         <div>
                             <label
                                 htmlFor='firstName'
-                                className='block text-sm font-medium leading-6 text-gray-400 text-left'
+                                className='block text-sm font-medium leading-6 text-secondaryLight text-left'
                             >
                                 First Name
                                 <input
@@ -83,14 +83,14 @@ const RegisterForm = ({formDisplay}) => {
                                     onChange={handleChange}
                                     autoComplete='firstName'
                                     required
-                                    className='mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                    className='mt-2 block w-full rounded-md border-0 text-secondaryLight py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                                 />
                             </label>
                         </div>
                         <div>
                             <label
                                 htmlFor='firstName'
-                                className='block text-sm font-medium leading-6 text-gray-400 text-left'
+                                className='block text-sm font-medium leading-6 text-secondaryLight text-left'
                             >
                                 Last Name
                                 <input
@@ -100,14 +100,14 @@ const RegisterForm = ({formDisplay}) => {
                                     onChange={handleChange}
                                     autoComplete='lastName'
                                     required
-                                    className='mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                    className='mt-2 block w-full rounded-md border-0 text-secondaryLight py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                                 />
                             </label>
                         </div>
                         <div>
                             <label
                                 htmlFor='email'
-                                className='block text-sm font-medium leading-6 text-gray-400 text-left'
+                                className='block text-sm font-medium leading-6 text-secondaryLight text-left'
                             >
                                 Email address
                                 <input
@@ -117,7 +117,7 @@ const RegisterForm = ({formDisplay}) => {
                                     onChange={handleChange}
                                     autoComplete='email'
                                     required
-                                    className='mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                    className='mt-2 block w-full rounded-md border-0 py-1.5 text-secondaryLight shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                                 />
                             </label>
                         </div>
@@ -126,7 +126,7 @@ const RegisterForm = ({formDisplay}) => {
                             <div className=' items-center justify-between'>
                                 <label
                                     htmlFor='password'
-                                    className='block text-sm font-medium leading-6 text-gray-400'
+                                    className='block text-sm font-medium leading-6 text-secondaryLight'
                                 >
                                     Password
                                     <div className='mt-2'>
@@ -137,7 +137,7 @@ const RegisterForm = ({formDisplay}) => {
                                             onChange={handleChange}
                                             autoComplete='current-password'
                                             required
-                                            className='mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                            className='mt-2 block w-full rounded-md border-0 py-1.5 text-secondaryLight shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                                         />
                                     </div>
                                 </label>
@@ -158,7 +158,7 @@ const RegisterForm = ({formDisplay}) => {
                         Already a member?{' '}
                         <button
                             type='button'
-                            className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500'
+                            className='font-semibold leading-6 text-flashy hover:text-indigo-500'
                             onClick={() => formDisplay('login')}
                         >
                             Login now

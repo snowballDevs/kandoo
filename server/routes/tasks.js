@@ -6,6 +6,7 @@ const tasksController = require('../controllers/tasksController');
 
 // prettier-ignore
 router.route('/')
+.get(tasksController.getTasks) // todo: DELETE - testing purposes
     .post(tasksController.createTask);
 
 // prettier-ignore
