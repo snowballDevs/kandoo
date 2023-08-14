@@ -1,8 +1,7 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
-import TrashIcon from "../assets/icons/TrashIcon";
-import PlusIcon from "../assets/icons/PlusIcon";
+import {HiPlusCircle, HiOutlineTrash} from 'react-icons/hi';
 import TaskCard from "./dndtaskcard";
 
 const Column = ({
@@ -98,7 +97,7 @@ const Column = ({
           className="stroke-gray-500 hover:stroke-white hover:bg-dangerLight
           rounded px-1 py-2"
         >
-          <TrashIcon />
+          <HiOutlineTrash />
         </button>
       </div>
 
@@ -123,7 +122,7 @@ const Column = ({
           createTask(column.id);
         }}
       >
-        <PlusIcon />
+        <HiPlusCircle />
         Add task
       </button>
     </div>

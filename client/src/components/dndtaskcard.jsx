@@ -2,9 +2,9 @@ import {useContext, useEffect, useState} from 'react';
 // import { Id, Task } from "../types";
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
+import {HiOutlineTrash} from 'react-icons/hi';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import TaskModal from "./TaskModal";
-import TrashIcon from '../assets/icons/TrashIcon';
 import Task from './Task';
 
 const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, deleteTask, updateTask}) => {
@@ -134,7 +134,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
                     }}
                     className='stroke-white hover:stroke-slate-100 absolute right-4 top-1/2 -translate-y-1/2 bg-dangerLight p-2 rounded opacity-100 hover:opacity-100'
                 >
-                    <TrashIcon />
+                    <HiOutlineTrash />
                 </button>
             )}
         </div>

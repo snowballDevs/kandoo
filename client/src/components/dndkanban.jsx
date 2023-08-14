@@ -11,7 +11,7 @@ import {
 } from '@dnd-kit/core';
 import {SortableContext, arrayMove} from '@dnd-kit/sortable';
 import {createPortal} from 'react-dom';
-import PlusIcon from '../assets/icons/PlusIcon';
+import {HiPlusCircle} from 'react-icons/hi';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import Modal from "./Modal";
 // import { Column, Id, Task } from "../types";
@@ -356,7 +356,7 @@ const KanbanBoard = ({boardInfo}) => {
                 gap-2
               '
                     >
-                        <PlusIcon />
+                        <HiPlusCircle />
                         Add Column
                     </button>
                 </div>
