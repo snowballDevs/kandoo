@@ -11,9 +11,7 @@ const Header = ({formDisplay}) => {
 
     const {currentPage, setCurrentPage} = useRoutingContext();
 
-    const Links = [
-        {name: 'DASHBOARD', onClick: () => setCurrentPage('dashboard')},
-    ];
+    const Links = [];
 
     const handleLogin = (login) => {
         handleOpen();
@@ -21,7 +19,11 @@ const Header = ({formDisplay}) => {
     };
 
     if (isAuthenticated) {
-        Links.push({name: 'LOGOUT', onClick: logout});
+        Links.push({
+            name: 'DASHBOARD',
+            onClick: () => setCurrentPage('dashboard'),
+        }),
+            Links.push({name: 'LOGOUT', onClick: logout});
     } else {
         Links.push({name: 'LOGIN', onClick: () => handleLogin('login')});
     }
