@@ -73,7 +73,8 @@ joinBoard: async (req, res) => {
         board.users.push(userId);
         await board.save();
 
-        return res.json({ message: 'User successfully joined the board' });
+        // Need to ensure that we are sending back the board so that the user can automatically open the board on joining
+        return res.json({board, message: 'User successfully joined the board' });
     } catch (error) {
         console.log('Error joining a board:', error);
     }
