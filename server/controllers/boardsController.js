@@ -56,32 +56,28 @@ module.exports = {
         }
     },
 
-    joinBoard: async (req, res) => {
-        try {
-            const {boardId} = req.body;
-            const user = req.user.id;
-            const board = await Board.findById(boardId);
+joinBoard: async (req, res) => {
+    try {
+        const { boardId } = req.body;
+        const userId = req.user.id;
 
-            if (!board) {
-                console.log('board not found');
-                return res.status(404).json({message: 'Board not found'});
-            }
-
-            if (board.users.includes(user)) {
-                return res
-                    .status(400)
-                    .json({message: 'User is already a member of the board'});
-            }
-
-            board.users.push(user);
-            await board.save();
-
-            return res.json({message: "User successfully joined the board"})
-
-        } catch (error) {
-            console.log('Error joining a board: ', error);
+        const board = await Board.findById(boardId);
+        if (!board) {
+            return res.status(404).json({ message: 'Board not found' });
         }
-    },
+
+        if (board.users.includes(userId)) {
+            return res.status(400).json({ message: 'User is already a member of the board' });
+        }
+
+        board.users.push(userId);
+        await board.save();
+
+        return res.json({ message: 'User successfully joined the board' });
+    } catch (error) {
+        console.log('Error joining a board:', error);
+    }
+},
 
     // to delete a board on dashboard
     deleteBoard: async (req, res) => {
