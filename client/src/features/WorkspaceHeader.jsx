@@ -18,8 +18,8 @@ const WorkspaceHeader = ({boardInfo}) => {
     };
 
     return (
-        <div>
-            <div className=' grid mt-2 w-full px-4 py-4 sm:px-6 max-w-7xl mx-auto items-center grid-cols-1 md:grid-cols-2 bg-primaryLight'>
+        <div className='bg-whiteLight'>
+            <div className=' grid mt-2 w-full px-4 py-4 sm:px-6 max-w-7xl mx-auto items-center grid-cols-1 md:grid-cols-2 bg-whiteLight'>
                 <div className='row'>
                     <p className='font-light text-md light:text-secondaryLight dark:text-secondaryLight'>
                         Project:
@@ -36,7 +36,7 @@ const WorkspaceHeader = ({boardInfo}) => {
                 </div>
                 <div className='flex gap-5 mt-5 md:mt-0 justify-end'>
                     <button type='button' className='flex items-center justify-center font-semibold dark:bg-gray-900 bg-tertiaryLight text-gray-100 dark:bg-gray-600 dark:hover:bg-blue-500 dark:text-gray-100 rounded w-32 py-2 px-2'>
-                        <MdModeEdit className='text-xl mr-2' />
+                        <MdModeEdit className='text-xl' />
                     </button>
 
                     <button
@@ -44,7 +44,7 @@ const WorkspaceHeader = ({boardInfo}) => {
                         onClick={() => deleteProject(boardInfo._id)}
                         className='flex items-center justify-center font-semibold hover:bg-red-700 text-gray-100 bg-dangerLight dark:hover:bg-red-500 dark:text-gray-100 rounded px-3 '
                     >
-                        <MdDelete className='text-xl mr-2' />
+                        <MdDelete className='text-xl' />
                     </button>
                 </div>
             </div>

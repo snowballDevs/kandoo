@@ -1,6 +1,6 @@
 # Kandoo
 
-![image](https://i.imgur.com/roOg6Dx.jpg)
+![image](https://i.imgur.com/GMPcGvB.jpg)
 
 Kandoo is an interactive planning app that allows collaboration and planning, in the style of a kanban board. 
 

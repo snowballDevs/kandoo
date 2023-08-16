@@ -8,7 +8,7 @@ export default {
             },
             colors: {
                 whiteLight: '#ffffff',
-                primaryLight: '#ebebeb', //fmrly e9e9e5
+                primaryLight: '#ebebeb', //gray, fmrly e9e9e5
                 secondaryLight: '#051e36', //fmrly 051e36
                 tertiaryLight: '#219ebc', //fmrly 61a0af
                 dangerLight: '#e63946', 
