@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const {Board, Task} = require('../models/Board');
+const {Board} = require('../models/Board');
 
 module.exports = {
     // used on the dashboard to get all the boards
@@ -53,6 +53,33 @@ module.exports = {
             res.json({board});
         } catch (error) {
             console.error(error);
+        }
+    },
+
+    joinBoard: async (req, res) => {
+        try {
+            const {boardId} = req.body;
+            const user = req.user.id;
+            const board = await Board.findById(boardId);
+
+            if (!board) {
+                console.log('board not found');
+                return res.status(404).json({message: 'Board not found'});
+            }
+
+            if (board.users.includes(user)) {
+                return res
+                    .status(400)
+                    .json({message: 'User is already a member of the board'});
+            }
+
+            board.users.push(user);
+            await board.save();
+
+            return res.json({message: "User successfully joined the board"})
+
+        } catch (error) {
+            console.log('Error joining a board: ', error);
         }
     },
 
