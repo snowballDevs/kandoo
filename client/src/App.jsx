@@ -1,11 +1,14 @@
 import './App.css';
 import {useState} from 'react';
+import { ToastContainer, toast} from 'react-toastify';
 import {useAuthContext} from './contexts/AuthContext/authContext';
 import {useRoutingContext} from './contexts/RoutingContext/routingContext';
 import LandingPage from './features/LandingPage';
 import Footer from './components/Footer';
 import Dashboard from './features/Dashboard';
 import Workspace from './features/Workspace';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
     const {isAuthenticated} = useAuthContext();
@@ -14,6 +17,7 @@ const App = () => {
 
     return (
         <div className='bg-primaryLight min-h-screen'>
+          <ToastContainer  />
 
 
             {/* {isAuthenticated ? <Dashboard /> : <LandingPage />} */}
