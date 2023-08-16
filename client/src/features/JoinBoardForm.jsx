@@ -1,4 +1,5 @@
 import {useState, useContext} from 'react'
+import { toast } from 'react-toastify';
 import dataService from '../services/dataService';
 import {ModalContext} from '../contexts/ModalContext/ModalContext'
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
@@ -40,9 +41,38 @@ const handleSubmit = async (event) => {
           setSelectedBoard(board);
           setCurrentPage('workspace');
           handleClose();
-      }
+      } 
+      
   } catch (error) {
-      console.error('Error: ', error.message);
+      // handle error
+      console.error('Error on joining board: ', error.message);
+      if(error.response) {
+        console.log(error.response)
+
+        if(error.response.status === 400) {
+          toast.error('Already joined this board!', {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            })
+        } else {
+          toast.error('Invalid Board ID', {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            } )
+        }
+      }
   }
 };
 

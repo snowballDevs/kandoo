@@ -17,7 +17,8 @@ const App = () => {
 
     return (
         <div className='bg-primaryLight min-h-screen'>
-          <ToastContainer  />
+          {/* Toast Container should be stated once in App root */}
+          <ToastContainer  /> 
 
 
             {/* {isAuthenticated ? <Dashboard /> : <LandingPage />} */}
