@@ -8,7 +8,7 @@ import TaskModal from "./TaskModal";
 import Task from './Task';
 
 const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, deleteTask, updateTask}) => {
-    const {handleModal, isModalOpen, handleClose, handleOpen} =
+    const {handleModal, isModalOpen, handleClose, handleOpen, isSlideOverOpen, setIsSlideOverOpen, handleSlideOver} =
         useContext(ModalContext);
 
     const [mouseIsOver, setMouseIsOver] = useState(false);
@@ -97,7 +97,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
             style={style}
             {...attributes}
             {...listeners}
-            onClick={toggleEditMode}
+            onClick={() => handleSlideOver()}
             className='bg-secondaryLight p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative task'
             onMouseEnter={() => {
                 setMouseIsOver(true);
@@ -108,14 +108,13 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
         >
             <p
                 className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-white'
-                onClick={handleModal}
             >
                 {' '}
                 {/* slide right */}
                 {task.content}
             </p>
 
-            <TaskModal>
+            {/* <TaskModal>
                 <Task
                     key={task.id}
                     taskName={taskName}
@@ -125,7 +124,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
                     deleteTask={deleteTask}
                     updateTask={updateTask}
                 />
-            </TaskModal>
+            </TaskModal> */}
 
             {mouseIsOver && (
                 <button

@@ -73,7 +73,7 @@ const WorkspaceHeader = ({boardInfo}) => {
                     <button type='button' className='flex items-center justify-center font-semibold bg-gray-600 text-gray-100 rounded w-min-content py-2 px-2 hover:bg-gray-500' onClick={() => copyID(boardInfo._id)}>
                       <MdFileCopy className='mr-2' /> Copy ID
                     </button>
-                    
+
                     <button type='button' className='flex items-center justify-center font-semibold dark:bg-gray-900 bg-tertiaryLight text-gray-100 dark:bg-gray-600 dark:hover:bg-blue-500 dark:text-gray-100 rounded w-min-content py-2 px-2'>
                         <MdModeEdit className='text-xl mr-2' />
                         Edit

@@ -16,13 +16,13 @@ const Card = ({name, desc, id, onDelete, onClick}) => {
             onClick={(e) => onClick(e)}
             id={id}
         >
-            <button
+            {/* <button
                 className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
                 type='button'
                 onClick={(e) => onDelete(e, id)}
             >
                 x
-            </button>
+            </button> */}
             <div className='flex flex-col gap-4'>
                 <h3 className='font-bold text-xl truncate leading-tight'>
                     {name}
