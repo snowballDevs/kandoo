@@ -1,3 +1,4 @@
+import { useState, useContext } from 'react'
 import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
 import {ToastContainer, toast} from 'react-toastify';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
@@ -5,15 +6,28 @@ import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
 import dataService from '../services/dataService';
 import formatDate from '../utils/formatDate';
 import 'react-toastify/dist/ReactToastify.css';
+import BoardConfirmDelete from './BoardConfirmDelete'
+import {ModalContext} from '../contexts/ModalContext/ModalContext';
+import Modal from '../components/Modal'
 
 const WorkspaceHeader = ({boardInfo}) => {
     const {setCurrentPage} = useRoutingContext();
+    const {handleModal, isModalOpen, handleClose, handleOpen} =
+        useContext(ModalContext);
+
+    const [displayedModal, setDisplayedModal] = useState(null)
+
+    const handleDisplayedModal = (modalContent) => {
+      setDisplayedModal(modalContent)
+      handleOpen();
+    }
 
     const deleteProject = async (id) => {
         try {
             const deletedProject = await dataService.deleteBoard(id);
             console.log(deleteProject);
             setCurrentPage('dashboard');
+            handleClose();
         } catch (err) {
             console.log(err);
         }
@@ -67,12 +81,15 @@ const WorkspaceHeader = ({boardInfo}) => {
 
                     <button
                         type='button'
-                        onClick={() => deleteProject(boardInfo._id)}
+                        onClick={() =>handleDisplayedModal('confirmDelete')}
                         className='flex items-center justify-center font-semibold hover:bg-red-700 text-gray-100 bg-dangerLight dark:hover:bg-red-500 dark:text-gray-100 rounded px-2 w-min-content py-2'
                     ><MdDelete className='text-xl' />
                     </button>
                 </div>
             </div>
+            <Modal>
+              <BoardConfirmDelete closeModal={handleClose} deleteBoard={deleteProject} boardId={boardInfo._id}/>
+            </Modal>
         </div>
     );
 };
