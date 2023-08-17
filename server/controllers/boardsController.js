@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const {Board, Task} = require('../models/Board');
+const {Board} = require('../models/Board');
 
 module.exports = {
     // used on the dashboard to get all the boards
@@ -55,6 +55,30 @@ module.exports = {
             console.error(error);
         }
     },
+
+joinBoard: async (req, res) => {
+    try {
+        const { boardId } = req.body;
+        const userId = req.user.id;
+
+        const board = await Board.findById(boardId);
+        if (!board) {
+            return res.status(404).json({ message: 'Board not found' });
+        }
+
+        if (board.users.includes(userId)) {
+            return res.status(400).json({ message: 'User is already a member of the board' });
+        }
+
+        board.users.push(userId);
+        await board.save();
+
+        // Need to ensure that we are sending back the board so that the user can automatically open the board on joining
+        return res.json({board, message: 'User successfully joined the board' });
+    } catch (error) {
+        console.log('Error joining a board:', error);
+    }
+},
 
     // to delete a board on dashboard
     deleteBoard: async (req, res) => {
