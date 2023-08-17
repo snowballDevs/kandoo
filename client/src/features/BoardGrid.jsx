@@ -8,6 +8,7 @@ import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
 import dataService from '../services/dataService';
 import JoinBoardForm from './JoinBoardForm';
 
+
 const BoardGrid = ({clickedCardId, setClickedCardId}) => {
     // this should capture an array of objects(boards)
     const {handleModal, isModalOpen, handleClose, handleOpen} =
@@ -82,7 +83,7 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
                         name={board.boardName}
                         desc={board.description}
                         id={board._id}
-                        onDelete={onDelete}
+                        // onDelete={onDelete}
                     />
                 ))}
 

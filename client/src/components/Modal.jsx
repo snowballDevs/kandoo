@@ -20,7 +20,7 @@ const Modal = ({children}) => {
             console.log('removed');
             document.removeEventListener('keydown', handleEscapeKey);
         };
-    }, [handleClose]);
+    }, []);
 
     return (
         <dialog className='modal' open={isModalOpen}>
