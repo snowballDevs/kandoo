@@ -83,7 +83,7 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
                         name={board.boardName}
                         desc={board.description}
                         id={board._id}
-                        onDelete={onDelete}
+                        // onDelete={onDelete}
                     />
                 ))}
 
