@@ -13,6 +13,7 @@ const ModalProvider = ({children}) => {
 
   const handleSlideOver = () => {
     setIsSlideOverOpen(prevState => !prevState)
+    
   }
 
   const modalValue = useMemo(

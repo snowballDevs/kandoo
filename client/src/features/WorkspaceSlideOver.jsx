@@ -42,7 +42,7 @@ const team = [
 ];
 const WorkspaceSlideOver = (boardInfo) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
-
+    console.log(boardInfo)
     return (
         <Transition.Root show={isSlideOverOpen} as={Fragment}>
             <Dialog
