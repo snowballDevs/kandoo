@@ -1,12 +1,13 @@
 import {useContext, useEffect, useState} from 'react';
 import Card from '../components/BoardCard';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
-import BoardForm from './BoardForm';
 import Modal from '../components/Modal';
 import CreateBoardForm from '../components/CreateBoardForm';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
 import dataService from '../services/dataService';
+import JoinBoardForm from './JoinBoardForm';
+
 
 const BoardGrid = ({clickedCardId, setClickedCardId}) => {
     // this should capture an array of objects(boards)
@@ -18,6 +19,12 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
     const {setCurrentPage} = useRoutingContext();
 
     const [boards, setBoards] = useState([]);
+    const [displayedForm, setDisplayedForm] = useState(null)
+
+    const handleDisplayedForm = (formToDisplay) => {
+      setDisplayedForm(formToDisplay)
+      handleOpen();
+    }
 
     useEffect(() => {
         getBoards();
@@ -54,12 +61,20 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
             <div className='flex justify-center pb-8'>
                 <button
                     type='button'
-                    className='btn bg-flashy text-primaryLight border-primaryLight'
-                    onClick={handleModal}
+                    className='btn bg-tertiaryLight text-primaryLight border-tertiaryLight hover:bg-successLight hover:text-secondaryLight'
+                    onClick={() => handleDisplayedForm('create')}
                 >
                     Create New Board
                 </button>
+                <button 
+                  className='btn bg-secondaryLight text-primaryLight hover:bg-fuchsia-500 ml-3' 
+                  type='button'
+                  onClick={() => handleDisplayedForm('join')}
+                >
+                  Join Board
+                </button>
             </div>
+            
             <div className='grid grid-cols-fluid justify-items-center gap-6 '>
                 {boards.map((board) => (
                     <Card
@@ -68,12 +83,13 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
                         name={board.boardName}
                         desc={board.description}
                         id={board._id}
-                        onDelete={onDelete}
+                        // onDelete={onDelete}
                     />
                 ))}
 
                 <Modal>
-                    <CreateBoardForm />
+                  {displayedForm === 'create' && <CreateBoardForm />}
+                  {displayedForm === 'join' && <JoinBoardForm />}
                 </Modal>
             </div>
         </div>

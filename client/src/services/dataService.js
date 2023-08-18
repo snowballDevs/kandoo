@@ -20,6 +20,8 @@ function DataService() {
 
     this.createBoard = (data) => instance.post(`/boards`, data);
 
+    this.joinBoard = (data) => instance.post('/boards/joinBoard', data); 
+
     this.deleteBoard = (boardId) => instance.delete(`/boards/${boardId}`);
 
     // Column

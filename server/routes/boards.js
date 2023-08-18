@@ -9,6 +9,10 @@ router.route('/')
       .get(boardsController.getAllBoards)
       .post(ensureAuth, boardsController.createBoard)
 
+// Joining a Board with BoardId
+router.route('/joinBoard')
+      .post(boardsController.joinBoard)
+
 // Delete a board
 router.route('/:boardId')
       .delete(ensureAuth, boardsController.deleteBoard)
