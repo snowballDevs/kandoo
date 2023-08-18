@@ -84,16 +84,6 @@ const WorkspaceSlideOver = ({
         );
     };
 
-    // switch (level) {
-    //     case 'high':
-    //         return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-red-200 text-xs font-semibold text-red-600 uppercase">High</span>;
-    //     case 'medium':
-    //         return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-yellow-200 text-xs font-semibold text-yellow-600 uppercase">Medium</span>;
-    //     case 'low':
-    //         return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase">Low</span>;
-    //     default:
-    //         return <span className="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-200 dark:text-gray-900">N/A</span>;
-
     return (
         <Transition.Root show={isSlideOverOpen} as={Fragment}>
             <Dialog

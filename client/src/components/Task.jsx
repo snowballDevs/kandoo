@@ -46,4 +46,6 @@ const Task = ({
     );
 };
 
+// const {taskTitle, taskPriority, taskDetail, taskComment, deleteTask, updateTask} = task;
+
 export default Task;
