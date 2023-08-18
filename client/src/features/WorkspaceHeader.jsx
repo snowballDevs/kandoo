@@ -24,10 +24,25 @@ const WorkspaceHeader = ({boardInfo}) => {
 
     const deleteProject = async (id) => {
         try {
-            const deletedProject = await dataService.deleteBoard(id);
-            console.log(deleteProject);
-            setCurrentPage('dashboard');
-            handleClose();
+            const data = await dataService.getUser();
+            const user = data.data.user._id
+            if(user === boardInfo.createdBy) {
+              const deletedProject = await dataService.deleteBoard(id);
+              console.log(deletedProject);
+              setCurrentPage('dashboard');
+              handleClose();
+            } else {
+              toast.error("You don't have permission to delete this board", {
+                position: "top-center",
+                autoClose: 750,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            }
         } catch (err) {
             console.log(err);
         }
