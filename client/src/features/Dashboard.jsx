@@ -3,11 +3,13 @@ import Header from '../components/Header';
 import dataService from '../services/dataService';
 import BoardGrid from './BoardGrid';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
-import KanbanBoard from '../components/dndkanban';
 
 const Dashboard = ({clickedCardId, setClickedCardId}) => {
     const [user, setUser] = useState(null);
     const {isAuthenticated} = useAuthContext();
+
+  
+
 
     useEffect(() => {
         async function fetchUser() {
@@ -39,7 +41,7 @@ const Dashboard = ({clickedCardId, setClickedCardId}) => {
                 clickedCardId={clickedCardId}
                 setClickedCardId={setClickedCardId}
             />
-            <KanbanBoard />
+           
         </div>
     );
 };
