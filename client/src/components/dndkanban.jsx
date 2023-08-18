@@ -309,7 +309,7 @@ const KanbanBoard = ({boardInfo}) => {
           overflow-x-auto 
           overflow-y-hidden 
           px-[40px]
-          bg-tertiaryLight
+          bg-primaryLight
           '
         >
             <DndContext
