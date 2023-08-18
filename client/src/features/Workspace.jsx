@@ -4,6 +4,7 @@ import WorkspaceHeader from './WorkspaceHeader';
 import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
 // import KanbanBoard from '../components/dndkanban';
 import WorkspaceSlideOver from './WorkspaceSlideOver';
+import KB from '../components/kb';
 
 const Workspace = () => {
     const {selectedBoard} = useSelectedBoardContext();
@@ -15,8 +16,7 @@ const Workspace = () => {
         <div>
             <Header />
             <WorkspaceHeader boardInfo={boardInfo} />
-            <KanbanBoard boardInfo={boardInfo} />
-            
+            <KB boardInfo={boardInfo} />
         </div>
     );
 };
