@@ -65,9 +65,12 @@ app.use(passport.session());
 // Setup Routes For Which The Server Is Listening
 app.use('/', mainRoutes);
 app.use('/boards', boardRoutes);
-app.use('/boards/:boardId/columns/', columnRoutes) 
+app.use('/boards/:boardId/columns/', columnRoutes);
 app.use('/boards/:boardId/columns/:columnId/tasks', taskRoutes);
-app.use('/boards/:boardId/columns/:columnId/tasks/:taskId/comments', commentRoutes);
+app.use(
+    '/boards/:boardId/columns/:columnId/tasks/:taskId/comments',
+    commentRoutes
+);
 // Should boardid -> column -> task???
 
 // app.use('/boards/:boardId/tasks', taskRoutes);

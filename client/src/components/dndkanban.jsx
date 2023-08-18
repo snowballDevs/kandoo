@@ -13,11 +13,11 @@ import {SortableContext, arrayMove} from '@dnd-kit/sortable';
 import {createPortal} from 'react-dom';
 import {HiPlusCircle} from 'react-icons/hi';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
-import Modal from "./Modal";
+import Modal from './Modal';
 // import { Column, Id, Task } from "../types";
 import Column from './dndcolumn';
 import TaskCard from './dndtaskcard';
-import dataService from '../services/dataService'
+import dataService from '../services/dataService';
 
 const defaultCols = [
     {
@@ -115,16 +115,13 @@ const KanbanBoard = ({boardInfo}) => {
 
     const [boards, setBoards] = useState([]);
 
- 
-
-
     // get column
     const getColumns = async () => {
         try {
             console.log('Sending Request');
             const response = await dataService.getColumns();
             console.log(response);
-           setColumns(resonse.data.board.column); // find one board ID
+            setColumns(resonse.data.board.column); // find one board ID
         } catch (err) {
             console.log(err);
         }
@@ -143,13 +140,12 @@ const KanbanBoard = ({boardInfo}) => {
     };
 
     // Open Task Modal
-//     const navigateToTask = (e) => {
-//       const {id} = e.currentTarget;
-//       const board = boards.find((board) => board._id === id);
-//       console.log(board);
-//       setSelectedBoard(board);
-//   };
-
+    //     const navigateToTask = (e) => {
+    //       const {id} = e.currentTarget;
+    //       const board = boards.find((board) => board._id === id);
+    //       console.log(board);
+    //       setSelectedBoard(board);
+    //   };
 
     // const { column, tasks } = boardInfo;
 
@@ -220,6 +216,8 @@ const KanbanBoard = ({boardInfo}) => {
     }
 
     function onDragStart(event) {
+        console.log(`Drag start event: ${event.active}`);
+
         if (event.active.data.current?.type === 'column') {
             setActiveColumn(event.active.data.current.column);
             return;
@@ -227,11 +225,11 @@ const KanbanBoard = ({boardInfo}) => {
 
         if (event.active.data.current?.type === 'Task') {
             setActiveTask(event.active.data.current.task);
-            
         }
     }
 
     function onDragEnd(event) {
+        console.log(`Drag end event: ${event.active}`);
         setActiveColumn(null);
         setActiveTask(null);
 
@@ -258,6 +256,8 @@ const KanbanBoard = ({boardInfo}) => {
 
     function onDragOver(event) {
         const {active, over} = event;
+
+        console.log(`Drag over event: ${active.id} ${over.id}`);
         if (!over) return;
 
         const activeId = active.id;
@@ -314,9 +314,13 @@ const KanbanBoard = ({boardInfo}) => {
         >
             <DndContext
                 sensors={sensors}
-                onDragStart={onDragStart}
-                onDragEnd={onDragEnd}
-                onDragOver={onDragOver}
+                onDragStart={(event) =>
+                    console.log('External onDragStart:', event)
+                }
+                onDragEnd={(event) => console.log('External onDragEnd:', event)}
+                onDragOver={(event) =>
+                    console.log('External onDragOver:', event)
+                }
             >
                 <div className='m-auto flex gap-4'>
                     <div className='flex gap-4'>
@@ -342,19 +346,19 @@ const KanbanBoard = ({boardInfo}) => {
                             createNewColumn();
                         }}
                         className='
-                h-[60px]
-                w-[350px]
-                min-w-[350px]
-                cursor-pointer
-                rounded-lg
-                border-2
-                border-columnBackgroundColor
-                p-4
-                ring-pinkLight
-                hover:ring-2
-                flex
-                gap-2
-              '
+                                h-[60px]
+                                w-[350px]
+                                min-w-[350px]
+                                cursor-pointer
+                                rounded-lg
+                                border-2
+                                border-columnBackgroundColor
+                                p-4
+                                ring-pinkLight
+                                hover:ring-2
+                                flex
+                                gap-2
+                            '
                     >
                         <HiPlusCircle />
                         Add Column

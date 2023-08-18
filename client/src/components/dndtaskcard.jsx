@@ -4,12 +4,27 @@ import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import {HiOutlineTrash} from 'react-icons/hi';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
-import TaskModal from "./TaskModal";
+import TaskModal from './TaskModal';
 import Task from './Task';
 
-const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, deleteTask, updateTask}) => {
-    const {handleModal, isModalOpen, handleClose, handleOpen, isSlideOverOpen, setIsSlideOverOpen, handleSlideOver} =
-        useContext(ModalContext);
+const TaskCard = ({
+    task,
+    taskName,
+    taskPriority,
+    taskComment,
+    taskDetail,
+    deleteTask,
+    updateTask,
+}) => {
+    const {
+        handleModal,
+        isModalOpen,
+        handleClose,
+        handleOpen,
+        isSlideOverOpen,
+        setIsSlideOverOpen,
+        handleSlideOver,
+    } = useContext(ModalContext);
 
     const [mouseIsOver, setMouseIsOver] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -29,6 +44,8 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
         },
         disabled: editMode,
     });
+
+ 
 
     const style = {
         transition,
@@ -106,9 +123,7 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
                 setMouseIsOver(false);
             }}
         >
-            <p
-                className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-white'
-            >
+            <p className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-white'>
                 {' '}
                 {/* slide right */}
                 {task.content}
