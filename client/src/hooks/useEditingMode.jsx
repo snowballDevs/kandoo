@@ -17,7 +17,8 @@ const useEditingMode = (initialContent) => {
     setIsEditing, 
     editedContent, 
     setEditedContent,
-    handleContentChange
+    handleContentChange,
+    toggleEditMode
   }
 }
 
