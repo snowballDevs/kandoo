@@ -267,9 +267,9 @@
 import {Fragment, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import {XMarkIcon} from '@heroicons/react/24/outline';
+import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
 
-import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
 import Column from '../components/dndcolumn';
 import Task from '../components/Task';
 
@@ -515,9 +515,7 @@ const WorkspaceSlideOver = ({taskName}) => {
                                                                     name='project-description'
                                                                     rows={2}
                                                                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                                                                    defaultValue={
-                                                                        'Write your comment here'
-                                                                    }
+                                                                    defaultValue="Write your comment here"
                                                                 />
                                                             </div>
                                                             <button

@@ -1,5 +1,6 @@
 //  purpose of this context is to pass modal abilities into other components throughout the app
 import {createContext, useMemo, useContext, useState} from 'react'
+import {createContext, useMemo, useContext, useState} from 'react'
 import useModal from '../../hooks/useModal'
 
 const ModalContext = createContext();
@@ -13,10 +14,12 @@ const ModalProvider = ({children}) => {
 
   const handleSlideOver = () => {
     setIsSlideOverOpen(prevState => !prevState)
-    
-  }
 
+  }
+  
   const modalValue = useMemo(
+    () => ({isModalOpen, setIsModalOpen, handleModal, handleClose, handleOpen, isSlideOverOpen, setIsSlideOverOpen, handleSlideOver}),
+    [isModalOpen, isSlideOverOpen] 
     () => ({isModalOpen, setIsModalOpen, handleModal, handleClose, handleOpen, isSlideOverOpen, setIsSlideOverOpen, handleSlideOver}),
     [isModalOpen, isSlideOverOpen] 
   )
