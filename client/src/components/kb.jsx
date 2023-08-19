@@ -1,4 +1,4 @@
-import {useContext, useMemo, useState, useEffect} from 'react';
+import {useContext, useMemo, useState, useEffect, useRef} from 'react';
 import {
     DndContext,
     //   DragEndEvent,
@@ -24,18 +24,27 @@ import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import Modal from './Modal';
 // import { Column, Id, Task } from "../types";
 import Column from './dndcolumn';
-import TaskCard from './dndtaskcard';
+import TaskCard from './TaskCard';
 import dataService from '../services/dataService';
 import SortableColumn from './SortableColumn';
 import SortableTask from './SortableTask';
+import ColumnLane from './ColumnLane';
+import Task from './Task';
 
 const KB = ({boardInfo}) => {
     console.log(boardInfo);
-    const [columns, setColumns] = useState(boardInfo.columns);
-    const [activeId, setActiveId] = useState(null);
-    const [activeTask, setActiveTask] = useState(null);
 
-    console.log(activeId);
+    const {columns} = boardInfo;
+    console.log(columns);
+    const [activeId, setActiveId] = useState(null);
+    const recentlyMovedToNewContainer = useRef(false);
+    const [items, setItems] = useState(columns);
+    const [containers, setContainers] = useState(Object.keys(items));
+
+    console.log(containers);
+    console.log(items);
+
+    // const isSortingContainer = activeId ? containers.includes(id) : false;
 
     const mouseSensor = useSensor(MouseSensor);
     const touchSensor = useSensor(TouchSensor);
@@ -48,58 +57,128 @@ const KB = ({boardInfo}) => {
         pointerSensor
     );
 
-    function onDragStart({active}) {
+    const findContainer = (id) => {
+        if (id in items) {
+            return id;
+        }
+
+        return Object.keys(items).find((key) => items[key].tasks.includes(id));
+    };
+
+    function handleDragStart({active}) {
         setActiveId(active.id);
         console.log(activeId);
     }
 
     function handleDragEnd({active, over}) {
-        if (active.id !== over.id) {
-            setColumns((columns) => {
-                const oldIndex = columns.indexOf(active.id);
-                const newIndex = columns.indexOf(over.id);
-                return arrayMove(columns, oldIndex, newIndex);
+        if (active.id in items && over?.id) {
+            setContainers((containers) => {
+                const activeIndex = containers.indexOf(active.id);
+                const overIndex = containers.indexOf(over.id);
+
+                return arrayMove(containers, activeIndex, overIndex);
+            });
+        }
+
+        const activeContainer = findContainer(active.id);
+
+        if (!activeContainer) {
+            setActiveId(null);
+            return;
+        }
+
+        const overId = over?.id;
+
+        if (overId == null) {
+            setActiveId(null);
+            return;
+        }
+
+        const overContainer = findContainer(overId);
+
+        if (overContainer) {
+            const activeIndex = items[activeContainer].tasks.indexOf(active.id);
+            const overIndex = items[overContainer].tasks.indexOf(overId);
+
+            console.log(items[overContainer].tasks);
+            console.log(activeIndex);
+            console.log(overIndex);
+            console.log(ov);
+            if (activeIndex !== overIndex) {
+                console.log(items[overContainer]);
+                setItems((items) => ({
+                    ...items,
+                    [overContainer]: arrayMove(
+                        items[overContainer].tasks,
+                        activeIndex,
+                        overIndex
+                    ),
+                }));
+            }
+        }
+
+        setActiveId(null);
+    }
+
+    function handleDragOver({active, over}) {
+        const overId = over?.id;
+
+        if (overId == null || active.id in items) {
+            return;
+        }
+
+        const overContainer = findContainer(overId);
+        const activeContainer = findContainer(active.id);
+
+        if (!overContainer || !activeContainer) {
+            return;
+        }
+
+        if (activeContainer !== overContainer) {
+            setItems((items) => {
+                const activeItems = items[activeContainer].tasks;
+                const overItems = items[overContainer].tasks;
+                const overIndex = overItems.indexOf(overId);
+                const activeIndex = activeItems.indexOf(active.id);
+
+                let newIndex;
+
+                if (overId in items) {
+                    newIndex = overItems.length + 1;
+                } else {
+                    const isBelowOverItem =
+                        over &&
+                        active.rect.current.translated &&
+                        active.rect.current.translated.top >
+                            over.rect.top + over.rect.height;
+
+                    const modifier = isBelowOverItem ? 1 : 0;
+
+                    newIndex =
+                        overIndex >= 0
+                            ? overIndex + modifier
+                            : overItems.length + 1;
+                }
+
+                recentlyMovedToNewContainer.current = true;
+
+                return {
+                    ...items,
+                    [activeContainer]: items[activeContainer].tasks.filter(
+                        (item) => item !== active.id
+                    ),
+                    [overContainer]: [
+                        ...items[overContainer].tasks.slice(0, newIndex),
+                        items[activeContainer].tasks[activeIndex],
+                        ...items[overContainer].tasks.slice(
+                            newIndex,
+                            items[overContainer].tasks.length
+                        ),
+                    ],
+                };
             });
         }
     }
-
-    // function onDragOver(event) {
-    //     const {active, over} = event;
-    //     if (!over) return;
-
-    //     const activeId = active.id;
-    //     const overId = over.id;
-
-    //     if (activeId === overId) return;
-
-    //     const isActiveATask = active.data.current?.type === 'Task';
-    //     const isOverATask = over.data.current?.type === 'Task';
-
-    //     if (!isActiveATask) return;
-
-    //     if (isActiveATask && isOverATask) {
-    //         setTasks((tasks) => {
-    //             const activeIndex = tasks.findIndex((t) => t.id === activeId);
-    //             const overIndex = tasks.findIndex((t) => t.id === overId);
-
-    //             tasks[activeIndex].columnId = tasks[overIndex].columnId;
-
-    //             return arrayMove(tasks, activeIndex, overIndex);
-    //         });
-    //     }
-
-    //     const isOverAColumn = over.data.current?.type === 'column';
-
-    //     if (isActiveATask && isOverAColumn) {
-    //         setTasks((tasks) => {
-    //             const activeIndex = tasks.findIndex((t) => t.id === activeId);
-
-    //             tasks[activeIndex].columnId = overId;
-
-    //             return arrayMove(tasks, activeIndex, activeIndex);
-    //         });
-    //     }
-    // }
 
     return (
         <div
@@ -117,20 +196,23 @@ const KB = ({boardInfo}) => {
         >
             <DndContext
                 sensors={sensors}
-                onDragStart={onDragStart}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
                 onDragEnd={handleDragEnd}
                 collisionDetection={closestCenter}
             >
                 <div className='m-auto flex gap-4'>
                     <div className='flex gap-4'>
                         <SortableContext
-                            items={columns}
+                            items={containers}
                             strategy={horizontalListSortingStrategy}
                         >
-                            {columns.map((column) => (
+                            {containers.map((containerId) => (
                                 <SortableColumn
-                                    column={column}
-                                    key={column.id}
+                                    column={items[containerId]}
+                                    key={containerId}
+                                    id={containerId}
+                                    items={items[containerId]}
                                 />
                             ))}
                         </SortableContext>
@@ -160,19 +242,37 @@ const KB = ({boardInfo}) => {
                 </div>
                 {createPortal(
                     <DragOverlay>
-                        {activeId ? (
-                            columns.includes(activeId) ? (
-                                <SortableColumn value={activeId} />
-                            ) : (
-                                <SortableTask value={activeId} />
-                            )
-                        ) : null}
+                        {activeId
+                            ? containers.includes(activeId)
+                                ? renderContainerDragOverlay(activeId)
+                                : renderSortableItemDragOverlay(activeId)
+                            : null}
                     </DragOverlay>,
                     document.body
                 )}
             </DndContext>
         </div>
     );
+
+    function renderContainerDragOverlay(containerId) {
+        console.log(containerId);
+        return (
+            <ColumnLane
+                column={items[containerId]}
+                items={items[containerId]}
+            />
+        );
+    }
+
+    function renderSortableItemDragOverlay(itemId) {
+        console.log(itemId);
+        const containerId = findContainer(itemId);
+        const activeIndex = items[containerId].tasks.indexOf(itemId);
+        const task = items[containerId].tasks[activeIndex];
+        console.log(activeIndex);
+        console.log(containerId);
+        return <TaskCard task={task} dragOverlay />;
+    }
 };
 
 export default KB;

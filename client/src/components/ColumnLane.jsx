@@ -8,19 +8,8 @@ import {useMemo, useState} from 'react';
 import {HiPlusCircle, HiOutlineTrash} from 'react-icons/hi';
 import SortableTask from './SortableTask';
 
-const ColumnLane = ({
-    column,
-    deleteColumn,
-    updateColumn,
-    createTask,
-    taskComment,
-    deleteTask,
-    updateTask,
-}) => {
-    console.log('hi');
-
+const ColumnLane = ({column, items, id}) => {
     const [editMode, setEditMode] = useState(false);
-
     return (
         <div className='bg-primaryLight w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col shadow-lg '>
             {/* Column title */}
@@ -32,7 +21,7 @@ const ColumnLane = ({
             >
                 <div className='flex gap-2'>
                     <div className='flex justify-center items-center bg-infoLight py-0 px-6 text-sm rounded-full ring-2 '>
-                        {column.tasks.length}
+                        {/* {column.tasks.length} */}
                     </div>
                     {!editMode && (
                         <div className='hover:ring-secondaryLight rounded px-1 py-2 hover:ring-2'>
@@ -70,14 +59,20 @@ const ColumnLane = ({
 
             {/* Column task container */}
             <div className='flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'>
-                <SortableContext
-                    items={column.tasks}
-                    strategy={verticalListSortingStrategy}
-                >
-                    {column.tasks.map((task) => (
-                        <SortableTask key={task.id} task={task} />
-                    ))}
-                </SortableContext>
+                {items && items.tasks && (
+                    <SortableContext
+                        items={items.tasks}
+                        strategy={verticalListSortingStrategy}
+                    >
+                        {items.tasks.map((item) => (
+                            <SortableTask
+                                key={item._id}
+                                task={item}
+                                id={item}
+                            />
+                        ))}
+                    </SortableContext>
+                )}
             </div>
             {/* Column footer */}
             <button
