@@ -4,28 +4,36 @@ import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import PageHeading from './PageHeading';
 
-const Header = ({boardName}) => {
-    const {handleModal, isModalOpen, handleClose, handleOpen} =
-        useContext(ModalContext);
+const Header = ({formDisplay}) => {
+    const {handleOpen} = useContext(ModalContext);
 
-    const {login, logout, isAuthenticated} = useAuthContext();
+    const {logout, isAuthenticated} = useAuthContext();
 
-    const {currentPage} = useRoutingContext();
+    const {currentPage, setCurrentPage} = useRoutingContext();
 
-    const Links = [{name: 'BOARDS', link: 'landingPage'}];
+    const Links = [];
+
+    const handleLogin = (login) => {
+        handleOpen();
+        formDisplay(login);
+    };
 
     if (isAuthenticated) {
-        Links.push({name: 'LOGOUT', onClick: logout});
+        Links.push({
+            name: 'DASHBOARD',
+            onClick: () => setCurrentPage('dashboard'),
+        }),
+            Links.push({name: 'LOGOUT', onClick: logout});
     } else {
-        Links.push({name: 'LOGIN', onClick: handleOpen});
+        Links.push({name: 'LOGIN', onClick: () => handleLogin('login')});
     }
 
     return (
-        <header className='bg-indigo-600'>
+        <header className='bg-tertiaryLight'>
             <nav className='navbar max-w-7xl mx-auto'>
                 <div className='flex-1'>
                     <a
-                        className='btn btn-ghost normal-case text-xl text-slate-50'
+                        className='btn btn-ghost normal-case text-xl text-primaryLight'
                         href='https://github.com/snowballDevs/kandoo'
                     >
                         KANDOO
@@ -45,13 +53,13 @@ const Header = ({boardName}) => {
                                 />
                             </div>
                         </button>
-                        <ul className='menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'>
+                        <ul className='menu menu-sm dropdown-content mt-3 p-2 shadow bg-primaryLight rounded-box w-52'>
                             {Links.map((link) => (
                                 <li key={link.name}>
                                     <button
                                         data-modal='modal-login'
                                         type='button'
-                                        className='btn btn-sm btn-ghost'
+                                        className='btn btn-sm btn-ghost text-secondaryLight'
                                         onClick={
                                             link.onClick ? link.onClick : null
                                         }

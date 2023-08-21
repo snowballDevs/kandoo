@@ -22,7 +22,7 @@ const taskSchema = new mongoose.Schema({
 
     priority: {type: Number, required: false},
 
-    category_stage: {type: String, required: false},
+    // column: {columnSchema},
 
     tags: {type: Array, required: false},
 
@@ -30,6 +30,12 @@ const taskSchema = new mongoose.Schema({
 
     comments: [commentSchema],
 });
+
+const columnSchema = new mongoose.Schema({
+  title: {type: String, required:true},
+  
+  tasks: [taskSchema],
+})
 
 const BoardSchema = new mongoose.Schema({
     users: [
@@ -44,10 +50,7 @@ const BoardSchema = new mongoose.Schema({
         require: true,
     },
 
-    categoryStages: {
-        type: Array,
-        required: true,
-    },
+    columns: [columnSchema],
 
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -58,8 +61,6 @@ const BoardSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-
-    tasks: [taskSchema],
 
     createdAt: {
         type: Date, // Expected output: "Fri, 02 Feb 1996 03:04:05 GMT"

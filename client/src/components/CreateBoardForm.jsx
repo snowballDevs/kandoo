@@ -30,7 +30,9 @@ const BoardForm = () => {
         // prevent refreshing the form
         event.preventDefault();
         try {
+            
             const response = await dataService.createBoard(formData);
+            console.log(response);
             // handle response
             if (response.status >= 200 && response.status < 300) {
                 console.log('Request Successful', response);
@@ -44,7 +46,7 @@ const BoardForm = () => {
         }
     };
     return (
-        <>
+        <div>
             <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
                 <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
                     <img
@@ -114,7 +116,7 @@ const BoardForm = () => {
                     </form>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

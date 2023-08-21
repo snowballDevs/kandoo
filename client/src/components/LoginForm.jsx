@@ -4,10 +4,9 @@ import dataService from '../services/dataService';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
-import Modal from './Modal';
 
 const LoginForm = () => {
-    const {isModalOpen, handleClose} = useContext(ModalContext);
+    const {handleClose} = useContext(ModalContext);
 
     const {setIsAuthenticated} = useAuthContext();
 
@@ -37,8 +36,8 @@ const LoginForm = () => {
                 console.log('Request Successful', response);
                 setCurrentPage('dashboard');
                 setIsAuthenticated(true);
+                handleClose();
             }
-            handleClose();
         } catch (error) {
             console.error('Error: ', error.message);
         }
@@ -52,7 +51,7 @@ const LoginForm = () => {
                         src='/KandooLogoW.png'
                         alt='Your Company'
                     />
-                    <h2 className='mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-400'>
+                    <h2 className='mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-secondaryLight'>
                         The start of something special
                     </h2>
                 </div>
@@ -62,7 +61,7 @@ const LoginForm = () => {
                         <div>
                             <label
                                 htmlFor='email'
-                                className='block text-sm font-medium leading-6 text-gray-400'
+                                className='block text-sm font-medium leading-6 text-secondaryLight'
                             >
                                 Email
                                 <input
@@ -71,7 +70,7 @@ const LoginForm = () => {
                                     type='email'
                                     onChange={handleChange}
                                     required
-                                    className='mt-2 block w-full rounded-md border-0 py-1.5 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                    className='mt-2 block w-full rounded-md border-0 py-1.5 text-secondaryLight shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                                 />
                             </label>
                         </div>
@@ -81,7 +80,7 @@ const LoginForm = () => {
                             <div>
                                 <label
                                     htmlFor='password'
-                                    className='block text-sm font-medium leading-6 text-gray-400'
+                                    className='block text-sm font-medium leading-6 text-secondaryLight'
                                 >
                                     Password
                                     <input
@@ -89,7 +88,7 @@ const LoginForm = () => {
                                         name='password'
                                         type='password'
                                         onChange={handleChange}
-                                        className='mt-2 block w-full rounded-md border-0 py-1.5 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                                        className='mt-2 block w-full rounded-md border-0 py-1.5 text-secondaryLight shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                                     />
                                 </label>
                             </div>

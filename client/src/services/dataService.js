@@ -13,40 +13,53 @@ function DataService() {
 
     this.login = (data) => instance.post(`/login`, data);
 
+    this.signup = (data) => instance.post('./signup', data);
+
     // Board
     this.getBoards = () => instance.get(`/boards`);
 
     this.createBoard = (data) => instance.post(`/boards`, data);
 
+    this.joinBoard = (data) => instance.post('/boards/joinBoard', data); 
+
     this.deleteBoard = (boardId) => instance.delete(`/boards/${boardId}`);
 
+    // Column
+    this.createColumn = (data) => instance.post(`boards/${boardId}/columns`, data);
+
+    this.updateColumn = (data) =>
+        instance.put(`/boards/${boardId}/columns/${columnId}`, data);
+
+    this.deleteColumn = () =>
+        instance.delete(`/boards/${boardId}/columns/${columnId}`);
+
     // Task
-    this.createTask = (data) => instance.post(`boards/${boardId}/tasks`, data);
+    this.createTask = (data) => instance.post(`/boards/${boardId}/columns/${columnId}/tasks`, data);
 
     this.updateTask = (data) =>
-        instance.put(`/boards/${boardId}/tasks/${taskId}`, data);
+        instance.put(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, data);
 
     this.deleteTask = () =>
-        instance.delete(`/boards/${boardId}/tasks/${taskId}`);
+        instance.delete(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
 
     // Comments
     this.createComment = (data) =>
-        instance.post(`/boards/${boardId}/tasks/${taskId}/comments`, data);
+        instance.post(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments`, data);
 
     this.updateComment = (data) =>
         instance.put(
-            `/boards/${boardId}/tasks/${taskId}/comments/${commentId}`,
+            `/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments/${commentId}`,
             data
         );
 
     this.likeComment = (data) =>
         instance.patch(
-            `/boards/${boardId}/tasks/${taskId}/comments/${commentId}`
+            `/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments/${commentId}`
         );
 
     this.deleteComment = (data) =>
         instance.delete(
-            `/boards/${boardId}/tasks/${taskId}/comments/${commentId}`
+            `/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments/${commentId}`
         );
 }
 

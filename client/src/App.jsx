@@ -1,11 +1,14 @@
 import './App.css';
-import {useAuthContext} from './contexts/AuthContext/authContext';
 import {useState} from 'react';
+import { ToastContainer, toast} from 'react-toastify';
+import {useAuthContext} from './contexts/AuthContext/authContext';
 import {useRoutingContext} from './contexts/RoutingContext/routingContext';
 import LandingPage from './features/LandingPage';
 import Dashboard from './features/Dashboard';
 import Workspace from './features/Workspace';
 import Footer from './components/Footer';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
     const {isAuthenticated} = useAuthContext();
@@ -13,7 +16,9 @@ const App = () => {
     // const [clickedCardId, setClickedCardId] = useState(null); // State for card ID
 
     return (
-        <div>
+        <div className='bg-primaryLight min-h-screen'>
+          {/* Toast Container should be stated once in App root */}
+          <ToastContainer  /> 
 
 
             {/* {isAuthenticated ? <Dashboard /> : <LandingPage />} */}
