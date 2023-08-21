@@ -4,11 +4,11 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import {useMemo, useState} from 'react';
+import {Children, useMemo, useState} from 'react';
 import {HiPlusCircle, HiOutlineTrash} from 'react-icons/hi';
 import SortableTask from './SortableTask';
 
-const ColumnLane = ({column, items, id}) => {
+const ColumnLane = ({column, items, id, children}) => {
     const [editMode, setEditMode] = useState(false);
     return (
         <div className='bg-primaryLight w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col shadow-lg '>
@@ -59,20 +59,7 @@ const ColumnLane = ({column, items, id}) => {
 
             {/* Column task container */}
             <div className='flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'>
-                {items && items.tasks && (
-                    <SortableContext
-                        items={items.tasks}
-                        strategy={verticalListSortingStrategy}
-                    >
-                        {items.tasks.map((item) => (
-                            <SortableTask
-                                key={item._id}
-                                task={item}
-                                id={item}
-                            />
-                        ))}
-                    </SortableContext>
-                )}
+                {children}
             </div>
             {/* Column footer */}
             <button
