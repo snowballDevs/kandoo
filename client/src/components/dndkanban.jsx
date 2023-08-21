@@ -327,7 +327,7 @@ const KanbanBoard = ({boardInfo}) => {
                         <SortableContext items={columnsId}>
                             {columns.map((col) => (
                                 <Column
-                                    key={col.+id}
+                                    key={col.-id}
                                     column={col}
                                     deleteColumn={deleteColumn}
                                     updateColumn={updateColumn}

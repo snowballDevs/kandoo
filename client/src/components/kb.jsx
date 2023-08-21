@@ -17,6 +17,7 @@ import {
     SortableContext,
     arrayMove,
     horizontalListSortingStrategy,
+    verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import {createPortal} from 'react-dom';
 import {HiPlusCircle} from 'react-icons/hi';
@@ -43,6 +44,7 @@ const KB = ({boardInfo}) => {
 
     console.log(containers);
     console.log(items);
+    console.log(items[0].tasks);
 
     // const isSortingContainer = activeId ? containers.includes(id) : false;
 
@@ -62,7 +64,18 @@ const KB = ({boardInfo}) => {
             return id;
         }
 
-        return Object.keys(items).find((key) => items[key].tasks.includes(id));
+        for (const [key, value] of Object.entries(items)) {
+            for (const task of value.tasks) {
+                if (task._id === id) {
+                    return key;
+                }
+            }
+        }
+
+        // return Object.keys(items).find((key) => {
+        //     console.log(items[key].tasks.some((task) => task._id === id));
+        //     return items[key].tasks.some((task) => task._id === id);
+        // });
     };
 
     function handleDragStart({active}) {
@@ -95,19 +108,20 @@ const KB = ({boardInfo}) => {
         }
 
         const overContainer = findContainer(overId);
-
+        console.log(overContainer);
+        console.log(activeContainer);
+        console.log('hi');
         if (overContainer) {
-            const activeIndex = items[activeContainer].tasks.indexOf(active.id);
-            const overIndex = items[overContainer].tasks.indexOf(overId);
+            const activeIndex = items[activeContainer].tasks.findIndex(
+                (t) => t._id === active.id
+            );
+            const overIndex = items[overContainer].tasks.findIndex(
+                (t) => t._id === overId
+            );
 
-            console.log(items[overContainer].tasks);
-            console.log(activeIndex);
-            console.log(overIndex);
-            console.log(ov);
             if (activeIndex !== overIndex) {
                 console.log(items[overContainer]);
                 setItems((items) => ({
-                    ...items,
                     [overContainer]: arrayMove(
                         items[overContainer].tasks,
                         activeIndex,
@@ -141,6 +155,11 @@ const KB = ({boardInfo}) => {
                 const overIndex = overItems.indexOf(overId);
                 const activeIndex = activeItems.indexOf(active.id);
 
+                console.log(activeItems);
+                console.log(overItems);
+                console.log(overIndex);
+                console.log(activeIndex);
+
                 let newIndex;
 
                 if (overId in items) {
@@ -165,7 +184,7 @@ const KB = ({boardInfo}) => {
                 return {
                     ...items,
                     [activeContainer]: items[activeContainer].tasks.filter(
-                        (item) => item !== active.id
+                        (item) => item._id !== active.id
                     ),
                     [overContainer]: [
                         ...items[overContainer].tasks.slice(0, newIndex),
@@ -212,8 +231,26 @@ const KB = ({boardInfo}) => {
                                     column={items[containerId]}
                                     key={containerId}
                                     id={containerId}
-                                    items={items[containerId]}
-                                />
+                                    items={items[containerId].tasks}
+                                >
+                                    <SortableContext
+                                        items={items[containerId].tasks}
+                                        strategy={verticalListSortingStrategy}
+                                    >
+                                        {items[containerId].tasks.map(
+                                            (task, index) => {
+                                                console.log(task);
+                                                return (
+                                                    <SortableTask
+                                                        key={task._id}
+                                                        task={task}
+                                                        index={index}
+                                                    />
+                                                );
+                                            }
+                                        )}
+                                    </SortableContext>
+                                </SortableColumn>
                             ))}
                         </SortableContext>
                     </div>
@@ -259,7 +296,7 @@ const KB = ({boardInfo}) => {
         return (
             <ColumnLane
                 column={items[containerId]}
-                items={items[containerId]}
+                items={items[containerId].tasks}
             />
         );
     }
@@ -267,8 +304,12 @@ const KB = ({boardInfo}) => {
     function renderSortableItemDragOverlay(itemId) {
         console.log(itemId);
         const containerId = findContainer(itemId);
-        const activeIndex = items[containerId].tasks.indexOf(itemId);
+        console.log(containerId);
+        const activeIndex = items[containerId].tasks.findIndex(
+            (t) => t._id === itemId
+        );
         const task = items[containerId].tasks[activeIndex];
+        console.log(task);
         console.log(activeIndex);
         console.log(containerId);
         return <TaskCard task={task} dragOverlay />;

@@ -1,8 +1,9 @@
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import ColumnLane from './ColumnLane';
+import {Children} from 'react';
 
-const SortableColumn = ({column, id, items}) => {
+const SortableColumn = ({column, id, items, children}) => {
     const {
         setNodeRef,
         attributes,
@@ -23,8 +24,10 @@ const SortableColumn = ({column, id, items}) => {
     };
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} dra>
-            <ColumnLane column={column} items={items} />
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            <ColumnLane column={column} items={items}>
+                {children}
+            </ColumnLane>
         </div>
     );
 };
