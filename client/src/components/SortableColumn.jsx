@@ -22,7 +22,7 @@ const SortableColumn = ({column, id, items, children}) => {
         transition,
         transform: CSS.Transform.toString(transform),
     };
-
+    
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
             <ColumnLane column={column} items={items}>

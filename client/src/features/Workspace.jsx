@@ -5,6 +5,7 @@ import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
 // import KanbanBoard from '../components/dndkanban';
 import WorkspaceSlideOver from './WorkspaceSlideOver';
 import KB from '../components/kb';
+import KB2 from '../components/kb2';
 
 const Workspace = () => {
     const {selectedBoard} = useSelectedBoardContext();

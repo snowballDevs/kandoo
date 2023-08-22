@@ -33,17 +33,15 @@ import ColumnLane from './ColumnLane';
 import Task from './Task';
 import colums from './data';
 
-const KB = ({boardInfo}) => {
+const KB2 = ({boardInfo}) => {
     console.log(boardInfo);
 
     const {columns} = boardInfo;
-
+    console.log(columns);
     const [activeId, setActiveId] = useState(null);
     const recentlyMovedToNewContainer = useRef(false);
     const [items, setItems] = useState(colums);
-    console.log(items);
     const [containers, setContainers] = useState(Object.keys(items));
-    console.log(containers);
 
     // const isSortingContainer = activeId ? containers.includes(id) : false;
 
@@ -219,35 +217,13 @@ const KB = ({boardInfo}) => {
                             strategy={horizontalListSortingStrategy}
                         >
                             {containers.map((containerId) => {
+                                console.log(items[containerId]);
                                 return (
                                     <SortableColumn
-                                        column={items[containerId]}
+                                        tasks={items[containerId]}
                                         key={containerId}
                                         id={containerId}
-                                    >
-                                        <SortableContext
-                                            items={
-                                                items[containerId].tasks || []
-                                            }
-                                            strategy={
-                                                verticalListSortingStrategy
-                                            }
-                                        >
-                                            {items[containerId].tasks.map(
-                                                (task, index) => {
-                                                    console.log(task);
-                                                    return (
-                                                        <SortableTask
-                                                            key={task._id}
-                                                            task={task}
-                                                            index={index}
-                                                            id={task._id}
-                                                        />
-                                                    );
-                                                }
-                                            )}
-                                        </SortableContext>
-                                    </SortableColumn>
+                                    />
                                 );
                             })}
                         </SortableContext>
@@ -314,4 +290,4 @@ const KB = ({boardInfo}) => {
     }
 };
 
-export default KB;
+export default KB2;
