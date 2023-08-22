@@ -58,6 +58,16 @@ const KB = ({boardInfo}) => {
         pointerSensor
     );
 
+    function getTaskIds(containderId) {
+        // need to get the tasksID within Each Column
+
+        const taskIds = items[containderId].tasks.map((task) => task._id);
+
+        return taskIds;
+    }
+
+    console.log(getTaskIds(0));
+
     const findContainer = (id) => {
         if (id in items) {
             return id;
@@ -226,9 +236,7 @@ const KB = ({boardInfo}) => {
                                         id={containerId}
                                     >
                                         <SortableContext
-                                            items={
-                                                items[containerId].tasks || []
-                                            }
+                                            items={getTaskIds(containerId)}
                                             strategy={
                                                 verticalListSortingStrategy
                                             }
