@@ -3,8 +3,8 @@ import WorkspaceHeader from './WorkspaceHeader';
 import WorkspaceSlideOver from './WorkspaceSlideOver';
 import KanbanBoard from './kanbanBoard/KanbanBoard';
 import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
-import KanbanBoard from '../components/dndkanban';
-import WorkspaceSlideOver from './WorkspaceSlideOver';
+// import KanbanBoard from '../components/KanbanBoard';
+// import WorkspaceSlideOver from './WorkspaceSlideOver';
 
 const Workspace = () => {
     const {selectedBoard} = useSelectedBoardContext();
@@ -17,7 +17,6 @@ const Workspace = () => {
             <Header />
             <WorkspaceHeader boardInfo={boardInfo} />
             <KanbanBoard boardInfo={boardInfo} />
-            <WorkspaceSlideOver boardInfo={boardInfo}/>
         </div>
     );
 };
