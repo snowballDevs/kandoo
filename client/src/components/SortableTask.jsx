@@ -2,7 +2,7 @@ import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import TaskCard from './TaskCard';
 
-const SortableTask = ({task}) => {
+const SortableTask = ({task, id}) => {
     const {
         setNodeRef,
         attributes,
@@ -11,7 +11,7 @@ const SortableTask = ({task}) => {
         transition,
         isDragging,
     } = useSortable({
-        id: task._id,
+        id,
         data: {
             type: 'Task',
         },
