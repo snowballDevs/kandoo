@@ -80,6 +80,21 @@ joinBoard: async (req, res) => {
     }
 },
 
+    updateBoard: async (req, res) => {
+      try {
+        const {boardId} = req.params;
+        const {boardName, description} = req.body;
+        const board = await Board.findById(boardId);
+        if(board) {
+          board.boardName = boardName;
+          board.description = description;
+          await board.save();
+          return res.json({board, message: 'Board updated'});}
+
+      } catch (error) {
+        console.error(error)
+      }
+    },
     // to delete a board on dashboard
     deleteBoard: async (req, res) => {
         try {
