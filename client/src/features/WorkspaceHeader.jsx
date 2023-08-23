@@ -18,15 +18,15 @@ const WorkspaceHeader = ({boardInfo}) => {
         useContext(ModalContext);
 
     const [displayedModal, setDisplayedModal] = useState(null);
+    const [formData, setFormData] = useState({
+      boardName: boardInfo.boardName,
+      description: boardInfo.description,
+    })
 
     const {
         isEditing,
-        setIsEditing,
-        editedContent,
-        setEditedContent,
-        handleContentChange,
         toggleEditMode,
-    } = useEditingMode(boardInfo.description);
+    } = useEditingMode();
     const handleDisplayedModal = (modalContent) => {
         setDisplayedModal(modalContent);
         handleOpen();
@@ -62,13 +62,7 @@ const WorkspaceHeader = ({boardInfo}) => {
         }
     };
 
-    const saveDescription = async (event) => {
-      try {
-        handleContentChange(event)
-      } catch (error) {
-        console.error(error)
-      }
-    }
+    
 
     return (
         <div className='bg-whiteLight'>
@@ -83,15 +77,10 @@ const WorkspaceHeader = ({boardInfo}) => {
                     <h2 className='text-gray-700 mb-4 text-sm dark:text-gray-400'>
                         Created: {formatDate(boardInfo.createdAt)}
                     </h2>
-                    {isEditing ? ( <TextAreaEditor boardDescription={boardInfo.description} />
-                        // <textarea
-                        //     className='text-secondaryLight line-clamp-2'
-                        //     value={editedContent}
-                        //     onChange={() => handleContentChange()}
-                        // />
+                    {isEditing ? ( <TextAreaEditor boardInfo={boardInfo} setFormData={setFormData} formData={formData} isEditing={isEditing} toggleEditMode={toggleEditMode} initialDescription={boardInfo.description} />
                     ) : (
                         <p className='text-secondaryLight line-clamp-2'>
-                            {boardInfo.description}
+                            {formData.description}
                         </p>
                     )}
                 </div>

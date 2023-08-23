@@ -1,30 +1,42 @@
 import { useState } from 'react'
 import useEditingMode from "../hooks/useEditingMode";
+import dataService from '../services/dataService';
 
-const TextAreaEditor = ({boardDescription}) => {
+const TextAreaEditor = ({boardInfo, setFormData, formData, isEditing, toggleEditMode}) => {
 
+    const handleSubmit = async (event) => {
+      event.preventDefault()
+      try {
+        const response = await dataService.updateBoard(boardInfo._id,formData)
+        console.log(response)
+        toggleEditMode()
 
-  const {
-    isEditing,
-    setIsEditing,
-    editedContent,
-    setEditedContent,
-    handleContentChange,
-    toggleEditMode,
-} = useEditingMode(boardDescription);
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    const handleChange = (event) => {
+      const {name, value} = event.target
+      setFormData(prevFormData => ({
+          ...prevFormData, 
+          [name]: value
+        }))
+      
+    }
 
   return (
     <div className="flex items-start space-x-4">
       <div className="min-w-0 flex-1">
-        <form className="relative" onSubmit={toggleEditMode}>
+        <form className="relative" onSubmit={handleSubmit}>
           <div className="overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
             <textarea
+              type="text"
               rows={3}
-              name="comment"
-              id="comment"
+              name="description"
+              id="description"
               className="block w-full resize-none border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-              defaultValue={editedContent}
-              onChange={handleContentChange}
+              defaultValue={formData.description}
+              onChange={handleChange}
             />
 
             {/* Spacer element to match the height of the toolbar */}
