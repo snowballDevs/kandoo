@@ -22,6 +22,8 @@ function DataService() {
 
     this.joinBoard = (data) => instance.post('/boards/joinBoard', data); 
 
+    this.updateBoard = (boardId, data) => instance.patch(`/boards/${boardId}`, data);
+
     this.deleteBoard = (boardId) => instance.delete(`/boards/${boardId}`);
 
     // Column
