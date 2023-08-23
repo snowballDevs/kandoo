@@ -7,8 +7,13 @@ import {CSS} from '@dnd-kit/utilities';
 import {Children, useMemo, useState} from 'react';
 import {HiPlusCircle, HiOutlineTrash} from 'react-icons/hi';
 import SortableTask from './SortableTask';
+import {useDroppable} from '@dnd-kit/core';
 
-const ColumnLane = ({column, items, id, children}) => {
+const ColumnLane = ({column, items, id}) => {
+    const {setNodeRef} = useDroppable({
+        id,
+    });
+
     const [editMode, setEditMode] = useState(false);
     return (
         <div className='bg-primaryLight w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col shadow-lg '>
@@ -58,9 +63,21 @@ const ColumnLane = ({column, items, id, children}) => {
             </div>
 
             {/* Column task container */}
-            <div className='flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'>
-                {children}
-            </div>
+
+            <SortableContext
+                id={id}
+                items={items}
+                strategy={verticalListSortingStrategy}
+            >
+                <div
+                    ref={setNodeRef}
+                    className='flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'
+                >
+                    {items.map((item) => (
+                        <SortableTask task={item} id={item._id} />
+                    ))}
+                </div>
+            </SortableContext>
             {/* Column footer */}
             <button
                 className='flex gap-2 items-center border-columnBackgroundColor border-2 rounded-md p-4 border-x-columnBackgroundColor hover:bg-mainBackgroundColor hover:bg-warningLight'
