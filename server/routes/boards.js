@@ -15,6 +15,7 @@ router.route('/joinBoard')
 
 // Delete a board
 router.route('/:boardId')
+      .patch(boardsController.updateBoard)
       .delete(ensureAuth, boardsController.deleteBoard)
 
 module.exports = router;
