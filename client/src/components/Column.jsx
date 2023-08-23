@@ -108,10 +108,11 @@ return (
             <Task
                 key={task._id}
                 taskName={task.taskName}
+                taskDetail={task.taskDetail}
                 taskComments={task.comments}
-                user={task.user}
+                tags={task.tags}
+                assignedUserIds={task.assignedUserIds}
                 columnName={columnName}
-
             />
           ))}
         {/* </SortableContext> */}
