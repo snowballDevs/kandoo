@@ -4,7 +4,7 @@ import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import {HiOutlineTrash} from 'react-icons/hi';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
-import TaskModal from "./TaskModal";
+// import TaskModal from "./TaskModal";
 import Task from './Task';
 
 const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, deleteTask, updateTask}) => {
