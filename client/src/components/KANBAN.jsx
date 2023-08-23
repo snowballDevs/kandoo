@@ -60,6 +60,7 @@ const defaultAnnouncements = {
 const KANBAN = () => {
     const [items, setItems] = useState(colums);
     const [activeId, setActiveId] = useState(null);
+    const recentlyMovedToNewContainer = useRef(false);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -94,129 +95,129 @@ const KANBAN = () => {
         setActiveId(id);
     }
 
-    function handleDragOver(event) {
-        const {active, over, draggingRect} = event;
-        const {id} = active;
-        const {id: overId} = over;
-
+    function handleDragOver({active, over}) {
         // Find the containers
-        const activeContainer = findContainer(id);
-        const overContainer = findContainer(overId);
+        const activeContainer = findContainer(active.id);
+        const overContainer = findContainer(over.id);
 
         console.log('old container: ', items[activeContainer]);
         console.log('over/new container: ', items[overContainer]);
 
-        if (
-            !activeContainer ||
-            !overContainer ||
-            activeContainer === overContainer
-        ) {
+        if (!activeContainer || !overContainer) {
             return;
         }
 
-        setItems((prev) => {
-            const activeItems = prev[activeContainer].tasks;
-            const overItems = prev[overContainer].tasks;
+        if (activeContainer !== overContainer) {
+            setItems((prev) => {
+                const activeItems = prev[activeContainer].tasks;
+                const overItems = prev[overContainer].tasks;
 
-            console.log(activeItems);
-            console.log(overItems);
+                console.log(activeItems);
+                console.log(overItems);
 
-            const activeIndex = prev[activeContainer].tasks.findIndex(
-                (t) => t._id === active.id
-            );
-            const overIndex = prev[overContainer].tasks.findIndex(
-                (t) => t._id === overId
-            );
+                const activeIndex = prev[activeContainer].tasks.findIndex(
+                    (t) => t._id === active.id
+                );
+                const overIndex = prev[overContainer].tasks.findIndex(
+                    (t) => t._id === over.id
+                );
 
-            let newIndex;
-            if (overId in prev) {
-                // We're at the root droppable of a container
-                newIndex = overItems.length + 1;
-            } else {
-                const isBelowLastItem =
-                    over &&
-                    overIndex === overItems.length - 1 &&
-                    draggingRect.offsetTop >
-                        over.rect.offsetTop + over.rect.height;
+                console.log(activeIndex);
 
-                const modifier = isBelowLastItem ? 1 : 0;
+                console.log(overIndex);
 
-                newIndex =
-                    overIndex >= 0
-                        ? overIndex + modifier
-                        : overItems.length + 1;
-            }
+                let newIndex;
+                if (over.id in prev) {
+                    // We're at the root droppable of a container
+                    newIndex = overItems.length + 1;
+                } else {
+                    const isBelowOverItem =
+                        over &&
+                        active.rect.current.translated &&
+                        active.rect.current.translated.top >
+                            over.rect.top + over.rect.height;
 
-            // if (activeIndex !== overIndex) {
-            //     console.log('Hi');
-            //     setItems((prevItems) => {
-            //         const updatedItems = [...prevItems]; // Create a shallow copy of the array
-            //         updatedItems[overContainer].tasks = arrayMove(
-            //             updatedItems[overContainer].tasks,
-            //             activeIndex,
-            //             overIndex
-            //         );
-            //         return updatedItems;
-            //     });
-            // }
+                    const modifier = isBelowOverItem ? 1 : 0;
 
-            const updatedItems = [...prev];
+                    newIndex =
+                        overIndex >= 0
+                            ? overIndex + modifier
+                            : overItems.length + 1;
+                }
 
-            const activeContainerArray = updatedItems[
-                activeContainer
-            ].tasks.filter((task) => task._id !== active.id);
+                recentlyMovedToNewContainer.current = true;
 
-            const overContainerArray = [
-                updatedItems[overContainer].tasks.slice(0, newIndex),
-                items[activeContainer].tasks[activeIndex],
-                updatedItems.slice(newIndex, prev[overContainer].tasks.length),
-            ];
+                // if (activeIndex !== overIndex) {
+                //     console.log('Hi');
+                //     setItems((prevItems) => {
+                //         const updatedItems = [...prevItems]; // Create a shallow copy of the array
+                //         updatedItems[overContainer].tasks = arrayMove(
+                //             updatedItems[overContainer].tasks,
+                //             activeIndex,
+                //             overIndex
+                //         );
+                //         return updatedItems;
+                //     });
+                // }
 
-            console.log(overContainer);
-            console.log('updatedItems: ', ...updatedItems);
-            console.log('activeContainer: ', ...activeContainerArray);
-            console.log('overContainer: ', ...overContainerArray);
+                const updatedItems = [...prev];
 
-            return [
-                ...updatedItems,
-                ...activeContainerArray,
-                ...overContainerArray,
-            ];
+                console.log('Updated items prevstate', updatedItems);
 
-            // return {
-            //     ...prev,
-            //     [activeContainer]: [
-            //         ...prev[activeContainer].filter(
-            //             (item) => item !== active.id
-            //         ),
-            //     ],
-            //     [overContainer]: [
-            //         ...prev[overContainer].slice(0, newIndex),
-            //         items[activeContainer][activeIndex],
-            //         ...prev[overContainer].slice(
-            //             newIndex,
-            //             prev[overContainer].length
-            //         ),
-            //     ],
-            // };
-        });
+                const updatedActiveContainerTasks = prev[
+                    activeContainer
+                ].tasks.filter((item) => item._id !== active.id);
+
+                console.log(
+                    'Active container tasks',
+                    updatedActiveContainerTasks
+                );
+
+                console.log(prev[activeContainer].tasks);
+                console.log(prev[activeContainer].tasks[activeIndex]);
+
+                const updatedOverContainerTasks = [
+                    ...prev[overContainer].tasks.slice(0, newIndex),
+                    prev[activeContainer].tasks[activeIndex],
+                    ...prev[overContainer].tasks.slice(
+                        newIndex,
+                        prev[overContainer].tasks.length
+                    ),
+                ];
+
+                console.log('Over container tasks', updatedOverContainerTasks);
+
+                updatedItems[activeContainer] = {
+                    ...updatedItems[activeContainer],
+                    tasks: updatedActiveContainerTasks,
+                };
+
+                updatedItems[overContainer] = {
+                    ...updatedItems[overContainer],
+                    tasks: updatedOverContainerTasks,
+                };
+
+                console.log(updatedItems);
+
+                return updatedItems;
+            });
+        }
     }
 
-    function handleDragEnd(event) {
-        const {active, over} = event;
-        const {id} = active;
-        const {id: overId} = over;
-
-        const activeContainer = findContainer(id);
-        const overContainer = findContainer(overId);
+    function handleDragEnd({active, over}) {
+        const activeContainer = findContainer(active.id);
+        const overContainer = findContainer(over.id);
         // console.log('handleDragStart - Set Active Id to: ', activeId);
 
-        if (
-            !activeContainer ||
-            !overContainer ||
-            activeContainer !== overContainer
-        ) {
-            console.log('returned');
+        if (!activeContainer) {
+            setActiveId(null);
+            return;
+        }
+
+        const overId = over?.id;
+
+        if (overId == null) {
+            setActiveId(null);
             return;
         }
 
@@ -243,19 +244,6 @@ const KANBAN = () => {
             });
         }
 
-        // if (activeIndex !== overIndex) {
-        //     console.log('Hi');
-        //     setItems((items) => ({
-        //         ...items,
-        //         items[overContainer]: arrayMove(
-        //             items[overContainer].tasks,
-        //             activeIndex,
-        //             overIndex
-        //         ),
-        //     }));
-        //     console.log(items);
-        // }
-        console.log(items);
         setActiveId(null);
     }
 
@@ -288,7 +276,7 @@ const KANBAN = () => {
                             // <div>{column}</div>
                             return (
                                 <ColumnLane
-                                    key={i}
+                                    key={column._id}
                                     id={i}
                                     items={column.tasks}
                                     column={column}
