@@ -105,7 +105,7 @@ const defaultTasks = [
 
 const KanbanBoard = ({boardInfo}) => {
     // KANDOO CODE
-    //catagoryStages is an array of Board; Column is the column component
+    // catagoryStages is an array of Board; Column is the column component
     const {handleModal, isModalOpen, handleClose, handleOpen} =
         useContext(ModalContext);
 
@@ -124,7 +124,7 @@ const KanbanBoard = ({boardInfo}) => {
             console.log('Sending Request');
             const response = await dataService.getColumns();
             console.log(response);
-            setColumns(response.data.board.column); //find one board ID
+           setColumns(resonse.data.board.column); // find one board ID
         } catch (err) {
             console.log(err);
         }
@@ -153,7 +153,7 @@ const KanbanBoard = ({boardInfo}) => {
 
     // const { column, tasks } = boardInfo;
 
-    //TUTORIAL
+    // TUTORIAL
     const [columns, setColumns] = useState(defaultCols);
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
     const [tasks, setTasks] = useState(defaultTasks);
@@ -168,7 +168,7 @@ const KanbanBoard = ({boardInfo}) => {
         })
     );
 
-    //TODO
+    // TODO
     function createTask(columnId) {
         const newTask = {
             _id: generateId(),
@@ -227,7 +227,7 @@ const KanbanBoard = ({boardInfo}) => {
 
         if (event.active.data.current?.type === 'Task') {
             setActiveTask(event.active.data.current.task);
-            return;
+            
         }
     }
 
@@ -309,7 +309,7 @@ const KanbanBoard = ({boardInfo}) => {
           overflow-x-auto 
           overflow-y-hidden 
           px-[40px]
-          bg-tertiaryLight
+          bg-primaryLight
           '
         >
             <DndContext

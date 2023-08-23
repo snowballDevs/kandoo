@@ -108,14 +108,13 @@ const TaskCard = ({task, taskName, taskPriority, taskComment, taskDetail, delete
         >
             <p
                 className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-white'
-                // onClick={handleModal}
             >
                 {' '}
                 {/* slide right */}
                 {task.content}
             </p>
-{/* 
-            <TaskModal>
+
+            {/* <TaskModal>
                 <Task
                     key={task.id}
                     taskName={taskName}

@@ -53,7 +53,7 @@ const Column = ({
     <div
       ref={setNodeRef}
       style={style}
-      className="bg-primaryLight w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col shadow-lg "
+      className="bg-whiteLight w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col shadow-lg "
     >
       {/* Column title */}
       <div
@@ -62,10 +62,10 @@ const Column = ({
         onClick={() => {
           setEditMode(true);
         }}
-        className="bg-primaryLight text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold border-primaryLight border-4 flex items-center justify-between "
+        className="bg-whiteLight text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold border-whiteLight border-4 flex items-center justify-between "
       >
         <div className="flex gap-2">
-          <div className="flex justify-center items-center bg-infoLight py-0 px-6 text-sm rounded-full ring-2 ">
+          <div className="flex justify-center items-center bg-infoLight py-0 px-4 text-sm rounded-full ">
             {tasks.length}
           </div>
           {!editMode && (
