@@ -266,9 +266,18 @@
 
 import {Fragment, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
-import {XMarkIcon} from '@heroicons/react/24/outline';
-import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
+import {ToastContainer, toast} from 'react-toastify';
+import {
+    BsPlus,
+    BsLink45Deg,
+    BsFillQuestionCircleFill,
+    BsXLg,
+} from 'react-icons/bs';
+import dataService from '../services/dataService';
+import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
+import useEditingMode from '../hooks/useEditingMode';
+import TextAreaEditor from '../components/textAreaEditor';
 
 import Column from '../components/dndcolumn';
 import Task from '../components/Task';
@@ -311,15 +320,17 @@ const team = [
     },
 ];
 const WorkspaceSlideOver = ({
-    taskName,
     key,
+    taskName,
+    taskDetail,
     taskComments,
+    tags,
+    assignedUserIds,
     columnName,
-    user,
-    usersAssigned,
-    description,
+    createdAt
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
+
     return (
         <Transition.Root show={isSlideOverOpen} as={Fragment}>
             <Dialog
@@ -360,24 +371,27 @@ const WorkspaceSlideOver = ({
                                                 {/* <div className='flex items-start justify-between space-x-3'> */}
                                                 <div className='space-y-2 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
                                                     <div className='space-y-1'>
-                                                        <Dialog.Title className='font-bold text-3xl text-secondaryLight leading-6'>
-                                                            {taskName}
+                                                        <Dialog.Title className='text-2xl font-semibold leading-6 text-gray-900'>
+                                                            {taskName} {tags}
                                                         </Dialog.Title>
-                                                        <p className='text-sm text-gray-500'>
-                                                            in list {columnName}
+                                                        <p className='text-sm text-gray-500 flex'>
+                                                            in list&nbsp;
+                                                            <div className='text-tertiaryLight'>
+                                                                {columnName}
+                                                            </div>
+                                                            
                                                         </p>
-                                                        <p className='text-sm text-gray-500'>
-                                                            Created by {user} at
-                                                            Date
+                                                        <p className='text-sm text-gray-500 flex'>
+                                                        Created: {formatDate(createdAt)}
+                                                            
                                                         </p>
                                                     </div>
                                                     <div className='flex h-7 gap-2 items-center'>
                                                         <button
                                                             type='button'
                                                             className='relative text-gray-400 hover:text-gray-500'
-                                                            // onClick={() =>
-                                                            //     // TODO: Editmode for taskname
-                                                            // }
+                                                            
+                                                            onClick={useEditingMode}
                                                         >
                                                             <span className='absolute -inset-2.5' />
                                                             <span className='sr-only'>
@@ -412,167 +426,17 @@ const WorkspaceSlideOver = ({
 
                                             {/* Divider container */}
                                             <div className='space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0'>
-                                                {/* Left Column */}
-                                                <div className='space-y-2 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
-                                                    <div className='sm:col-span-2'>
-                                                        <div className='flex'>
-                                                            <label
-                                                                htmlFor='project-description'
-                                                                className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5 sm:col-span-1'
-                                                            >
-                                                                {description}
-                                                            </label>
-                                                            <button
-                                                                type='button'
-                                                                className='relative text-gray-400 hover:text-gray-500'
-                                                                // onClick={() =>
-                                                                //     // TODO: Editmode for taskname
-                                                                // }
-                                                            >
-                                                                <span className='absolute -inset-2.5' />
-                                                                <span className='sr-only'>
-                                                                    Edit panel
-                                                                </span>
-                                                                <MdModeEdit
-                                                                    className='h-4 w-4'
-                                                                    aria-hidden='true'
-                                                                />
-                                                            </button>
-                                                        </div>
-
-                                                        <p
-                                                            // id='project-description'
-                                                            // name='project-description'
-                                                            // // rows={3}
-                                                            // className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                                                            // defaultValue=''
-                                                            className='text-sm text-gray-500'
-                                                        >
-                                                            Lorem ipsum dolor,
-                                                            sit amet consectetur
-                                                            adipisicing elit.
-                                                            Delectus dolorem cum
-                                                            officiis accusantium
-                                                            magni, velit illo
-                                                            perferendis
-                                                            repellendus minus
-                                                            sapiente laboriosam,
-                                                            facilis cumque
-                                                            doloremque doloribus
-                                                            autem magnam.
-                                                            Quisquam, nihil
-                                                            reiciendis.
-                                                        </p>
-                                                        <div>
-                                                            <label
-                                                                htmlFor='project-comments'
-                                                                className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5 sm:col-span-1'
-                                                            >
-                                                                Comments{' '}
-                                                                {taskComments.length >
-                                                                0
-                                                                    ? taskComments
-                                                                    : '0'}
-                                                            </label>
-                                                            {/* <div className='mt-2 flex items-center justify-between'> */}
-                                                            <p className='text-sm italic text-gray-500'>
-                                                                {taskComments.length >
-                                                                0
-                                                                    ? taskComments
-                                                                    : 'No comments yet'}
-                                                            </p>
-                                                            <div className='sm:col-span-2'>
-                                                                <textarea
-                                                                    id='project-description'
-                                                                    name='project-description'
-                                                                    rows={2}
-                                                                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                                                                    defaultValue='Write your comment here'
-                                                                />
-                                                            </div>
-                                                            <button
-                                                                type='button'
-                                                                className='relative -mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500'
-                                                            >
-                                                                <span className='absolute -inset-1.5' />
-                                                                {/* <PencilIcon className="h-5 w-5" aria-hidden="true" /> */}
-                                                                <span className='sr-only'>
-                                                                    Add
-                                                                    description
-                                                                </span>
-                                                            </button>
-                                                            {/* </div> */}
-                                                        </div>
+                                                {/* Assignees */}
+                                                <div className='space-y-2 px-4 flex sm:items-center sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                    <div>
+                                                        <h3 className='text-sm font-medium leading-6 text-gray-900'>
+                                                            Assignees
+                                                        </h3>
                                                     </div>
-
-                                                    {/* Right Column */}
-                                                    <div className='sm:col-span-1 '>
-                                                        <label
-                                                            htmlFor='project-priority'
-                                                            className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5 sm:col-span-1'
-                                                        >
-                                                            Tag
-                                                        </label>
-                                                        {/* <p
-                                                            // id='project-description'
-                                                            // name='project-description'
-                                                            // rows={3}
-                                                            // className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                                                            // defaultValue=''
-                                                            className='text-sm text-gray-500'
-                                                        >
-                                                            - Low - Medium -
-                                                            High
-                                                        </p> */}
-                                                        <div className='form-control'>
-                                                            <label className='label cursor-pointer'>
-                                                                <span className='label-text text-sm text-gray-500'>
-                                                                    High
-                                                                </span>
-                                                                <input
-                                                                    type='radio'
-                                                                    name='radio-10'
-                                                                    className='radio radio-sm checked:bg-dangerLight hover:bg-dangerLight'
-                                                                    checked
-                                                                />
-                                                            </label>
-                                                        </div>
-                                                        <div className='form-control'>
-                                                            <label className='label cursor-pointer'>
-                                                                <span className='label-text text-sm text-gray-500'>
-                                                                    Medium
-                                                                </span>
-                                                                <input
-                                                                    type='radio'
-                                                                    name='radio-10'
-                                                                    className='radio radio-sm checked:bg-warningLight hover:bg-warningLight'
-                                                                    checked
-                                                                />
-                                                            </label>
-                                                        </div>
-                                                        <div className='form-control'>
-                                                            <label className='label cursor-pointer'>
-                                                                <span className='label-text text-sm text-gray-500'>
-                                                                    Low
-                                                                </span>
-                                                                <input
-                                                                    type='radio'
-                                                                    name='radio-10'
-                                                                    className='radio radio-sm checked:bg-successLight hover:bg-successLight text-sm'
-                                                                    checked
-                                                                />
-                                                            </label>
-                                                        </div>
-                                                        {/* Team members */}
-                                                        {/* <div className='space-y-2 px-4 sm:grid sm:grid-cols-3 sm:items-center sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'> */}
-                                                        <div>
-                                                            <h3 className='text-sm font-medium leading-6 text-gray-900'>
-                                                                Team Members
-                                                            </h3>
-                                                        </div>
-                                                        <div className='sm:col-span-2'>
-                                                            <div className='flex space-x-2'>
-                                                                {team.map(
+                                                    <div className='sm:col-span-2 text-sm font-medium leading-6 text-gray-900 '>
+                                                        <div className='flex space-x-2'>
+                                                            {assignedUserIds &&
+                                                                assignedUserIds.map(
                                                                     (
                                                                         person
                                                                     ) => (
@@ -598,22 +462,196 @@ const WorkspaceSlideOver = ({
                                                                     )
                                                                 )}
 
-                                                                <button
-                                                                    type='button'
-                                                                    className='relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-                                                                >
-                                                                    <span className='absolute -inset-2' />
-                                                                    <span className='sr-only'>
-                                                                        Add team
-                                                                        member
-                                                                    </span>
-                                                                    {/* <PlusIcon className="h-5 w-5" aria-hidden="true" /> */}
-                                                                </button>
-                                                            </div>
+                                                            <button
+                                                                type='button'
+                                                                className='relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-infoLight focus:ring-offset-2'
+                                                            >
+                                                                <span className='absolute -inset-2' />
+                                                                <span className='sr-only'>
+                                                                    Add team
+                                                                    member
+                                                                </span>
+                                                                <BsPlus
+                                                                    className='h-5 w-5'
+                                                                    aria-hidden='true'
+                                                                />
+                                                            </button>
                                                         </div>
-                                                        {/* </div> */}
                                                     </div>
                                                 </div>
+
+                                                {/* Project description */}
+                                                <div className='space-y-2 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                    <div>
+                                                        <label
+                                                            htmlFor='project-description'
+                                                            className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
+                                                        >
+                                                            Description
+                                                        </label>
+                                                    </div>
+                                                    <div className='sm:col-span-3'>
+                                                        <p
+                                                            // id='project-description'
+                                                            // name='project-description'
+                                                            // rows={3}
+                                                            // className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
+                                                            // defaultValue={''}
+                                                            className='text-sm text-gray-500'
+                                                        >
+                                                            {taskDetail}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                {/* Comments */}
+                                                <div className='space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                    <div>
+                                                        <label
+                                                            htmlFor='project-comments'
+                                                            className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
+                                                        >
+                                                            Comments{' '}
+                                                            {taskComments.length >
+                                                            0
+                                                                ? taskComments
+                                                                : '0'}
+                                                        </label>
+                                                    </div>
+                                                    <p className='text-sm italic text-gray-500 space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                        {taskComments.length > 0
+                                                            ? taskComments
+                                                            : // {taskComment.map((comment) => (
+                                                              //     <Comment
+                                                              //         comment = {taskComments}
+                                                              //     />
+                                                              //   ))}
+                                                              'No comments yet'}
+                                                    </p>
+                                                    <textarea
+                                                        id='project-description'
+                                                        name='project-description'
+                                                        rows={3}
+                                                        className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
+                                                        defaultValue='Write your comment here'
+                                                    />
+                                                </div>
+
+                                                {/* Tags */}
+                                                <fieldset className='space-y-2 px-4 sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                    <legend className='sr-only'>
+                                                        Tags
+                                                    </legend>
+                                                    <div
+                                                        className='text-sm font-medium leading-6 text-gray-900'
+                                                        aria-hidden='true'
+                                                    >
+                                                        Tags
+                                                    </div>
+                                                    <div className='space-y-5 sm:col-span-2'>
+                                                        <div className='space-y-5 sm:mt-0 '>
+                                                            <div className='relative items-start sm:col-span-3'>
+                                                                <div className='absolute flex h-6 items-center'>
+                                                                    <input
+                                                                        id='public-access'
+                                                                        name='privacy'
+                                                                        aria-describedby='public-access-description'
+                                                                        type='radio'
+                                                                        className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
+                                                                        defaultChecked
+                                                                    />
+                                                                </div>
+                                                                <div className='pl-7 text-sm leading-6'>
+                                                                    <label
+                                                                        htmlFor='public-access'
+                                                                        className='font-medium text-gray-900'
+                                                                    >
+                                                                        <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-red-200 text-xs font-semibold text-red-600 uppercase'>
+                                                                            High
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className='relative flex items-start'>
+                                                                <div className='absolute flex h-6 items-center'>
+                                                                    <input
+                                                                        id='restricted-access'
+                                                                        name='privacy'
+                                                                        aria-describedby='restricted-access-description'
+                                                                        type='radio'
+                                                                        className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
+                                                                    />
+                                                                </div>
+                                                                <div className='pl-7 text-sm leading-6'>
+                                                                    <label
+                                                                        htmlFor='restricted-access'
+                                                                        className='font-medium text-gray-900'
+                                                                    >
+                                                                        <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-yellow-200 text-xs font-semibold text-yellow-600 uppercase'>
+                                                                            Medium
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className='relative flex items-start'>
+                                                                <div className='absolute flex h-6 items-center'>
+                                                                    <input
+                                                                        id='private-access'
+                                                                        name='privacy'
+                                                                        aria-describedby='private-access-description'
+                                                                        type='radio'
+                                                                        className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
+                                                                    />
+                                                                </div>
+                                                                <div className='pl-7 text-sm leading-6'>
+                                                                    <label
+                                                                        htmlFor='private-access'
+                                                                        className='font-medium text-gray-900'
+                                                                    >
+                                                                        <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase'>
+                                                                            Low
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr className='border-gray-200' />
+                                                        <div className='flex flex-col items-start space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0'>
+                                                            <div>
+                                                                <a
+                                                                    href='#'
+                                                                    className='group flex items-center space-x-2.5 text-sm font-medium text-tertiaryLight hover:text-secondaryLight'
+                                                                >
+                                                                    <BsLink45Deg
+                                                                        className='h-5 w-5 text-infoLight group-hover:text-secondaryLight'
+                                                                        aria-hidden='true'
+                                                                    />
+                                                                    <span>
+                                                                        Copy
+                                                                        link
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                            <div>
+                                                                <a
+                                                                    href='#'
+                                                                    className='group flex items-center space-x-2.5 text-sm text-gray-500 hover:text-gray-900'
+                                                                >
+                                                                    <BsFillQuestionCircleFill
+                                                                        className='h-5 w-5 text-gray-400 group-hover:text-gray-500'
+                                                                        aria-hidden='true'
+                                                                    />
+                                                                    <span>
+                                                                        Learn
+                                                                        more
+                                                                        about
+                                                                        sharing
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                
                                             </div>
                                         </div>
 
@@ -633,9 +671,9 @@ const WorkspaceSlideOver = ({
                                                 </button>
                                                 <button
                                                     type='submit'
-                                                    className='inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                                                    className='inline-flex justify-center rounded-md bg-tertiaryLight px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-infoLight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tertiaryLight'
                                                 >
-                                                    Create
+                                                    Update
                                                 </button>
                                             </div>
                                         </div>
