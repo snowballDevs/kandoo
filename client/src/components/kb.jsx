@@ -56,7 +56,8 @@ const KB = ({boardInfo}) => {
         touchSensor,
         keyboardSensor,
         pointerSensor
-    );
+    )
+
 
     function getTaskIds(containderId) {
         // need to get the tasksID within Each Column

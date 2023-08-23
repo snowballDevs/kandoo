@@ -1,7 +1,12 @@
-import {useSortable} from '@dnd-kit/sortable';
+import {
+    useSortable,
+    SortableContext,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import ColumnLane from './ColumnLane';
 import {Children} from 'react';
+import SortableTask from './SortableTask';
 
 const SortableColumn = ({column, id, items, children}) => {
     const {
@@ -22,13 +27,22 @@ const SortableColumn = ({column, id, items, children}) => {
         transition,
         transform: CSS.Transform.toString(transform),
     };
-    
+
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            <ColumnLane column={column} items={items}>
-                {children}
-            </ColumnLane>
-        </div>
+        <SortableContext
+            id={id}
+            items={items}
+            strategy={verticalListSortingStrategy}
+        >
+            <div
+                ref={setNodeRef}
+                className='flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'
+            >
+                {items.map((item) => (
+                    <SortableTask task={item} id={item._id} />
+                ))}
+            </div>
+        </SortableContext>
     );
 };
 

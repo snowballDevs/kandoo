@@ -3,7 +3,7 @@ const colums = [
         title: 'Backlog',
         tasks: [
             {
-                taskName: 'Add your tasks here!',
+                taskName: 'Task 1!',
                 assignedUserIds: [],
                 priority: 1,
                 tags: [],
@@ -13,7 +13,7 @@ const colums = [
                 comments: [],
             },
             {
-                taskName: 'Backlog Task 8-12',
+                taskName: 'Task 2',
                 assignedUserIds: [],
                 priority: 2,
                 tags: [],
@@ -23,7 +23,7 @@ const colums = [
                 comments: [],
             },
             {
-                taskName: 'Backlog Task 8-12',
+                taskName: 'Task 3',
                 assignedUserIds: [],
                 priority: 2,
                 tags: [],
@@ -33,7 +33,7 @@ const colums = [
                 comments: [],
             },
             {
-                taskName: 'Backlog Task 8-12',
+                taskName: 'Task 4',
                 assignedUserIds: [],
                 priority: 2,
                 tags: [],
