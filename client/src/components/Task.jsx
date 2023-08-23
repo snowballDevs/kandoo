@@ -2,7 +2,7 @@ import {useContext} from 'react';
 import WorkspaceSlideOver from '../features/WorkspaceSlideOver';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 
-const Task = ({taskName, key, taskComments, columnName, user, usersAssigned, description}) => {
+const Task = ({key, taskName, taskDetail, taskComments, tags, assignedUserIds, columnName}) => {
     const {
         handleModal,
         isModalOpen,
@@ -16,13 +16,13 @@ const Task = ({taskName, key, taskComments, columnName, user, usersAssigned, des
     return (
         <div>
                     <WorkspaceSlideOver 
-                        taskName = {taskName} 
                         key={key}
+                        taskName = {taskName} 
+                        taskDetail={taskDetail}
                         taskComments={taskComments}
-                        columnName={columnName}
-                        createdBy={user}
-                        usersAssigned={usersAssigned}
-                        description={description}/>
+                        tags={tags}
+                        assignedUserIds={assignedUserIds}
+                        columnName={columnName}/>
         <div
             className=' p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl  cursor-grab relative task'
             onClick={() => handleSlideOver()}
