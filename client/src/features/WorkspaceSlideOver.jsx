@@ -327,9 +327,26 @@ const WorkspaceSlideOver = ({
     tags,
     assignedUserIds,
     columnName,
-    createdAt
+    createdAt,
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
+    const [editingMode, setEditingMode] = useState(false);
+    const [editedTaskName, setEditedTaskName] = useState(taskName);
+    const [editedTaskDetail, setEditedTaskDetail] = useState(taskDetail);
+    const [editedTags, setEditedTags] = useState(tags);
+
+    const toggleEditingMode = () => {
+        setEditingMode(!editingMode);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Perform update logic using edited values
+        // ...
+
+        // After updating, exit editing mode
+        setEditingMode(false);
+    };
 
     return (
         <Transition.Root show={isSlideOverOpen} as={Fragment}>
@@ -372,26 +389,51 @@ const WorkspaceSlideOver = ({
                                                 <div className='space-y-2 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
                                                     <div className='space-y-1'>
                                                         <Dialog.Title className='text-2xl font-semibold leading-6 text-gray-900'>
-                                                            {taskName} {tags}
+                                                            {editingMode ? (
+                                                                <input
+                                                                    type='text'
+                                                                    value={
+                                                                        editedTaskName
+                                                                    }
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setEditedTaskName(
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                    
+                                                                    rows={1}
+                                                                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
+                                                                    defaultValue={taskName}
+                                                                />
+                                                            ) : (
+                                                                taskName
+                                                            )}{' '}
+                                                            {tags}
                                                         </Dialog.Title>
                                                         <p className='text-sm text-gray-500 flex'>
                                                             in list&nbsp;
                                                             <div className='text-tertiaryLight'>
                                                                 {columnName}
                                                             </div>
-                                                            
                                                         </p>
                                                         <p className='text-sm text-gray-500 flex'>
-                                                        Created: {formatDate(createdAt)}
-                                                            
+                                                            Created:{' '}
+                                                            {formatDate(
+                                                                createdAt
+                                                            )}
                                                         </p>
                                                     </div>
                                                     <div className='flex h-7 gap-2 items-center'>
                                                         <button
                                                             type='button'
                                                             className='relative text-gray-400 hover:text-gray-500'
-                                                            
-                                                            onClick={useEditingMode}
+                                                            onClick={
+                                                                toggleEditingMode
+                                                            }
                                                         >
                                                             <span className='absolute -inset-2.5' />
                                                             <span className='sr-only'>
@@ -491,16 +533,28 @@ const WorkspaceSlideOver = ({
                                                         </label>
                                                     </div>
                                                     <div className='sm:col-span-3'>
-                                                        <p
-                                                            // id='project-description'
-                                                            // name='project-description'
-                                                            // rows={3}
-                                                            // className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
-                                                            // defaultValue={''}
-                                                            className='text-sm text-gray-500'
-                                                        >
-                                                            {taskDetail}
-                                                        </p>
+                                                        {editingMode ? (
+                                                            <textarea
+                                                                id='project-description'
+                                                                name='project-description'
+                                                                rows={3}
+                                                                value={
+                                                                    editedTaskDetail
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setEditedTaskDetail(
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
+                                                                defaultValue={taskName}
+                                                            />
+                                                        ) : (
+                                                            <p className='text-sm text-gray-500'>
+                                                                {taskDetail}
+                                                            </p>
+                                                        )}
                                                     </div>
                                                 </div>
                                                 {/* Comments */}
@@ -651,7 +705,6 @@ const WorkspaceSlideOver = ({
                                                         </div>
                                                     </div>
                                                 </fieldset>
-                                                
                                             </div>
                                         </div>
 
@@ -661,17 +714,24 @@ const WorkspaceSlideOver = ({
                                                 <button
                                                     type='button'
                                                     className='rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
-                                                    onClick={() =>
-                                                        setIsSlideOverOpen(
-                                                            false
-                                                        )
-                                                    }
+                                                    onClick={() => {
+                                                        setEditingMode(false);
+                                                        // Reset edited values if needed
+                                                        setEditedTaskName(
+                                                            taskName
+                                                        );
+                                                        setEditedTaskDetail(
+                                                            taskDetail
+                                                        );
+                                                        // ... reset other edited values ...
+                                                    }}
                                                 >
                                                     Cancel
                                                 </button>
                                                 <button
                                                     type='submit'
                                                     className='inline-flex justify-center rounded-md bg-tertiaryLight px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-infoLight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tertiaryLight'
+                                                    onClick={handleSubmit}
                                                 >
                                                     Update
                                                 </button>
