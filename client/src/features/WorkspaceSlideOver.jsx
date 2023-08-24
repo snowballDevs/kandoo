@@ -281,7 +281,7 @@ import Column from '../components/dndcolumn';
 import Task from '../components/Task';
 
 const WorkspaceSlideOver = ({
-    // key,
+    taskId,
     taskName,
     taskDetail,
     taskComments,
@@ -289,24 +289,58 @@ const WorkspaceSlideOver = ({
     assignedUserIds,
     columnName,
     createdAt,
+    boardId, 
+    columnId
 }) => {
+    
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
     const [editingMode, setEditingMode] = useState(false);
     const [editedTaskName, setEditedTaskName] = useState(taskName);
     const [editedTaskDetail, setEditedTaskDetail] = useState(taskDetail);
-    // const [editedTags, setEditedTags] = useState(tags);
+    const [editedTags, setEditedTags] = useState(tags);
+    const [isDirty, setIsDirty] = useState(false); 
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Perform update logic using edited values
-        // ...
+    const handleChange = (field, value) => {
+        setIsDirty(true); // Mark changes
+        switch (field) {
+            case 'taskName':
+                setEditedTaskName(value);
+                break;
+            case 'taskDetail':
+                setEditedTaskDetail(value);
+                break;
+            case 'tags':
+                setEditedTags(value);
+                break;
+            default:
+                break;
+        }
+    };
 
-        // After updating, exit editing mode
-        setEditingMode(false);
+    const handleTaskSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const updatedData = {
+                taskName: editedTaskName,
+                taskDetail: editedTaskDetail,
+                tags: editedTags
+            };
+            const response = await dataService.updateTask(boardId, columnId, taskId, updatedData);
+
+            setEditedTaskName(response.data.taskName);
+            setEditedTaskDetail(response.data.taskDetail);
+            setEditedTags(response.data.tags);
+            console.log('Beep boop your task has been updated!')
+
+            setIsDirty(false); // Reset changes after update
+            toggleEditingMode();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -341,7 +375,9 @@ const WorkspaceSlideOver = ({
                                 leaveTo='translate-x-full'
                             >
                                 <Dialog.Panel className='pointer-events-auto w-screen max-w-2xl'>
-                                    <form className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'>
+                                    <form 
+                                        className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'
+                                        onSubmit={handleTaskSubmit}>
                                         <div className='flex-1'>
                                             {/* Divider Container */}
                                             {/* <div className='bg-gray-50 px-4 py-6 sm:px-6'> */}
@@ -353,27 +389,27 @@ const WorkspaceSlideOver = ({
                                                             {editingMode ? (
                                                                 <input
                                                                     type='text'
+                                                                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
                                                                     value={
                                                                         editedTaskName
                                                                     }
                                                                     onChange={(
                                                                         e
                                                                     ) =>
-                                                                        setEditedTaskName(
+                                                                        handleChange(
+                                                                            'taskName',
                                                                             e
                                                                                 .target
                                                                                 .value
                                                                         )
                                                                     }
-                                                                    
-                                                                    rows={1}
-                                                                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
-                                                                    defaultValue={taskName}
                                                                 />
                                                             ) : (
-                                                                taskName
-                                                            )}{' '}
-                                                            {tags}
+                                                                <h2 className='text-2xl font-semibold leading-6 text-gray-900'>
+                                                                    {editedTaskName}
+                                                                    {tags}
+                                                                </h2>
+                                                            )}
                                                         </Dialog.Title>
                                                         <p className='text-sm text-gray-500 flex'>
                                                             in list&nbsp;
@@ -495,21 +531,27 @@ const WorkspaceSlideOver = ({
                                                     </div>
                                                     <div className='sm:col-span-3'>
                                                         {editingMode ? (
-                                                            <textarea
-                                                                id='project-description'
-                                                                name='project-description'
+                                                            <input
+                                                                type='text'
                                                                 rows={3}
                                                                 value={
                                                                     editedTaskDetail
                                                                 }
-                                                                onChange={(e) =>
-                                                                    setEditedTaskDetail(
-                                                                        e.target
-                                                                            .value
-                                                                    )
-                                                                }
+                                                                onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        handleChange(
+                                                                            'taskDetail',
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+
                                                                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
-                                                                defaultValue={taskName}
+                                                                defaultValue={
+                                                                    editedTaskDetail
+                                                                }
                                                             />
                                                         ) : (
                                                             <p className='text-sm text-gray-500'>
@@ -630,7 +672,7 @@ const WorkspaceSlideOver = ({
                                                             </div>
                                                         </div>
 
-                                                            {/* Saving for Post MVP */}
+                                                        {/* Saving for Post MVP */}
 
                                                         {/* <hr className='border-gray-200' /> 
                                                         <div className='flex flex-col items-start space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0'>
@@ -673,34 +715,41 @@ const WorkspaceSlideOver = ({
                                         </div>
 
                                         {/* Action buttons */}
-                                        <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
-                                            <div className='flex justify-end space-x-3'>
-                                                <button
-                                                    type='button'
-                                                    className='rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
-                                                    onClick={() => {
-                                                        setEditingMode(false);
-                                                        // Reset edited values if needed
-                                                        setEditedTaskName(
-                                                            taskName
-                                                        );
-                                                        setEditedTaskDetail(
-                                                            taskDetail
-                                                        );
-                                                        // ... reset other edited values ...
-                                                    }}
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button
-                                                    type='submit'
-                                                    className='inline-flex justify-center rounded-md bg-tertiaryLight px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-infoLight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tertiaryLight'
-                                                    onClick={handleSubmit}
-                                                >
-                                                    Update
-                                                </button>
+                                        {isDirty && (
+                                            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+                                                <div className='flex justify-end space-x-3'>
+                                                    <button
+                                                        type='button'
+                                                        className='rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+                                                        onClick={() => {
+                                                            setIsDirty(false); // Reset changes
+                                                            setEditingMode(
+                                                                false
+                                                            );
+                                                            // Reset edited values if needed
+                                                            setEditedTaskName(
+                                                                taskName
+                                                            );
+                                                            setEditedTaskDetail(
+                                                                taskDetail
+                                                            );
+                                                            setEditedTags(tags);
+                                                        }}
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                    <button
+                                                        type='button'
+                                                        className='inline-flex justify-center rounded-md bg-tertiaryLight px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-infoLight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tertiaryLight'
+                                                        onClick={
+                                                            handleTaskSubmit
+                                                        }
+                                                    >
+                                                        Update
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
                                     </form>
                                 </Dialog.Panel>
                             </Transition.Child>
