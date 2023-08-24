@@ -1,61 +1,19 @@
 import {Fragment, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
-import {ToastContainer, toast} from 'react-toastify';
-import dataService from '../services/dataService';
-import formatDate from '../utils/formatDate';
-import {useModalContext} from '../contexts/ModalContext/ModalContext';
+// import {ToastContainer, toast} from 'react-toastify';
 import {
     BsPlus,
-    BsLink45Deg,
-    BsFillQuestionCircleFill,
     BsXLg,
 } from 'react-icons/bs';
-import useEditingMode from '../hooks/useEditingMode';
-import TextAreaEditor from '../components/textAreaEditor';
-
+// import dataService from '../services/dataService';
 import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
-import Column from '../components/dndcolumn';
-import Task from '../components/Task';
+import formatDate from '../utils/formatDate';
+import {useModalContext} from '../contexts/ModalContext/ModalContext';
+// import useEditingMode from '../hooks/useEditingMode';
+// import TextAreaEditor from '../components/textAreaEditor';
 
-const team = [
-    {
-        name: 'Tom Cook',
-        email: 'tom.cook@example.com',
-        href: '#',
-        imageUrl:
-            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    {
-        name: 'Whitney Francis',
-        email: 'whitney.francis@example.com',
-        href: '#',
-        imageUrl:
-            'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    {
-        name: 'Leonard Krasner',
-        email: 'leonard.krasner@example.com',
-        href: '#',
-        imageUrl:
-            'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    {
-        name: 'Floyd Miles',
-        email: 'floyd.miles@example.com',
-        href: '#',
-        imageUrl:
-            'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    {
-        name: 'Emily Selman',
-        email: 'emily.selman@example.com',
-        href: '#',
-        imageUrl:
-            'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-];
 const WorkspaceSlideOver = ({
-    key,
+    // key,
     taskName,
     taskDetail,
     taskComments,
@@ -68,7 +26,7 @@ const WorkspaceSlideOver = ({
     const [editingMode, setEditingMode] = useState(false);
     const [editedTaskName, setEditedTaskName] = useState(taskName);
     const [editedTaskDetail, setEditedTaskDetail] = useState(taskDetail);
-    const [editedTags, setEditedTags] = useState(tags);
+    // const [editedTags, setEditedTags] = useState(tags);
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
@@ -385,7 +343,7 @@ const WorkspaceSlideOver = ({
                                                                         htmlFor='private-access'
                                                                         className='font-medium text-gray-900'
                                                                     >
-                                                                        <span class='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase'>
+                                                                        <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase'>
                                                                             Low
                                                                         </span>
                                                                     </label>
