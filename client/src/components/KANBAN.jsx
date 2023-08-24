@@ -24,11 +24,15 @@ import {
 import ColumnLane from './ColumnLane';
 import colums from './data';
 import SortableTask from './SortableTask';
+import SortableColumn from './SortableColumn';
 
 const KANBAN = ({boardInfo}) => {
     const {columns} = boardInfo;
 
     const [items, setItems] = useState(columns);
+    const [containers, setContainers] = useState(Object.keys(items));
+    console.log(containers);
+
     const [activeId, setActiveId] = useState(null);
     const recentlyMovedToNewContainer = useRef(false);
 
@@ -58,14 +62,27 @@ const KANBAN = ({boardInfo}) => {
         // });
     };
 
-    function handleDragStart(event) {
-        const {active} = event;
-        const {id} = active;
+    // <div>{column}</div>
+    //  return (
+    //     <ColumnLane
+    //         key={column._id}
+    //         id={`${i}`}
+    //         items={getIds(column)}
+    //         column={column}
+    //     />
+    // );
 
-        setActiveId(id);
+    function handleDragStart({active}) {
+        setActiveId(active.id);
     }
 
     function handleDragOver({active, over}) {
+        const overId = over?.id;
+
+        if (overId == null || active.id in items) {
+            return;
+        }
+
         // Find the containers
         const activeContainer = findContainer(active.id);
         const overContainer = findContainer(over.id);
@@ -181,8 +198,16 @@ const KANBAN = ({boardInfo}) => {
     }
 
     function handleDragEnd({active, over}) {
+        if (active.id in items && over?.id) {
+            setContainers((containers) => {
+                const activeIndex = containers.indexOf(active.id);
+                const overIndex = containers.indexOf(over.id);
+                return arrayMove(containers, activeIndex, overIndex);
+            });
+        }
+
         const activeContainer = findContainer(active.id);
-        const overContainer = findContainer(over.id);
+
         // console.log('handleDragStart - Set Active Id to: ', activeId);
 
         if (!activeContainer) {
@@ -197,6 +222,7 @@ const KANBAN = ({boardInfo}) => {
             return;
         }
 
+        const overContainer = findContainer(over.id);
         // const activeIndex = items[activeContainer].indexOf(active.id);
         // const overIndex = items[overContainer].indexOf(overId);
 
@@ -225,7 +251,7 @@ const KANBAN = ({boardInfo}) => {
     }
 
     function getIds(column) {
-        return column.tasks.map((task) => task._id);
+        return items[column].tasks.map((task) => task._id);
     }
 
     return (
@@ -251,20 +277,42 @@ const KANBAN = ({boardInfo}) => {
             >
                 {/* todo: check later for index */}
 
-                {items.map((column, i) => {
-                    // <div>{column}</div>
-                    return (
-                        <ColumnLane
-                            key={column._id}
-                            id={`${i}`}
-                            items={getIds(column)}
-                            column={column}
-                        />
-                    );
-                })}
+                <SortableContext items={containers}>
+                    {containers.map((containderId) => {
+                        return (
+                            <SortableColumn
+                                column={items[containderId]}
+                                key={containderId}
+                                id={containderId}
+                                items={getIds(containderId)}
+                            >
+                                <SortableContext items={getIds(containderId)}>
+                                    {getIds(containderId).map((task, index) => {
+                                        console.log(getIds(containderId));
+                                        console.log(task);
+                                        return (
+                                            <SortableTask
+                                                id={task}
+                                                task={
+                                                    items[containderId].tasks[
+                                                        index
+                                                    ]
+                                                }
+                                            />
+                                        );
+                                    })}
+                                </SortableContext>
+                            </SortableColumn>
+                        );
+                    })}
+                </SortableContext>
 
                 <DragOverlay>
-                    {activeId ? renderSortableItemDragOverlay(activeId) : null}
+                    {activeId
+                        ? containers.includes(activeId)
+                            ? renderContainerDragOverlay(activeId)
+                            : renderSortableItemDragOverlay(activeId)
+                        : null}
                 </DragOverlay>
             </DndContext>
         </div>
@@ -280,6 +328,24 @@ const KANBAN = ({boardInfo}) => {
         const task = items[containerId].tasks[activeIndex];
 
         return <SortableTask task={task} dragOverlay />;
+    }
+
+    function renderContainerDragOverlay(containerId) {
+        console.log(containerId);
+        return (
+            <ColumnLane
+                column={items[containerId]}
+                items={getIds(containerId)}
+                dragOverlay
+            >
+                {getIds(containerId).map((task, index) => (
+                    <SortableTask
+                        id={task}
+                        task={items[containerId].tasks[index]}
+                    />
+                ))}
+            </ColumnLane>
+        );
     }
 };
 
