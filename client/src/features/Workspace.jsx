@@ -16,7 +16,7 @@ const Workspace = () => {
         <div>
             <Header />
             <WorkspaceHeader boardInfo={boardInfo} />
-            <KANBAN />
+            <KANBAN boardInfo={boardInfo} />
         </div>
     );
 };
