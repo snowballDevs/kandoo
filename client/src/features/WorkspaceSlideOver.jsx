@@ -668,7 +668,10 @@ const WorkspaceSlideOver = ({
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <hr className='border-gray-200' />
+
+                                                            {/* Saving for Post MVP */}
+
+                                                        {/* <hr className='border-gray-200' /> 
                                                         <div className='flex flex-col items-start space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0'>
                                                             <div>
                                                                 <a
@@ -702,7 +705,7 @@ const WorkspaceSlideOver = ({
                                                                     </span>
                                                                 </a>
                                                             </div>
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                 </fieldset>
                                             </div>
