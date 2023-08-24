@@ -25,6 +25,7 @@ import ColumnLane from './ColumnLane';
 import colums from './data';
 import SortableTask from './SortableTask';
 import SortableColumn from './SortableColumn';
+import TaskCard from './TaskCard';
 
 const KANBAN = ({boardInfo}) => {
     const {columns} = boardInfo;
@@ -327,7 +328,7 @@ const KANBAN = ({boardInfo}) => {
         );
         const task = items[containerId].tasks[activeIndex];
 
-        return <SortableTask task={task} dragOverlay />;
+        return <TaskCard task={task} dragOverlay />;
     }
 
     function renderContainerDragOverlay(containerId) {
