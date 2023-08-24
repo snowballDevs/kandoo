@@ -16,64 +16,107 @@ const WorkspaceSlideOver = ({
     assignedUserIds,
     columnName,
     createdAt,
-    boardId, 
-    columnId
+    boardId,
+    columnId,
 }) => {
-    
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
     const [editingMode, setEditingMode] = useState(false);
-    const [editedTaskName, setEditedTaskName] = useState(taskName);
-    const [editedTaskDetail, setEditedTaskDetail] = useState(taskDetail);
-    const [editedTags, setEditedTags] = useState(tags);
-    const [isDirty, setIsDirty] = useState(false); 
+    // const [editedTaskName, setEditedTaskName] = useState(taskName);
+    // const [editedTaskDetail, setEditedTaskDetail] = useState(taskDetail);
+    // const [editedTags, setEditedTags] = useState(tags);
+
+    const [formData, setFormData] = useState(
+        {
+            taskName: taskName, 
+            taskDetail: taskDetail, 
+            tags: tags, 
+        }
+    )
+    console.log(formData.taskName)
+
+    // const [isDirty, setIsDirty] = useState(false);
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
     };
 
-    const handleChange = (field, value) => {
-        setIsDirty(true); // Mark changes
-        switch (field) {
-            case 'taskName':
-                setEditedTaskName(value);
-                break;
-            case 'taskDetail':
-                setEditedTaskDetail(value);
-                break;
-            case 'tags':
-                setEditedTags(value);
-                break;
-            default:
-                break;
-        }
-    };
+    // const handleChange = (field, value) => {
+    //     setIsDirty(true); // Mark changes
+    //     switch (field) {
+    //         case 'taskName':
+    //             setEditedTaskName(value);
+    //             break;
+    //         case 'taskDetail':
+    //             setEditedTaskDetail(value);
+    //             break;
+    //         case 'tags':
+    //             setEditedTags(value);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // };
 
-    const handleTaskSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            const updatedData = {
-                taskName: editedTaskName,
-                taskDetail: editedTaskDetail,
-                tags: editedTags
-            };
-            const response = await dataService.updateTask(boardId, columnId, taskId, updatedData);
+    // const handleTaskSubmit = async (event) => {
+    //     event.preventDefault();
+    //     try {
+    //         const updatedData = {
+    //             taskName: editedTaskName,
+    //             taskDetail: editedTaskDetail,
+    //             tags: editedTags,
+    //         };
+    //         const response = await dataService.updateTask(
+    //             boardId,
+    //             columnId,
+    //             taskId,
+    //             updatedData
+    //         );
+    //         if (response){
+    //             setEditedTaskName(response.data.taskName);
+    //             setEditedTaskDetail(response.data.taskDetail);
+    //             setEditedTags(response.data.tags);
+    //             console.log('Beep boop your task has been updated!');
+    //         }
 
-            setEditedTaskName(response.data.taskName);
-            setEditedTaskDetail(response.data.taskDetail);
-            setEditedTags(response.data.tags);
-            console.log('Beep boop your task has been updated!')
+    //         setIsDirty(false); // Reset changes after update
+    //         toggleEditingMode();
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
 
-            setIsDirty(false); // Reset changes after update
-            toggleEditingMode();
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    async function handleTaskSubmit(event) {
+            event.preventDefault()
+            try {
+              const response = await dataService.updateTask(
+                            boardId,
+                            columnId,
+                            taskId,
+                            formData
+                        );
+              console.log(response)
+            //   setIsDirty(false);
+              toggleEditingMode()
+      
+            } catch (error) {
+              console.error(error)
+            }
+          }
+
+    function handleChange(event) {
+        // setIsDirty(true);
+        console.log(event)
+        const {name, value, type, checked} = event.target
+        setFormData(prevFormData => ({
+                ...prevFormData,
+                [name]: type === "checkbox" ? checked : value
+            }))
+    }
+
 
     return (
         <Transition.Root show={isSlideOverOpen} as={Fragment}>
             <Dialog
-                Dialog
                 as='div'
                 className='relative z-10'
                 onClose={() => setIsSlideOverOpen(false)}
@@ -93,9 +136,10 @@ const WorkspaceSlideOver = ({
                                 leaveTo='translate-x-full'
                             >
                                 <Dialog.Panel className='pointer-events-auto w-screen max-w-2xl'>
-                                    <form 
+                                    <form
                                         className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'
-                                        onSubmit={handleTaskSubmit}>
+                                        onSubmit={handleTaskSubmit}
+                                    >
                                         <div className='flex-1'>
                                             {/* Header */}
                                             <div className='bg-gray-50 px-4 py-6 sm:px-6'>
@@ -106,39 +150,36 @@ const WorkspaceSlideOver = ({
                                                                 <input
                                                                     type='text'
                                                                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
+                                                                    name="taskName"
                                                                     value={
-                                                                        editedTaskName
+                                                                        formData.taskName
                                                                     }
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleChange(
-                                                                            'taskName',
-                                                                            e
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
+                                                                    onChange={handleChange}
                                                                 />
                                                             ) : (
-                                                                <h2 className='text-2xl font-semibold leading-6 text-gray-900'>
-                                                                    {editedTaskName}
+                                                                <div className='text-2xl font-semibold leading-6 text-gray-900'>
+                                                                    {
+                                                                        formData.taskName
+                                                                    }
                                                                     {tags}
-                                                                </h2>
+                                                                </div>
                                                             )}
                                                         </Dialog.Title>
-                                                        <p className='text-sm text-gray-500 flex'>
-                                                            in list&nbsp;
-                                                            <div className='text-tertiaryLight'>
+                                                        <div className='flex'>
+                                                            <p className='text-sm text-gray-500'>
+                                                                in list&nbsp;
+                                                            </p>
+                                                            <p className='text-tertiaryLight'>
                                                                 {columnName}
+                                                            </p>
                                                             </div>
-                                                        </p>
-                                                        <p className='text-sm text-gray-500 flex'>
-                                                            Created:{' '}
-                                                            {formatDate(
-                                                                createdAt
-                                                            )}
-                                                        </p>
+                                                            <p className='text-sm text-gray-500 '>
+                                                                Created:{' '}
+                                                                {formatDate(
+                                                                    createdAt
+                                                                )}
+                                                            </p>
+                                                        
                                                     </div>
                                                     <div className='flex h-7 gap-2 items-center'>
                                                         <button
@@ -247,66 +288,22 @@ const WorkspaceSlideOver = ({
                                                     </div>
                                                     <div className='sm:col-span-3'>
                                                         {editingMode ? (
-                                                            <input
+                                                            <textarea
                                                                 type='text'
                                                                 rows={3}
                                                                 value={
-                                                                    editedTaskDetail
+                                                                    formData.taskDetail
                                                                 }
-                                                                onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleChange(
-                                                                            'taskDetail',
-                                                                            e
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
-
+                                                                name='taskDetail'
+                                                                onChange={handleChange}
                                                                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
-                                                                defaultValue={
-                                                                    editedTaskDetail
-                                                                }
                                                             />
                                                         ) : (
                                                             <p className='text-sm text-gray-500'>
-                                                                {taskDetail}
+                                                                {formData.taskDetail}
                                                             </p>
                                                         )}
                                                     </div>
-                                                </div>
-                                                {/* Comments */}
-                                                <div className='space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
-                                                    <div>
-                                                        <label
-                                                            htmlFor='project-comments'
-                                                            className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
-                                                        >
-                                                            Comments{' '}
-                                                            {taskComments.length >
-                                                            0
-                                                                ? taskComments
-                                                                : '0'}
-                                                        </label>
-                                                    </div>
-                                                    <p className='text-sm italic text-gray-500 space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
-                                                        {taskComments.length > 0
-                                                            ? taskComments
-                                                            : // {taskComment.map((comment) => (
-                                                              //     <Comment
-                                                              //         comment = {taskComments}
-                                                              //     />
-                                                              //   ))}
-                                                              'No comments yet'}
-                                                    </p>
-                                                    <textarea
-                                                        id='project-description'
-                                                        name='project-description'
-                                                        rows={3}
-                                                        className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
-                                                        defaultValue='Write your comment here'
-                                                    />
                                                 </div>
 
                                                 {/* Tags */}
@@ -427,11 +424,43 @@ const WorkspaceSlideOver = ({
                                                         </div> */}
                                                     </div>
                                                 </fieldset>
+                                                {/* Comments */}
+                                                <div className='space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                    <div>
+                                                        <label
+                                                            htmlFor='project-comments'
+                                                            className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
+                                                        >
+                                                            Comments{' '}
+                                                            {taskComments.length >
+                                                            0
+                                                                ? taskComments
+                                                                : '0'}
+                                                        </label>
+                                                    </div>
+                                                    <p className='text-sm italic text-gray-500 space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                        {taskComments.length > 0
+                                                            ? taskComments
+                                                            : // {taskComment.map((comment) => (
+                                                              //     <Comment
+                                                              //         comment = {taskComments}
+                                                              //     />
+                                                              //   ))}
+                                                              'No comments yet'}
+                                                    </p>
+                                                    <textarea
+                                                        id='project-description'
+                                                        name='project-description'
+                                                        rows={3}
+                                                        className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
+                                                        defaultValue='Write your comment here'
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
 
                                         {/* Action buttons */}
-                                        {isDirty && (
+                                        {editingMode && (
                                             <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
                                                 <div className='flex justify-end space-x-3'>
                                                     <button
@@ -442,14 +471,6 @@ const WorkspaceSlideOver = ({
                                                             setEditingMode(
                                                                 false
                                                             );
-                                                            // Reset edited values if needed
-                                                            setEditedTaskName(
-                                                                taskName
-                                                            );
-                                                            setEditedTaskDetail(
-                                                                taskDetail
-                                                            );
-                                                            setEditedTags(tags);
                                                         }}
                                                     >
                                                         Cancel
