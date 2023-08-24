@@ -17,7 +17,7 @@ const SortableColumn = ({column, id, items, children}) => {
         transform,
         transition,
         isDragging,
-    } = useDroppable({
+    } = useSortable({
         id,
         data: {
             type: 'Column',
@@ -31,16 +31,17 @@ const SortableColumn = ({column, id, items, children}) => {
     };
 
     return (
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            <div
-                ref={setNodeRef}
-                className='flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'
-            >
-                {items.map((item) => (
-                    <SortableTask task={item} id={item._id} />
-                ))}
-            </div>
-        </SortableContext>
+        <div
+            ref={setNodeRef}
+            className='flex  flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'
+            {...listeners}
+            {...attributes}
+            style={style}
+        >
+            <ColumnLane column={column} items={items}>
+                {children}
+            </ColumnLane>
+        </div>
     );
 };
 
