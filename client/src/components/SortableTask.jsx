@@ -47,6 +47,7 @@ const SortableTask = ({task, id}) => {
     const style = {
         transition,
         transform: CSS.Transform.toString(transform),
+        opacity: isDragging ? 0.5 : undefined,
     };
 
     return (
