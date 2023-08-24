@@ -27,7 +27,7 @@ import Task from './Task';
 // export default Column;
 
 
-const Column = ({columnName, columnTasks}) => {
+const Column = ({columnName, columnTasks, boardId, columnId}) => {
 
     function createTask(columnName) {
         const newTask = {
@@ -126,12 +126,16 @@ return (
           {columnTasks.map((task) => (
             <Task
                 key={task._id}
+                task={task}
+                columnId={columnId}
+                boardId={boardId}
                 taskName={task.taskName}
                 taskDetail={task.taskDetail}
                 taskComments={task.comments}
                 tags={task.tags}
                 assignedUserIds={task.assignedUserIds}
                 columnName={columnName}
+
                 createdAt={task.created_at}
             />
           ))}

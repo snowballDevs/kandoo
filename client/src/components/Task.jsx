@@ -3,29 +3,28 @@ import WorkspaceSlideOver from '../features/WorkspaceSlideOver';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 
 const Task = ({
-    key,
+    task,
     taskName,
     taskDetail,
     taskComments,
     tags,
     assignedUserIds,
     columnName,
-    createdAt
+    createdAt,
+    boardId, 
+    columnId
 }) => {
     const {
-        handleModal,
-        isModalOpen,
-        handleClose,
-        handleOpen,
-        isSlideOverOpen,
-        setIsSlideOverOpen,
         handleSlideOver,
     } = useContext(ModalContext);
 
     return (
         <div>
             <WorkspaceSlideOver
-                key={key}
+                key={task._id}
+                taskId={task._id}
+                columnId={columnId}
+                boardId={boardId}
                 taskName={taskName}
                 taskDetail={taskDetail}
                 taskComments={taskComments}
@@ -43,7 +42,5 @@ const Task = ({
         </div>
     );
 };
-
-// const {taskTitle, taskPriority, taskDetail, taskComment, deleteTask, updateTask} = task;
 
 export default Task;

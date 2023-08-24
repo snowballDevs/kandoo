@@ -32,6 +32,8 @@ const KanbanBoard = ({boardInfo}) => {
             {columns.map((column) => (
                 <Column
                     key={column._id}
+                    columnId={column._id}
+                    boardId={boardInfo._id}
                     columnName={column.title}
                     columnTasks={column.tasks}
                 />
