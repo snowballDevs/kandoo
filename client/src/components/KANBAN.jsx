@@ -23,54 +23,55 @@ import {
 } from '@dnd-kit/sortable';
 import ColumnLane from './ColumnLane';
 import colums from './data';
-import SortableColumn from './SortableColumn';
 import SortableTask from './SortableTask';
 
-const defaultAnnouncements = {
-    onDragStart(id) {
-        console.log(`Picked up draggable item ${id}.`);
-    },
-    onDragOver(id, overId) {
-        if (overId) {
-            console.log(
-                `Draggable item ${id} was moved over droppable area ${overId}.`
-            );
-            return;
-        }
-
-        console.log(`Draggable item ${id} is no longer over a droppable area.`);
-    },
-    onDragEnd(id, overId) {
-        if (overId) {
-            console.log(
-                `Draggable item ${id} was dropped over droppable area ${overId}`
-            );
-            return;
-        }
-
-        console.log(`Draggable item ${id} was dropped.`);
-    },
-    onDragCancel(id) {
-        console.log(
-            `Dragging was cancelled. Draggable item ${id} was dropped.`
-        );
-    },
-};
-
 const KANBAN = () => {
+    // const defaultAnnouncements = {
+    //     onDragStart(id) {
+    //         console.log(`Picked up draggable item ${id}.`);
+    //     },
+    //     onDragOver(id, overId) {
+    //         if (overId) {
+    //             console.log(
+    //                 `Draggable item ${id} was moved over droppable area ${overId}.`
+    //             );
+    //             return;
+    //         }
+
+    //         console.log(
+    //             `Draggable item ${id} is no longer over a droppable area.`
+    //         );
+    //     },
+    //     onDragEnd(id, overId) {
+    //         if (overId) {
+    //             console.log(
+    //                 `Draggable item ${id} was dropped over droppable area ${overId}`
+    //             );
+    //             return;
+    //         }
+
+    //         console.log(`Draggable item ${id} was dropped.`);
+    //     },
+    //     onDragCancel(id) {
+    //         console.log(
+    //             `Dragging was cancelled. Draggable item ${id} was dropped.`
+    //         );
+    //     },
+    // };
+
     const [items, setItems] = useState(colums);
     const [activeId, setActiveId] = useState(null);
     const recentlyMovedToNewContainer = useRef(false);
 
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        })
-    );
+    const mouseSensor = useSensor(MouseSensor);
+    const touchSensor = useSensor(TouchSensor);
+    const keyboardSensor = useSensor(KeyboardSensor);
+
+    const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
 
     const findContainer = (id) => {
         if (id in items) {
+            console.log('find container', id);
             return id;
         }
 
@@ -100,27 +101,31 @@ const KANBAN = () => {
         const activeContainer = findContainer(active.id);
         const overContainer = findContainer(over.id);
 
-        console.log('old container: ', items[activeContainer]);
+        console.log('Active container', activeContainer);
+        console.log('Over container', overContainer);
+
+        console.log('activecontainer ', items[activeContainer]);
         console.log('over/new container: ', items[overContainer]);
 
-        if (!activeContainer || !overContainer) {
+        if (!overContainer || !activeContainer) {
+            console.log('No active or not over');
             return;
         }
 
         if (activeContainer !== overContainer) {
+            console.log('Active and over not equal');
             setItems((prev) => {
                 const activeItems = prev[activeContainer].tasks;
                 const overItems = prev[overContainer].tasks;
-
+                console.log(prev);
+                console.log(over.id);
                 console.log(activeItems);
                 console.log(overItems);
 
-                const activeIndex = prev[activeContainer].tasks.findIndex(
+                const activeIndex = activeItems.findIndex(
                     (t) => t._id === active.id
                 );
-                const overIndex = prev[overContainer].tasks.findIndex(
-                    (t) => t._id === over.id
-                );
+                const overIndex = overItems.findIndex((t) => t._id === over.id);
 
                 console.log(activeIndex);
 
@@ -128,6 +133,8 @@ const KANBAN = () => {
 
                 let newIndex;
                 if (over.id in prev) {
+                    console.log(over.id);
+                    console.log('Fired true');
                     // We're at the root droppable of a container
                     newIndex = overItems.length + 1;
                 } else {
@@ -224,27 +231,32 @@ const KANBAN = () => {
         // const activeIndex = items[activeContainer].indexOf(active.id);
         // const overIndex = items[overContainer].indexOf(overId);
 
-        const activeIndex = items[activeContainer].tasks.findIndex(
-            (t) => t._id === active.id
-        );
-        const overIndex = items[overContainer].tasks.findIndex(
-            (t) => t._id === overId
-        );
+        if (overContainer) {
+            const activeIndex = items[activeContainer].tasks.findIndex(
+                (t) => t._id === active.id
+            );
+            const overIndex = items[overContainer].tasks.findIndex(
+                (t) => t._id === overId
+            );
 
-        if (activeIndex !== overIndex) {
-            console.log('Hi');
-            setItems((prevItems) => {
-                const updatedItems = [...prevItems]; // Create a shallow copy of the array
-                updatedItems[overContainer].tasks = arrayMove(
-                    updatedItems[overContainer].tasks,
-                    activeIndex,
-                    overIndex
-                );
-                return updatedItems;
-            });
+            if (activeIndex !== overIndex) {
+                console.log('Hi');
+                setItems((prevItems) => {
+                    const updatedItems = [...prevItems]; // Create a shallow copy of the array
+                    updatedItems[overContainer].tasks = arrayMove(
+                        updatedItems[overContainer].tasks,
+                        activeIndex,
+                        overIndex
+                    );
+                    return updatedItems;
+                });
+            }
         }
-
         setActiveId(null);
+    }
+
+    function getIds(column) {
+        return column.tasks.map((task) => task._id);
     }
 
     return (
@@ -262,7 +274,6 @@ const KANBAN = () => {
         '
         >
             <DndContext
-                announcements={defaultAnnouncements}
                 sensors={sensors}
                 collisionDetection={closestCorners}
                 onDragStart={handleDragStart}
@@ -270,21 +281,19 @@ const KANBAN = () => {
                 onDragEnd={handleDragEnd}
             >
                 {/* todo: check later for index */}
-                <div className='m-auto flex gap-4'>
-                    <div className='flex gap-4'>
-                        {items.map((column, i) => {
-                            // <div>{column}</div>
-                            return (
-                                <ColumnLane
-                                    key={column._id}
-                                    id={i}
-                                    items={column.tasks}
-                                    column={column}
-                                />
-                            );
-                        })}
-                    </div>
-                </div>
+
+                {items.map((column, i) => {
+                    // <div>{column}</div>
+                    return (
+                        <ColumnLane
+                            key={column._id}
+                            id={`${i}`}
+                            items={getIds(column)}
+                            column={column}
+                        />
+                    );
+                })}
+
                 <DragOverlay>
                     {activeId ? renderSortableItemDragOverlay(activeId) : null}
                 </DragOverlay>
