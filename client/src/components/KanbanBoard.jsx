@@ -1,42 +1,45 @@
 import Column from './Column';
-import {
-    DndContext,
-    // DragEndEvent,
-    // DragOverEvent,
-    // DragOverlay,
-    // DragStartEvent,
-    // PointerSensor,
-    // useSensor,
-    useSensors,
-  } from "@dnd-kit/core";
-import TaskCard from "./Task"
-import { SortableContext, arrayMove } from "@dnd-kit/sortable";
-import {createPortal} from "react-dom"
 
 const KanbanBoard = ({boardInfo}) => {
-    const {column, tasks} = boardInfo;
     console.log(boardInfo);
-
-    const sensors = useSensors
+    const {columns} = boardInfo;
+    console.log(columns);
+    // const checkingIfThisWorks = (columns) => {
+    //     columns.map((column) => {
+    //         console.log(`these are the column titles: `, column.title);
+    //         console.log(`these are the column tasks`, column.tasks);
+    //     });
+    // };
+    // console.log('did this work?', checkingIfThisWorks(columns));
+    // console.log('did this work?',getTasks(columns));
+    // console.log('did this work?', getTasks(columns));
 
     return (
-        <div className='flex justify-center items-center h-screen'>
+        <div>
 
-                {/* // sensors={sensors}
-                // onDragStart={onDragStart}
-                // onDragEnd={onDragEnd}
-                // onDragOver={onDragOver} */}
-            <div className='flex space-x-4 text-black'>
-                {/* <SortableContext items={columnName}> */}
-                {categoryStages.map((column, i) => (
-                    <Column key={column} columnName={column} tasks={tasks} />
-                ))}
-                {/* </SortableContext> */}
-            </div>
-
+        <div
+            className='
+                    m-auto 
+                    flex 
+                    min-h-screen 
+                    w-full 
+                    items-center 
+                    overflow-x-auto 
+                    overflow-y-hidden 
+                    px-[40px]
+                    bg-tertiaryLight'
+        >
+            {columns.map((column) => (
+                <Column
+                    key={column._id}
+                    columnId={column._id}
+                    boardId={boardInfo._id}
+                    columnName={column.title}
+                    columnTasks={column.tasks}
+                />
+            ))}
+        </div>
         </div>
     );
 };
-
-
 export default KanbanBoard;

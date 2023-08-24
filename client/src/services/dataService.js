@@ -36,12 +36,12 @@ function DataService() {
         instance.delete(`/boards/${boardId}/columns/${columnId}`);
 
     // Task
-    this.createTask = (data) => instance.post(`/boards/${boardId}/columns/${columnId}/tasks`, data);
+    this.createTask = (boardId, columnId, data) => instance.post(`/boards/${boardId}/columns/${columnId}/tasks`, data);
 
-    this.updateTask = (data) =>
+    this.updateTask = (boardId, columnId, taskId, data) =>
         instance.put(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, data);
 
-    this.deleteTask = () =>
+    this.deleteTask = (boardId, columnId, taskId) =>
         instance.delete(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
 
     // Comments
