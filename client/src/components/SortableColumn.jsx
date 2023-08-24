@@ -7,6 +7,7 @@ import {CSS} from '@dnd-kit/utilities';
 import ColumnLane from './ColumnLane';
 import {Children} from 'react';
 import SortableTask from './SortableTask';
+import {useDroppable} from '@dnd-kit/core';
 
 const SortableColumn = ({column, id, items, children}) => {
     const {
@@ -16,10 +17,11 @@ const SortableColumn = ({column, id, items, children}) => {
         transform,
         transition,
         isDragging,
-    } = useSortable({
+    } = useDroppable({
         id,
         data: {
             type: 'Column',
+            children: items,
         },
     });
 
@@ -29,11 +31,7 @@ const SortableColumn = ({column, id, items, children}) => {
     };
 
     return (
-        <SortableContext
-            id={id}
-            items={items}
-            strategy={verticalListSortingStrategy}
-        >
+        <SortableContext items={items} strategy={verticalListSortingStrategy}>
             <div
                 ref={setNodeRef}
                 className='flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'

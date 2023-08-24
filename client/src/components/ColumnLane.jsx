@@ -16,21 +16,16 @@ const ColumnLane = ({column, items, id}) => {
     });
 
     return (
-        <div
-            className='bg-primaryLight w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col shadow-lg'
-            ref={setNodeRef}
-        >
-            <SortableContext
-                id={id}
-                items={items}
-                strategy={verticalListSortingStrategy}
+        <SortableContext items={items}>
+            <div
+                className='bg-primaryLight w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col shadow-lg'
+                ref={setNodeRef}
             >
-                {items.map((item) => {
-                    return <SortableTask task={item} id={item._id} />;
+                {items.map((item, i) => {
+                    return <SortableTask task={column.tasks[i]} id={item} />;
                 })}
-            </SortableContext>
-            {/* Column footer */}
-        </div>
+            </div>
+        </SortableContext>
     );
 };
 
