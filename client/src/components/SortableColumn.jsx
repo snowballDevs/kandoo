@@ -35,9 +35,9 @@ const SortableColumn = ({column, id, items, children}) => {
         <div
             ref={setNodeRef}
             className='flex  flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'
+            style={style}
             {...listeners}
             {...attributes}
-            style={style}
         >
             <ColumnLane column={column} items={items}>
                 {children}
