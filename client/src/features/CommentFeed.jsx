@@ -93,12 +93,19 @@ const CommentFeed = ({task, boardId, columnId}) => {
     const handleCommentSubmit = async (event) => {
         event.preventDefault();
         try {
-            // const response = await dataService.createComment(boardId, columnId, task._id, commentInput);
-            // console.log(response)
+            const response = await dataService.createComment(boardId, columnId, task._id, commentInput);
+            console.log(response)
+            // resets comment textarea 
+            setCommentInput({
+              description:'',
+              createdBy:loggedInUserFirstLast
+            })
+            
         } catch (error) {
             console.log(error);
         }
-        event.stopPropagation();
+        // this stops parent forms from being submitted
+        event.stopPropagation()
     };
 
     return (
@@ -144,25 +151,7 @@ const CommentFeed = ({task, boardId, columnId}) => {
                                         </svg>
                                     </button>
                                     <p className='text-sm text-center'>0</p>
-                                    <button
-                                        type='button'
-                                        className='rounded-full px-2 py-2 text-xs font-semibold text-gray-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-                                    >
-                                        <svg
-                                            xmlns='http://www.w3.org/2000/svg'
-                                            fill='none'
-                                            viewBox='0 0 24 24'
-                                            strokeWidth={1.5}
-                                            stroke='currentColor'
-                                            className='w-4 h-4'
-                                        >
-                                            <path
-                                                strokeLinecap='round'
-                                                strokeLinejoin='round'
-                                                d='M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3'
-                                            />
-                                        </svg>
-                                    </button>
+                                    
                                 </div>
                                 <div className='flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200 ml-2'>
                                     <div className='flex justify-between gap-x-4'>
@@ -210,6 +199,7 @@ const CommentFeed = ({task, boardId, columnId}) => {
                             placeholder='Add your comment...'
                             defaultValue=''
                             onChange={handleCommentChange}
+                            value={commentInput.description}
                         />
                     </div>
 
