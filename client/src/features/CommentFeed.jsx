@@ -2,6 +2,7 @@ import {useState} from 'react';
 import ProfileIcon from '../components/ProfileIcon';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
 import dataService from '../services/dataService';
+import formattedDate from '../utils/formatDate';
 
 // todo: Create a way to add Comments to a task
 // todo:  Create form for comment input, and add submit to server + update state
@@ -9,77 +10,39 @@ import dataService from '../services/dataService';
 // todo: update the total number of comments in the comment title
 // todo: make sure to update comments controller to allow dislikes
 
-const taskSample = {
-    taskName: 'Task 8-24 postman filler',
-    assignedUserIds: [],
-    priority: 2,
-    tags: [],
-    taskDetail: 'This is a test from postman',
-    _id: '64e7d4e215fe0c2e1e564a8a',
-    created_at: '2023-08-24T22:08:34.757Z',
-    comments: [
-        {
-            description:
-                'This is a comment created by postman test 8-24 comment 1',
-            createdBy: 'Chris Jin',
-            likes: 0,
-            _id: '64e7d52515fe0c2e1e564a96',
-            commentDate: '2023-08-24T22:09:41.691Z',
-        },
-        {
-            description:
-                'This is a comment created by postman test 8-24 comment 2',
-            createdBy: 'Chris Jin',
-            likes: 0,
-            _id: '64e7d52d15fe0c2e1e564aa3',
-            commentDate: '2023-08-24T22:09:49.491Z',
-        },
-    ],
-};
-
-const activity = [
-    {
-        id: 4,
-        type: 'commented',
-        person: {
-            name: 'Chelsea Hagon',
-            imageUrl:
-                'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-        comment:
-            'Called client, they reassured me the invoice would be paid by the 25th.',
-        date: '3d ago',
-        dateTime: '2023-01-23T15:56',
-    },
-    {
-        id: 5,
-        type: 'commented',
-        person: {
-            name: 'Chelsea Hagon',
-            imageUrl:
-                'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-        comment:
-            'Called client, they reassured me the invoice would be paid by the 25th.',
-        date: '3d ago',
-        dateTime: '2023-01-23T15:56',
-    },
-];
-
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
-const CommentFeed = ({task, boardId, columnId}) => {
+const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
     const {loggedInUserFirstLast} = useAuthContext();
 
-    const [allComments, setAllComments] = useState(task.comments);
+    const [allComments, setAllComments] = useState(taskComments);
+    console.log(allComments);
 
     // comment input form data
     const [commentInput, setCommentInput] = useState({
         description: '',
         createdBy: loggedInUserFirstLast,
     });
+    // console.log(task)
+    // const lookingAtTasks = () => {
+    //   console.log(allComments)
+
+    // }
+    // lookingAtTasks()
+
+    const addNewComment = (commentInput, dateTime) => {
+        setAllComments([
+            ...allComments,
+            {
+                description: commentInput.description,
+                createdBy: commentInput.createdBy,
+                likes: 0,
+                commentDate: dateTime,
+            },
+        ]);
+    };
 
     const handleCommentChange = (event) => {
         const {name, value} = event.target;
@@ -93,29 +56,43 @@ const CommentFeed = ({task, boardId, columnId}) => {
     const handleCommentSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await dataService.createComment(boardId, columnId, task._id, commentInput);
-            console.log(response)
-            // resets comment textarea 
+            const response = await dataService.createComment(
+                boardId,
+                columnId,
+                taskId,
+                commentInput
+            );
+            console.log(response);
+            // resets comment textarea
+            addNewComment(commentInput, Date.now());
             setCommentInput({
-              description:'',
-              createdBy:loggedInUserFirstLast
-            })
-            
+                description: '',
+                createdBy: loggedInUserFirstLast,
+            });
         } catch (error) {
             console.log(error);
         }
         // this stops parent forms from being submitted
-        event.stopPropagation()
+        event.stopPropagation();
     };
 
     return (
-        <div>
+        <div className='space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+            <div>
+                <h3
+                    htmlFor='project-comments'
+                    className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
+                >
+                    Comments 
+                    {/* {taskComments.length > 0 ? taskComments : '0'} */}
+                </h3>
+            </div>
             <ul className='space-y-6 mt-3 overflow-y-auto'>
-                {activity.map((activityItem, activityItemIdx) => (
-                    <li key={activityItem.id} className='relative flex gap-x-4'>
+                {allComments.map((comment, commentIdx) => (
+                    <li key={comment._id} className='relative flex gap-x-4'>
                         <div
                             className={classNames(
-                                activityItemIdx === activity.length - 1
+                                commentIdx === comment.length - 1
                                     ? 'h-6'
                                     : '-bottom-6',
                                 'absolute left-0 top-0 flex w-6 justify-center'
@@ -126,7 +103,7 @@ const CommentFeed = ({task, boardId, columnId}) => {
                         <div>
                             <div className='ml-5'>
                                 <ProfileIcon
-                                    firstLastName={activityItem.person.name}
+                                    firstLastName={comment.createdBy}
                                 />
                             </div>
                             <div className='flex'>
@@ -151,25 +128,24 @@ const CommentFeed = ({task, boardId, columnId}) => {
                                         </svg>
                                     </button>
                                     <p className='text-sm text-center'>0</p>
-                                    
                                 </div>
                                 <div className='flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200 ml-2'>
                                     <div className='flex justify-between gap-x-4'>
                                         <div className='py-0.5 text-xs leading-5 text-gray-500'>
                                             <span className='font-medium text-gray-900'>
-                                                {activityItem.person.name}
+                                                {comment.createdBy}
                                             </span>{' '}
                                             commented
                                         </div>
                                         <time
-                                            dateTime={activityItem.dateTime}
+                                            dateTime={comment.commentDate}
                                             className='flex-none py-0.5 text-xs leading-5 text-gray-500'
                                         >
-                                            {activityItem.date}
+                                            {formattedDate(comment.commentDate)}
                                         </time>
                                     </div>
                                     <p className='text-sm leading-6 text-gray-500'>
-                                        {activityItem.comment}
+                                        {comment.description}
                                     </p>
                                 </div>
                             </div>
@@ -182,9 +158,7 @@ const CommentFeed = ({task, boardId, columnId}) => {
                 <ProfileIcon firstLastName={loggedInUserFirstLast} />
 
                 <form
-                    onSubmit={
-                        handleCommentSubmit
-                    }
+                    onSubmit={handleCommentSubmit}
                     className='relative flex-auto'
                 >
                     <div className='overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600'>
@@ -197,8 +171,8 @@ const CommentFeed = ({task, boardId, columnId}) => {
                             id='description'
                             className='block w-full resize-none border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
                             placeholder='Add your comment...'
-                            defaultValue=''
                             onChange={handleCommentChange}
+                            // defaultValue=''
                             value={commentInput.description}
                         />
                     </div>

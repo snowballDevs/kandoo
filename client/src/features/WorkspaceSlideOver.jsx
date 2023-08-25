@@ -7,7 +7,6 @@ import dataService from '../services/dataService';
 import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
 import CommentFeed from './CommentFeed';
-import {useAuthContext} from '../contexts/AuthContext/authContext';
 
 const WorkspaceSlideOver = ({
     taskId,
@@ -20,7 +19,6 @@ const WorkspaceSlideOver = ({
     createdAt,
     boardId,
     columnId,
-    task,
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
     const [editingMode, setEditingMode] = useState(false);
@@ -30,7 +28,6 @@ const WorkspaceSlideOver = ({
         taskDetail,
         tags,
     });
-    console.log(formData.taskName);
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
@@ -276,8 +273,8 @@ const WorkspaceSlideOver = ({
                                                             Tags
                                                         </div>
                                                         <div className='space-y-5 sm:col-span-2'>
-                                                            <div className='space-y-5 sm:mt-0 '>
-                                                                <div className='relative items-start sm:col-span-3'>
+                                                            <div className=' flex sm:mt-0'>
+                                                                <div className='relative items-start sm:col-span-3 mr-3'>
                                                                     <div className='absolute flex h-6 items-center'>
                                                                         <input
                                                                             id='public-access'
@@ -309,7 +306,7 @@ const WorkspaceSlideOver = ({
                                                                             className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
                                                                         />
                                                                     </div>
-                                                                    <div className='pl-7 text-sm leading-6'>
+                                                                    <div className='pl-7 text-sm leading-6 mr-3'>
                                                                         <label
                                                                             htmlFor='restricted-access'
                                                                             className='font-medium text-gray-900'
@@ -421,25 +418,14 @@ const WorkspaceSlideOver = ({
                                                     </p> */}
                                                 </div>
                                             </form>
-                                    {/* Comments */}
-                                    <div className='space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
-                                        <div>
-                                            <label
-                                                htmlFor='project-comments'
-                                                className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
-                                            >
-                                                Comments{' '}
-                                                {taskComments.length > 0
-                                                    ? taskComments
-                                                    : '0'}
-                                            </label>
-                                        </div>
-                                        <CommentFeed
-                                            task={task}
-                                            boardId={boardId}
-                                            columnId={columnId}
-                                        />
-                                    </div>
+                                            {/* Comments */}
+
+                                            <CommentFeed
+                                                taskId={taskId}
+                                                taskComments={taskComments}
+                                                boardId={boardId}
+                                                columnId={columnId}
+                                            />
                                         </div>
                                     </div>
                                 </Dialog.Panel>
