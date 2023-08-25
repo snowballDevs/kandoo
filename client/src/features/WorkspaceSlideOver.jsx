@@ -20,15 +20,16 @@ const WorkspaceSlideOver = ({
     boardId,
     columnId,
     priority,
+    task
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
     const [editingMode, setEditingMode] = useState(false);
 
     const [formData, setFormData] = useState({
-        taskName,
-        taskDetail,
-        priority,
-    });
+      taskName,
+      taskDetail,
+      priority,
+  });
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
