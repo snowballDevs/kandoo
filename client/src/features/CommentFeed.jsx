@@ -6,7 +6,7 @@ import dataService from '../services/dataService';
 // todo: Create a way to add Comments to a task
 // todo:  Create form for comment input, and add submit to server + update state
 // todo: Show corresponding comments
-// todo: update the total number of comments in the comment title 
+// todo: update the total number of comments in the comment title
 // todo: make sure to update comments controller to allow dislikes
 
 const taskSample = {
@@ -72,7 +72,6 @@ function classNames(...classes) {
 
 const CommentFeed = ({task, boardId, columnId}) => {
     const {loggedInUserFirstLast} = useAuthContext();
-  
 
     const [allComments, setAllComments] = useState(task.comments);
 
@@ -81,9 +80,8 @@ const CommentFeed = ({task, boardId, columnId}) => {
         description: '',
         createdBy: loggedInUserFirstLast,
     });
-    
 
-    const handleChange = (event) => {
+    const handleCommentChange = (event) => {
         const {name, value} = event.target;
         setCommentInput((prevComment) => ({
             ...prevComment,
@@ -93,15 +91,14 @@ const CommentFeed = ({task, boardId, columnId}) => {
     };
 
     const handleCommentSubmit = async (event) => {
-      event.preventDefault()
+        event.preventDefault();
         try {
-          console.log('please prevent default')
             // const response = await dataService.createComment(boardId, columnId, task._id, commentInput);
             // console.log(response)
         } catch (error) {
             console.log(error);
         }
-      event.stopPropagation()
+        event.stopPropagation();
     };
 
     return (
@@ -191,8 +188,41 @@ const CommentFeed = ({task, boardId, columnId}) => {
                     </li>
                 ))}
             </ul>
+            {/* New comment form */}
+            <div className='mt-6 flex gap-x-3'>
+                <ProfileIcon firstLastName={loggedInUserFirstLast} />
 
-            
+                <form
+                    onSubmit={
+                        handleCommentSubmit
+                    }
+                    className='relative flex-auto'
+                >
+                    <div className='overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600'>
+                        <label htmlFor='description' className='sr-only'>
+                            Add your comment
+                        </label>
+                        <textarea
+                            rows={2}
+                            name='description'
+                            id='description'
+                            className='block w-full resize-none border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
+                            placeholder='Add your comment...'
+                            defaultValue=''
+                            onChange={handleCommentChange}
+                        />
+                    </div>
+
+                    <div className='absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2'>
+                        <button
+                            type='submit'
+                            className='rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+                        >
+                            Comment
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
