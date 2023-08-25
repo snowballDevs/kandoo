@@ -117,15 +117,6 @@ const Column = ({
                 </SortableContext>
             </div>
             {/* Column footer */}
-            <button
-                className='flex gap-2 items-center border-columnBackgroundColor border-2 rounded-md p-4 border-x-columnBackgroundColor hover:bg-mainBackgroundColor hover:bg-warningLight'
-                onClick={() => {
-                    createTask(column.id);
-                }}
-            >
-                <HiPlusCircle />
-                Add task
-            </button>
         </div>
     );
 };
