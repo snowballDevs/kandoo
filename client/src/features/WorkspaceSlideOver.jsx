@@ -2,10 +2,11 @@ import {Fragment, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 // import {ToastContainer, toast} from 'react-toastify';
 import {BsPlus, BsXLg} from 'react-icons/bs';
-import dataService from '../services/dataService';
 import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
+import dataService from '../services/dataService';
 import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
+import CommentFeed from './CommentFeed';
 
 const WorkspaceSlideOver = ({
     taskId,
@@ -18,101 +19,48 @@ const WorkspaceSlideOver = ({
     createdAt,
     boardId,
     columnId,
+    task,
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
     const [editingMode, setEditingMode] = useState(false);
-    // const [editedTaskName, setEditedTaskName] = useState(taskName);
-    // const [editedTaskDetail, setEditedTaskDetail] = useState(taskDetail);
-    // const [editedTags, setEditedTags] = useState(tags);
 
-    const [formData, setFormData] = useState(
-        {
-            taskName: taskName, 
-            taskDetail: taskDetail, 
-            tags: tags, 
-        }
-    )
-    console.log(formData.taskName)
-
-    // const [isDirty, setIsDirty] = useState(false);
+    const [formData, setFormData] = useState({
+        taskName,
+        taskDetail,
+        tags,
+    });
+    console.log(formData.taskName);
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
     };
 
-    // const handleChange = (field, value) => {
-    //     setIsDirty(true); // Mark changes
-    //     switch (field) {
-    //         case 'taskName':
-    //             setEditedTaskName(value);
-    //             break;
-    //         case 'taskDetail':
-    //             setEditedTaskDetail(value);
-    //             break;
-    //         case 'tags':
-    //             setEditedTags(value);
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // };
-
-    // const handleTaskSubmit = async (event) => {
-    //     event.preventDefault();
-    //     try {
-    //         const updatedData = {
-    //             taskName: editedTaskName,
-    //             taskDetail: editedTaskDetail,
-    //             tags: editedTags,
-    //         };
-    //         const response = await dataService.updateTask(
-    //             boardId,
-    //             columnId,
-    //             taskId,
-    //             updatedData
-    //         );
-    //         if (response){
-    //             setEditedTaskName(response.data.taskName);
-    //             setEditedTaskDetail(response.data.taskDetail);
-    //             setEditedTags(response.data.tags);
-    //             console.log('Beep boop your task has been updated!');
-    //         }
-
-    //         setIsDirty(false); // Reset changes after update
-    //         toggleEditingMode();
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-
     async function handleTaskSubmit(event) {
-            event.preventDefault()
-            try {
-              const response = await dataService.updateTask(
-                            boardId,
-                            columnId,
-                            taskId,
-                            formData
-                        );
-              console.log(response)
+        event.preventDefault();
+        try {
+            const response = await dataService.updateTask(
+                boardId,
+                columnId,
+                taskId,
+                formData
+            );
+            console.log(response);
             //   setIsDirty(false);
-              toggleEditingMode()
-      
-            } catch (error) {
-              console.error(error)
-            }
-          }
+            toggleEditingMode();
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     function handleChange(event) {
         // setIsDirty(true);
-        console.log(event)
-        const {name, value, type, checked} = event.target
-        setFormData(prevFormData => ({
-                ...prevFormData,
-                [name]: type === "checkbox" ? checked : value
-            }))
+        console.log(event);
+        const {name, value, type, checked} = event.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
     }
-
 
     return (
         <Transition.Root show={isSlideOverOpen} as={Fragment}>
@@ -150,11 +98,13 @@ const WorkspaceSlideOver = ({
                                                                 <input
                                                                     type='text'
                                                                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
-                                                                    name="taskName"
+                                                                    name='taskName'
                                                                     value={
                                                                         formData.taskName
                                                                     }
-                                                                    onChange={handleChange}
+                                                                    onChange={
+                                                                        handleChange
+                                                                    }
                                                                 />
                                                             ) : (
                                                                 <div className='text-2xl font-semibold leading-6 text-gray-900'>
@@ -172,14 +122,13 @@ const WorkspaceSlideOver = ({
                                                             <p className='text-tertiaryLight'>
                                                                 {columnName}
                                                             </p>
-                                                            </div>
-                                                            <p className='text-sm text-gray-500 '>
-                                                                Created:{' '}
-                                                                {formatDate(
-                                                                    createdAt
-                                                                )}
-                                                            </p>
-                                                        
+                                                        </div>
+                                                        <p className='text-sm text-gray-500 '>
+                                                            Created:{' '}
+                                                            {formatDate(
+                                                                createdAt
+                                                            )}
+                                                        </p>
                                                     </div>
                                                     <div className='flex h-7 gap-2 items-center'>
                                                         <button
@@ -295,12 +244,16 @@ const WorkspaceSlideOver = ({
                                                                     formData.taskDetail
                                                                 }
                                                                 name='taskDetail'
-                                                                onChange={handleChange}
+                                                                onChange={
+                                                                    handleChange
+                                                                }
                                                                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
                                                             />
                                                         ) : (
                                                             <p className='text-sm text-gray-500'>
-                                                                {formData.taskDetail}
+                                                                {
+                                                                    formData.taskDetail
+                                                                }
                                                             </p>
                                                         )}
                                                     </div>
@@ -438,23 +391,58 @@ const WorkspaceSlideOver = ({
                                                                 : '0'}
                                                         </label>
                                                     </div>
-                                                    <p className='text-sm italic text-gray-500 space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                    <CommentFeed task={task} boardId={boardId} columnId={columnId} />
+                                                    {/* <p className='text-sm italic text-gray-500 space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
                                                         {taskComments.length > 0
                                                             ? taskComments
-                                                            : // {taskComment.map((comment) => (
-                                                              //     <Comment
-                                                              //         comment = {taskComments}
-                                                              //     />
-                                                              //   ))}
+                                                            : 
                                                               'No comments yet'}
-                                                    </p>
-                                                    <textarea
-                                                        id='project-description'
-                                                        name='project-description'
-                                                        rows={3}
-                                                        className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
-                                                        defaultValue='Write your comment here'
-                                                    />
+                                                    </p> */}
+                                                    {/* New comment form */}
+                                                    <div className='mt-6 flex gap-x-3'>
+                                                        {/* <ProfileIcon
+                                                            firstLastName={
+                                                                loggedInUserFirstLast
+                                                            }
+                                                        /> */}
+
+                                                        <form
+                                                            // onSubmit={
+                                                            //     handleCommentSubmit
+                                                            // }
+                                                            className='relative flex-auto'
+                                                        >
+                                                            <div className='overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600'>
+                                                                <label
+                                                                    htmlFor='description'
+                                                                    className='sr-only'
+                                                                >
+                                                                    Add your
+                                                                    comment
+                                                                </label>
+                                                                <textarea
+                                                                    rows={2}
+                                                                    name='description'
+                                                                    id='description'
+                                                                    className='block w-full resize-none border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
+                                                                    placeholder='Add your comment...'
+                                                                    defaultValue=''
+                                                                    onChange={
+                                                                        handleChange
+                                                                    }
+                                                                />
+                                                            </div>
+
+                                                            <div className='absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2'>
+                                                                <button
+                                                                    type='submit'
+                                                                    className='rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+                                                                >
+                                                                    Comment
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

@@ -32,6 +32,7 @@ const Task = ({
                 assignedUserIds={assignedUserIds}
                 columnName={columnName}
                 createdAt={createdAt}
+                task={task}
             />
             <div
                 className=' p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl  cursor-grab relative task'
