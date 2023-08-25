@@ -1,9 +1,7 @@
-import {useContext} from 'react';
-import {useAuthContext} from '../contexts/AuthContext/authContext';
+// expectation is the input is `FirstName LastName` like `Keanu Reeves`
+const ProfileIcon = ({firstLastName}) => {
 
-const ProfileIcon = () => {
-    const {loggedInUserFirstLast} = useAuthContext();
-    const initials = loggedInUserFirstLast
+    const initials = firstLastName
         .split(' ')
         .map((n) => n[0])
         .join('');
