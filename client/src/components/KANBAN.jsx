@@ -26,6 +26,7 @@ import colums from './data';
 import SortableTask from './SortableTask';
 import SortableColumn from './SortableColumn';
 import TaskCard from './TaskCard';
+import {createPortal} from 'react-dom';
 
 const KANBAN = ({boardInfo}) => {
     const {columns} = boardInfo;
@@ -37,11 +38,16 @@ const KANBAN = ({boardInfo}) => {
     const [activeId, setActiveId] = useState(null);
     const recentlyMovedToNewContainer = useRef(false);
 
-    const mouseSensor = useSensor(MouseSensor);
+    const pointerSensor = useSensor(PointerSensor, {
+        activationConstraint: {
+            distance: 10,
+        },
+    });
+
     const touchSensor = useSensor(TouchSensor);
     const keyboardSensor = useSensor(KeyboardSensor);
 
-    const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
+    const sensors = useSensors(pointerSensor, touchSensor, keyboardSensor);
 
     const findContainer = (id) => {
         if (id in items) {
@@ -199,10 +205,15 @@ const KANBAN = ({boardInfo}) => {
     }
 
     function handleDragEnd({active, over}) {
+        console.log(items);
         if (active.id in items && over?.id) {
+            console.log('changed');
+            console.log(active.id);
+            console.log(over.id);
             setContainers((containers) => {
                 const activeIndex = containers.indexOf(active.id);
                 const overIndex = containers.indexOf(over.id);
+                console.log(overIndex);
                 return arrayMove(containers, activeIndex, overIndex);
             });
         }
@@ -252,6 +263,7 @@ const KANBAN = ({boardInfo}) => {
     }
 
     function getIds(column) {
+        console.log(items[column].tasks.map((task) => task._id));
         return items[column].tasks.map((task) => task._id);
     }
 
@@ -260,18 +272,17 @@ const KANBAN = ({boardInfo}) => {
             className='
         m-auto 
         flex 
-        min-h-screen 
-        w-full 
-        items-center 
-        overflow-x-auto 
-        overflow-y-hidden 
-        px-[40px]
+        gap-4
+        w-full
+        max-h-fit
+        flex-start
+        justify-center
         bg-tertiaryLight
+        py-8
         '
         >
             <DndContext
                 sensors={sensors}
-                collisionDetection={closestCorners}
                 onDragStart={handleDragStart}
                 onDragOver={handleDragOver}
                 onDragEnd={handleDragEnd}
@@ -284,13 +295,11 @@ const KANBAN = ({boardInfo}) => {
                             <SortableColumn
                                 column={items[containderId]}
                                 key={containderId}
-                                id={containderId}
+                                id={`${containderId}`}
                                 items={getIds(containderId)}
                             >
                                 <SortableContext items={getIds(containderId)}>
                                     {getIds(containderId).map((task, index) => {
-                                        console.log(getIds(containderId));
-                                        console.log(task);
                                         return (
                                             <SortableTask
                                                 id={task}
@@ -307,14 +316,16 @@ const KANBAN = ({boardInfo}) => {
                         );
                     })}
                 </SortableContext>
-
-                <DragOverlay>
-                    {activeId
-                        ? containers.includes(activeId)
-                            ? renderContainerDragOverlay(activeId)
-                            : renderSortableItemDragOverlay(activeId)
-                        : null}
-                </DragOverlay>
+                {createPortal(
+                    <DragOverlay>
+                        {activeId
+                            ? containers.includes(activeId)
+                                ? renderContainerDragOverlay(activeId)
+                                : renderSortableItemDragOverlay(activeId)
+                            : null}
+                    </DragOverlay>,
+                    document.body
+                )}
             </DndContext>
         </div>
     );
