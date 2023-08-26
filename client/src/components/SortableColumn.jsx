@@ -17,6 +17,7 @@ const SortableColumn = ({column, id, items, children}) => {
         transform,
         transition,
         isDragging,
+        setActivatorNodeRef,
     } = useSortable({
         id,
         data: {
@@ -32,13 +33,7 @@ const SortableColumn = ({column, id, items, children}) => {
     };
 
     return (
-        <div
-            ref={setNodeRef}
-            className='flex  flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto'
-            style={style}
-            {...listeners}
-            {...attributes}
-        >
+        <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
             <ColumnLane column={column} items={items}>
                 {children}
             </ColumnLane>

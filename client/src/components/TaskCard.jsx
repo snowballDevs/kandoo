@@ -34,7 +34,7 @@ const TaskCard = ({
 
     if (editMode) {
         return (
-            <div className='bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative'>
+            <div className='bg-mainBackgroundColor px-2 py-4 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative'>
                 <textarea
                     className='
             h-[90%]
@@ -57,7 +57,7 @@ const TaskCard = ({
     return (
         <div
             // onClick={() => handleSlideOver()}
-            className='bg-secondaryLight p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative task'
+            className='bg-secondaryLight px-2 py-4  items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative task'
             onMouseEnter={() => {
                 setMouseIsOver(true);
             }}
@@ -68,14 +68,6 @@ const TaskCard = ({
             <p className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-white'>
                 {task.taskName}
             </p>
-
-            <h1>hi</h1>
-
-            {mouseIsOver && (
-                <button className='stroke-white hover:stroke-slate-100 absolute right-4 top-1/2 -translate-y-1/2 bg-dangerLight p-2 rounded opacity-100 hover:opacity-100'>
-                    <HiOutlineTrash />
-                </button>
-            )}
         </div>
     );
 };
