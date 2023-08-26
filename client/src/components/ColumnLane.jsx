@@ -12,7 +12,7 @@ import AddTask from './AddTask';
 
 const ColumnLane = ({column, items, children, draggableProps}) => {
     return (
-        <div className='bg-primaryLight w-[350px]  max-h-[600px] rounded-md flex flex-col shadow-lg overflow-y-auto '>
+        <div className='bg-primaryLight w-[300px] max-h-full rounded-md flex flex-col shadow-lg overflow-y-auto '>
             {/* Column title */}
 
             <ColumnHeader

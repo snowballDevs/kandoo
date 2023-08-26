@@ -273,8 +273,9 @@ const KANBAN = ({boardInfo}) => {
         m-auto 
         flex 
         gap-4
-        w-full
-        max-h-fit
+        max-w-7xl
+        xl:max-w-none
+        max-h-kanban
         flex-start
         justify-center
         bg-tertiaryLight

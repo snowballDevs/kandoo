@@ -20,6 +20,9 @@ export default {
                 redLight: '#ef4444',
                 yellowLight: '#ffb703', //fmrly eab308
             },
+            maxHeight: {
+                kanban: 'calc(100vh - 216px)',
+            },
         },
     },
     plugins: [require('daisyui'), require('@tailwindcss/forms')], // eslint-disable-line global-require
