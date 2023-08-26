@@ -33,7 +33,6 @@ const KANBAN = ({boardInfo}) => {
 
     const [items, setItems] = useState(columns);
     const [containers, setContainers] = useState(Object.keys(items));
-    console.log(containers);
 
     const [activeId, setActiveId] = useState(null);
     const recentlyMovedToNewContainer = useRef(false);
@@ -62,22 +61,7 @@ const KANBAN = ({boardInfo}) => {
                 }
             }
         }
-
-        // return Object.keys(items).find((key) => {
-        //     console.log(items[key].tasks.some((task) => task._id === id));
-        //     return items[key].tasks.some((task) => task._id === id);
-        // });
     };
-
-    // <div>{column}</div>
-    //  return (
-    //     <ColumnLane
-    //         key={column._id}
-    //         id={`${i}`}
-    //         items={getIds(column)}
-    //         column={column}
-    //     />
-    // );
 
     function handleDragStart({active}) {
         setActiveId(active.id);
@@ -94,19 +78,11 @@ const KANBAN = ({boardInfo}) => {
         const activeContainer = findContainer(active.id);
         const overContainer = findContainer(over.id);
 
-        console.log('Active container', activeContainer);
-        console.log('Over container', overContainer);
-
-        console.log('activecontainer ', items[activeContainer]);
-        console.log('over/new container: ', items[overContainer]);
-
         if (!overContainer || !activeContainer) {
-            console.log('No active or not over');
             return;
         }
 
         if (activeContainer !== overContainer) {
-            console.log('Active and over not equal');
             setItems((prev) => {
                 const activeItems = prev[activeContainer].tasks;
                 const overItems = prev[overContainer].tasks;
@@ -119,10 +95,6 @@ const KANBAN = ({boardInfo}) => {
                     (t) => t._id === active.id
                 );
                 const overIndex = overItems.findIndex((t) => t._id === over.id);
-
-                console.log(activeIndex);
-
-                console.log(overIndex);
 
                 let newIndex;
                 if (over.id in prev) {
@@ -147,19 +119,6 @@ const KANBAN = ({boardInfo}) => {
 
                 recentlyMovedToNewContainer.current = true;
 
-                // if (activeIndex !== overIndex) {
-                //     console.log('Hi');
-                //     setItems((prevItems) => {
-                //         const updatedItems = [...prevItems]; // Create a shallow copy of the array
-                //         updatedItems[overContainer].tasks = arrayMove(
-                //             updatedItems[overContainer].tasks,
-                //             activeIndex,
-                //             overIndex
-                //         );
-                //         return updatedItems;
-                //     });
-                // }
-
                 const updatedItems = [...prev];
 
                 console.log('Updated items prevstate', updatedItems);
@@ -167,14 +126,6 @@ const KANBAN = ({boardInfo}) => {
                 const updatedActiveContainerTasks = prev[
                     activeContainer
                 ].tasks.filter((item) => item._id !== active.id);
-
-                console.log(
-                    'Active container tasks',
-                    updatedActiveContainerTasks
-                );
-
-                console.log(prev[activeContainer].tasks);
-                console.log(prev[activeContainer].tasks[activeIndex]);
 
                 const updatedOverContainerTasks = [
                     ...prev[overContainer].tasks.slice(0, newIndex),
@@ -184,8 +135,6 @@ const KANBAN = ({boardInfo}) => {
                         prev[overContainer].tasks.length
                     ),
                 ];
-
-                console.log('Over container tasks', updatedOverContainerTasks);
 
                 updatedItems[activeContainer] = {
                     ...updatedItems[activeContainer],
@@ -197,17 +146,13 @@ const KANBAN = ({boardInfo}) => {
                     tasks: updatedOverContainerTasks,
                 };
 
-                console.log(updatedItems);
-
                 return updatedItems;
             });
         }
     }
 
     function handleDragEnd({active, over}) {
-        console.log(items);
         if (active.id in items && over?.id) {
-            console.log('changed');
             console.log(active.id);
             console.log(over.id);
             setContainers((containers) => {
@@ -219,8 +164,6 @@ const KANBAN = ({boardInfo}) => {
         }
 
         const activeContainer = findContainer(active.id);
-
-        // console.log('handleDragStart - Set Active Id to: ', activeId);
 
         if (!activeContainer) {
             setActiveId(null);
@@ -235,8 +178,6 @@ const KANBAN = ({boardInfo}) => {
         }
 
         const overContainer = findContainer(over.id);
-        // const activeIndex = items[activeContainer].indexOf(active.id);
-        // const overIndex = items[overContainer].indexOf(overId);
 
         if (overContainer) {
             const activeIndex = items[activeContainer].tasks.findIndex(
@@ -247,9 +188,8 @@ const KANBAN = ({boardInfo}) => {
             );
 
             if (activeIndex !== overIndex) {
-                console.log('Hi');
                 setItems((prevItems) => {
-                    const updatedItems = [...prevItems]; // Create a shallow copy of the array
+                    const updatedItems = [...prevItems];
                     updatedItems[overContainer].tasks = arrayMove(
                         updatedItems[overContainer].tasks,
                         activeIndex,
@@ -263,7 +203,6 @@ const KANBAN = ({boardInfo}) => {
     }
 
     function getIds(column) {
-        console.log(items[column].tasks.map((task) => task._id));
         return items[column].tasks.map((task) => task._id);
     }
 
@@ -288,19 +227,20 @@ const KANBAN = ({boardInfo}) => {
                 onDragOver={handleDragOver}
                 onDragEnd={handleDragEnd}
             >
-                {/* todo: check later for index */}
-
                 <SortableContext items={containers}>
                     {containers.map((containderId) => {
+                        // Array of tasksIds for each container
+                        const taskIds = getIds(containderId);
+
                         return (
                             <SortableColumn
                                 column={items[containderId]}
                                 key={containderId}
                                 id={`${containderId}`}
-                                items={getIds(containderId)}
+                                items={taskIds}
                             >
-                                <SortableContext items={getIds(containderId)}>
-                                    {getIds(containderId).map((task, index) => {
+                                <SortableContext items={taskIds}>
+                                    {taskIds.map((task, index) => {
                                         return (
                                             <SortableTask
                                                 id={task}
@@ -332,9 +272,7 @@ const KANBAN = ({boardInfo}) => {
     );
 
     function renderSortableItemDragOverlay(itemId) {
-        console.log(itemId);
         const containerId = findContainer(itemId);
-        console.log(containerId);
         const activeIndex = items[containerId].tasks.findIndex(
             (t) => t._id === itemId
         );
@@ -344,14 +282,11 @@ const KANBAN = ({boardInfo}) => {
     }
 
     function renderContainerDragOverlay(containerId) {
-        console.log(containerId);
+        const tasks = getIds(containerId);
+
         return (
-            <ColumnLane
-                column={items[containerId]}
-                items={getIds(containerId)}
-                dragOverlay
-            >
-                {getIds(containerId).map((task, index) => (
+            <ColumnLane column={items[containerId]} items={tasks} dragOverlay>
+                {tasks.map((task, index) => (
                     <SortableTask
                         id={task}
                         task={items[containerId].tasks[index]}
