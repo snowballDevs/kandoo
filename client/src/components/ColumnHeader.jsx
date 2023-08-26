@@ -5,7 +5,6 @@ const ColumnHeader = ({column, items, draggableProps}) => {
     const [editMode, setEditMode] = useState(false);
     const [mouseIsOver, setMouseIsOver] = useState(false);
 
-    console.log(draggableProps);
 
     return (
         <div
