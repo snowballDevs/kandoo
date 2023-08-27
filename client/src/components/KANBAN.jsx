@@ -27,12 +27,16 @@ import SortableTask from './SortableTask';
 import SortableColumn from './SortableColumn';
 import TaskCard from './TaskCard';
 import {createPortal} from 'react-dom';
+import PlaceholderColumn from './PlaceHolderColumn';
 
 const KANBAN = ({boardInfo}) => {
     const {columns} = boardInfo;
 
     const [items, setItems] = useState(columns);
     const [containers, setContainers] = useState(Object.keys(items));
+    const PLACEHOLDER_ID = 'placeholder';
+
+    console.log(items);
 
     const [activeId, setActiveId] = useState(null);
     const recentlyMovedToNewContainer = useRef(false);
@@ -118,7 +122,7 @@ const KANBAN = ({boardInfo}) => {
                 }
 
                 recentlyMovedToNewContainer.current = true;
-
+                console.log(prev);
                 const updatedItems = [...prev];
 
                 console.log('Updated items prevstate', updatedItems);
@@ -206,19 +210,40 @@ const KANBAN = ({boardInfo}) => {
         return items[column].tasks.map((task) => task._id);
     }
 
+    function handleAddColumn() {
+        const newContainerId = getNextContainerId();
+        const column = {
+            title: `Column ${newContainerId}`,
+            tasks: [],
+        };
+        setContainers((containers) => [...containers, newContainerId]);
+        setItems((items) => [...items, column]);
+    }
+
+    console.log(containers);
+
+    function getNextContainerId() {
+        const containerIds = Object.keys(items);
+        const lastContainerId =
+            Number(containerIds[containerIds.length - 1]) + 1;
+        return `${lastContainerId}`;
+    }
+
     return (
         <div
             className='
-        m-auto 
-        flex 
+                overflox-x-scroll
+        flex
+        first:mx-auto
+        last: mx-auto
         gap-4
         max-w-7xl
         xl:max-w-none
         max-h-kanban
         flex-start
-        justify-center
         bg-tertiaryLight
         py-8
+        px-4
         '
         >
             <DndContext
@@ -227,7 +252,7 @@ const KANBAN = ({boardInfo}) => {
                 onDragOver={handleDragOver}
                 onDragEnd={handleDragEnd}
             >
-                <SortableContext items={containers}>
+                <SortableContext items={[...containers, PLACEHOLDER_ID]}>
                     {containers.map((containderId) => {
                         // Array of tasksIds for each container
                         const taskIds = getIds(containderId);
@@ -256,6 +281,11 @@ const KANBAN = ({boardInfo}) => {
                             </SortableColumn>
                         );
                     })}
+                    <PlaceholderColumn
+                        onClick={handleAddColumn}
+                        id={PLACEHOLDER_ID}
+                        items={[]}
+                    />
                 </SortableContext>
                 {createPortal(
                     <DragOverlay>

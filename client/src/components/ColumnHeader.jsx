@@ -1,15 +1,13 @@
 import {useState} from 'react';
 import {HiOutlineTrash} from 'react-icons/hi';
 
-const ColumnHeader = ({column, items, draggableProps}) => {
+const ColumnHeader = ({column, items}) => {
     const [editMode, setEditMode] = useState(false);
     const [mouseIsOver, setMouseIsOver] = useState(false);
-
 
     return (
         <div
             className='bg-primaryLight text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold border-primaryLight border-4 flex items-center justify-between'
-            {...draggableProps}
             onMouseEnter={() => {
                 setMouseIsOver(true);
             }}
