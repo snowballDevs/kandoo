@@ -59,7 +59,7 @@ function DataService() {
             `/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments/${commentId}`
         );
 
-    this.deleteComment = (boardId, columnId, taskId, data) =>
+    this.deleteComment = (boardId, columnId, taskId, commentId) =>
         instance.delete(
             `/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments/${commentId}`
         );

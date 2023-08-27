@@ -29,7 +29,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
     // }
     // lookingAtTasks()
 
-    const addNewComment = (commentInput, dateTime,commentIdx) => {
+    const addNewComment = (commentInput, dateTime, commentIdx) => {
         setAllComments([
             ...allComments,
             {
@@ -40,23 +40,37 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
             },
         ]);
     };
-
+    // currently as of 8-27, users who make comments and like their own comments will not see their likes being saved until the board is saved and they like their own comments.
     const addLike = async (commentid) => {
+        try {
+            const response = await dataService.likeComment(
+                boardId,
+                columnId,
+                taskId,
+                commentid
+            );
+            console.log(response);
+
+            setAllComments(prevComments =>
+              prevComments.map(comment =>
+                  comment._id === commentid
+                      ? { ...comment, likes: comment.likes + 1 }
+                      : comment
+              )
+          );
+            
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const deleteComment = async ( commentid) => {
       try {
-        const response = await dataService.likeComment(boardId, columnId, taskId, commentid)
+        const response = await dataService.deleteComment(boardId, columnId, taskId, commentid)
         console.log(response)
-        const updatedComments = allComments.map(comment=> {
-          if(comment._id ===commentid) {
-            return {
-              ...comment,
-              likes: comment.likes + 1
-            }
-          }
-          return comment
-        })
-        setAllComments(updatedComments)
+        setAllComments(oldComments => oldComments.filter(cmts => cmts._id !== commentid))
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     }
 
@@ -91,7 +105,6 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
         // this stops parent forms from being submitted
         event.stopPropagation();
     };
-    
 
     return (
         <div className='space-y-2 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5 basis-2/3'>
@@ -133,7 +146,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                                 <div className='flex'>
                                     <div className='flex-col ml-7 mt-2 justify-center content-center'>
                                         <button
-                                            onClick={()=> addLike(comment._id)}
+                                            onClick={() => addLike(comment._id)}
                                             type='button'
                                             className='block rounded-full  px-2 py-2 text-xs font-semibold text-gray-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                                         >
@@ -152,7 +165,9 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                                                 />
                                             </svg>
                                         </button>
-                                        <p className='text-sm text-center'>{comment.likes}</p>
+                                        <p className='text-sm text-center'>
+                                            {comment.likes}
+                                        </p>
                                     </div>
                                     <div className='flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200 ml-2'>
                                         <div className='flex justify-between gap-x-4'>
@@ -174,6 +189,29 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                                         <p className='text-sm leading-6 text-gray-500'>
                                             {comment.description}
                                         </p>
+                                        {/* Delete button */}
+                                        <div className='flex space-x-5 place-content-end'>
+                                            <button
+                                                type='button'
+                                                className='items-end'
+                                                onClick={() => deleteComment(comment._id)}
+                                            >
+                                                <svg
+                                                    xmlns='http://www.w3.org/2000/svg'
+                                                    fill='none'
+                                                    viewBox='0 0 24 24'
+                                                    strokeWidth={1.5}
+                                                    stroke='currentColor'
+                                                    className='w-5 h-5 text-red-500 '
+                                                >
+                                                    <path
+                                                        strokeLinecap='round'
+                                                        strokeLinejoin='round'
+                                                        d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0'
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
