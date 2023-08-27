@@ -8,6 +8,11 @@ import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
 import CommentFeed from './CommentFeed';
 
+// todo: change priority in backend to string instead of number - see if i can limit string to 3 choices (high medium, low)
+// todo: review any potential changes to current task setup on the frontend and dataservice 
+// todo: move placement of priority on frotnend to elsewhere - when not in edit mode should just show the badge and not the selection
+// todo: when editing have it where it is currently. 
+
 const WorkspaceSlideOver = ({
     taskId,
     taskName,
@@ -119,11 +124,9 @@ const WorkspaceSlideOver = ({
                                                             <div className='flex'>
                                                                 <p className='text-sm text-gray-500'>
                                                                     in
-                                                                    list&nbsp;
+                                                                    list: <span className='text-tertiaryLight'>{columnName}</span>
                                                                 </p>
-                                                                <p className='text-tertiaryLight'>
-                                                                    {columnName}
-                                                                </p>
+                                                                
                                                             </div>
                                                             <p className='text-sm text-gray-500 '>
                                                                 Created:{' '}

@@ -48,7 +48,7 @@ function DataService() {
     this.createComment = (boardId, columnId, taskId, data) =>
         instance.post(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments`, data);
 
-    this.updateComment = (boardId, columnId, taskId, data) =>
+    this.updateComment = (boardId, columnId, taskId, commentId, data) =>
         instance.put(
             `/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments/${commentId}`,
             data

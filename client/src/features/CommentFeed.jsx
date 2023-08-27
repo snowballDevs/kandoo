@@ -4,9 +4,6 @@ import {useAuthContext} from '../contexts/AuthContext/authContext';
 import dataService from '../services/dataService';
 import formattedDate from '../utils/formatDate';
 
-// todo: Setup Comment Likes
-// todo: setup comment deletes
-
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
