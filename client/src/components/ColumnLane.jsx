@@ -22,9 +22,9 @@ const ColumnLane = ({column, items, children, draggableProps}) => {
             />
 
             {/* Container for all sortable tasks*/}
-            <div className='flex flex-col  gap-2 p-2 overflow-x-hidden overflow-y-auto min-h-[100px]'>
+            <ul className='flex flex-col  gap-2 p-2 overflow-x-hidden overflow-y-auto min-h-[100px]'>
                 {children}
-            </div>
+            </ul>
 
             <AddTask />
         </div>
