@@ -12,7 +12,7 @@ router.route('/')
 // prettier-ignore
 router.route('/:commentId')
     .put(commentsController.updateComment)
-    // .patch(commentsController.likeComment)
+    .patch(commentsController.likeComment)
     .delete(commentsController.deleteComment);
 
 module.exports = router;

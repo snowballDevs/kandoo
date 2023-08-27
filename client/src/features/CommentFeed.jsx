@@ -29,7 +29,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
     // }
     // lookingAtTasks()
 
-    const addNewComment = (commentInput, dateTime) => {
+    const addNewComment = (commentInput, dateTime,commentIdx) => {
         setAllComments([
             ...allComments,
             {
@@ -40,6 +40,25 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
             },
         ]);
     };
+
+    const addLike = async (commentid) => {
+      try {
+        const response = await dataService.likeComment(boardId, columnId, taskId, commentid)
+        console.log(response)
+        const updatedComments = allComments.map(comment=> {
+          if(comment._id ===commentid) {
+            return {
+              ...comment,
+              likes: comment.likes + 1
+            }
+          }
+          return comment
+        })
+        setAllComments(updatedComments)
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
     const handleCommentChange = (event) => {
         const {name, value} = event.target;
@@ -61,7 +80,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
             );
             console.log(response);
             // resets comment textarea
-            addNewComment(commentInput, Date.now());
+            addNewComment(commentInput, Date.now(), allComments.length);
             setCommentInput({
                 description: '',
                 createdBy: loggedInUserFirstLast,
@@ -72,6 +91,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
         // this stops parent forms from being submitted
         event.stopPropagation();
     };
+    
 
     return (
         <div className='space-y-2 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5 basis-2/3'>
@@ -113,6 +133,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                                 <div className='flex'>
                                     <div className='flex-col ml-7 mt-2 justify-center content-center'>
                                         <button
+                                            onClick={()=> addLike(comment._id)}
                                             type='button'
                                             className='block rounded-full  px-2 py-2 text-xs font-semibold text-gray-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                                         >
@@ -131,7 +152,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                                                 />
                                             </svg>
                                         </button>
-                                        <p className='text-sm text-center'>0</p>
+                                        <p className='text-sm text-center'>{comment.likes}</p>
                                     </div>
                                     <div className='flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200 ml-2'>
                                         <div className='flex justify-between gap-x-4'>
