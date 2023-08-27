@@ -4,9 +4,8 @@ import {useAuthContext} from '../contexts/AuthContext/authContext';
 import dataService from '../services/dataService';
 import formattedDate from '../utils/formatDate';
 
-// todo: Show corresponding comments
-// todo: update the total number of comments in the comment title
-// todo: make sure to update comments controller to allow dislikes
+// todo: Setup Comment Likes
+// todo: setup comment deletes
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
@@ -81,79 +80,93 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                     htmlFor='project-comments'
                     className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5 mb-3'
                 >
-                
-                    Comments 
-                    {/* {taskComments.length > 0 ? taskComments : '0'} */}
+                    {allComments.length > 0
+                        ? `${allComments.length} Comment${
+                              allComments.length === 1 ? '' : 's'
+                          }`
+                        : 'No Comments (Yet)'}
                 </h3>
             </div>
-            <ul className='min-h-[40%] space-y-6 my-3 overflow-y-auto'>
-                {allComments.map((comment, commentIdx) => (
-                    <li key={comment._id} className='relative flex gap-x-4 my-2'>
-                        <div
-                            className={classNames(
-                                commentIdx === comment.length - 1
-                                    ? 'h-6'
-                                    : '-bottom-6',
-                                'absolute left-0 top-0 flex w-6 justify-center'
-                            )}
+            {allComments.length > 0 ? (
+                <ul className='min-h-[40%] space-y-6 mt-3 overflow-y-auto'>
+                    {allComments.map((comment, commentIdx) => (
+                        <li
+                            key={comment._id}
+                            className='relative flex gap-x-4 my-2'
                         >
-                            <div className='w-px bg-gray-200' />
-                        </div>
-                        <div>
-                            <div className='ml-8'>
-                                <ProfileIcon
-                                    firstLastName={comment.createdBy}
-                                />
+                            <div
+                                className={classNames(
+                                    commentIdx === allComments.length - 1
+                                        ? 'h-6'
+                                        : '-bottom-6',
+                                    'absolute left-0 top-0 flex w-6 justify-center'
+                                )}
+                            >
+                                <div className='w-px bg-gray-200' />
                             </div>
-                            <div className='flex'>
-                                <div className='flex-col ml-7 mt-2 justify-center content-center'>
-                                    <button
-                                        type='button'
-                                        className='block rounded-full  px-2 py-2 text-xs font-semibold text-gray-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-                                    >
-                                        <svg
-                                            xmlns='http://www.w3.org/2000/svg'
-                                            fill='none'
-                                            viewBox='0 0 24 24'
-                                            strokeWidth={1.5}
-                                            stroke='currentColor'
-                                            className='w-4 h-4'
-                                        >
-                                            <path
-                                                strokeLinecap='round'
-                                                strokeLinejoin='round'
-                                                d='M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18'
-                                            />
-                                        </svg>
-                                    </button>
-                                    <p className='text-sm text-center'>0</p>
+                            <div>
+                                <div className='ml-8'>
+                                    <ProfileIcon
+                                        firstLastName={comment.createdBy}
+                                    />
                                 </div>
-                                <div className='flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200 ml-2'>
-                                    <div className='flex justify-between gap-x-4'>
-                                        <div className='py-0.5 text-xs leading-5 text-gray-500'>
-                                            <span className='font-medium text-gray-900'>
-                                                {comment.createdBy}
-                                            </span>{' '}
-                                            commented
-                                        </div>
-                                        <time
-                                            dateTime={comment.commentDate}
-                                            className='flex-none py-0.5 text-xs leading-5 text-gray-500'
+                                <div className='flex'>
+                                    <div className='flex-col ml-7 mt-2 justify-center content-center'>
+                                        <button
+                                            type='button'
+                                            className='block rounded-full  px-2 py-2 text-xs font-semibold text-gray-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                                         >
-                                            {formattedDate(comment.commentDate)}
-                                        </time>
+                                            <svg
+                                                xmlns='http://www.w3.org/2000/svg'
+                                                fill='none'
+                                                viewBox='0 0 24 24'
+                                                strokeWidth={1.5}
+                                                stroke='currentColor'
+                                                className='w-4 h-4'
+                                            >
+                                                <path
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
+                                                    d='M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18'
+                                                />
+                                            </svg>
+                                        </button>
+                                        <p className='text-sm text-center'>0</p>
                                     </div>
-                                    <p className='text-sm leading-6 text-gray-500'>
-                                        {comment.description}
-                                    </p>
+                                    <div className='flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200 ml-2'>
+                                        <div className='flex justify-between gap-x-4'>
+                                            <div className='py-0.5 text-xs leading-5 text-gray-500'>
+                                                <span className='font-medium text-gray-900'>
+                                                    {comment.createdBy}
+                                                </span>{' '}
+                                                commented
+                                            </div>
+                                            <time
+                                                dateTime={comment.commentDate}
+                                                className='flex-none py-0.5 text-xs leading-5 text-gray-500'
+                                            >
+                                                {formattedDate(
+                                                    comment.commentDate
+                                                )}
+                                            </time>
+                                        </div>
+                                        <p className='text-sm leading-6 text-gray-500'>
+                                            {comment.description}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <div className='text-sm block text-center p-5'>
+                    Be the first to add comments!
+                </div>
+            )}
+
             {/* New comment form */}
-            <div className='mt-6 flex gap-x-3'>
+            <div className='mt-6 flex gap-x-3 pt-4'>
                 <ProfileIcon firstLastName={loggedInUserFirstLast} />
 
                 <form

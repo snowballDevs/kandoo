@@ -54,7 +54,7 @@ function DataService() {
             data
         );
 
-    this.likeComment = (boardId, columnId, taskId, data) =>
+    this.likeComment = (boardId, columnId, taskId, commentId) =>
         instance.patch(
             `/boards/${boardId}/columns/${columnId}/tasks/${taskId}/comments/${commentId}`
         );
