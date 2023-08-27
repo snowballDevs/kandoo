@@ -4,8 +4,6 @@ import {useAuthContext} from '../contexts/AuthContext/authContext';
 import dataService from '../services/dataService';
 import formattedDate from '../utils/formatDate';
 
-// todo: Create a way to add Comments to a task
-// todo:  Create form for comment input, and add submit to server + update state
 // todo: Show corresponding comments
 // todo: update the total number of comments in the comment title
 // todo: make sure to update comments controller to allow dislikes
@@ -77,19 +75,20 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
     };
 
     return (
-        <div className='space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+        <div className='space-y-2 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5 basis-2/3'>
             <div>
                 <h3
                     htmlFor='project-comments'
-                    className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
+                    className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5 mb-3'
                 >
+                
                     Comments 
                     {/* {taskComments.length > 0 ? taskComments : '0'} */}
                 </h3>
             </div>
-            <ul className='space-y-6 mt-3 overflow-y-auto'>
+            <ul className='min-h-[40%] space-y-6 my-3 overflow-y-auto'>
                 {allComments.map((comment, commentIdx) => (
-                    <li key={comment._id} className='relative flex gap-x-4'>
+                    <li key={comment._id} className='relative flex gap-x-4 my-2'>
                         <div
                             className={classNames(
                                 commentIdx === comment.length - 1
@@ -101,7 +100,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                             <div className='w-px bg-gray-200' />
                         </div>
                         <div>
-                            <div className='ml-5'>
+                            <div className='ml-8'>
                                 <ProfileIcon
                                     firstLastName={comment.createdBy}
                                 />

@@ -82,12 +82,12 @@ const WorkspaceSlideOver = ({
                                 leaveTo='translate-x-full'
                             >
                                 {/* Adding overflow auto for now to scroll to see comments */}
-                                <Dialog.Panel className='pointer-events-auto w-screen max-w-2xl overflow-auto'>
+                                <Dialog.Panel className='pointer-events-auto w-screen max-w-2xl'>
                                     <div>
-                                        <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'>
+                                        <div className='h-screen flex flex-col overflow-y-scroll bg-white shadow-xl'>
                                             <form
                                                 // className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'
-                                                className='flex-1'
+                                                className='basis-1/3'
                                                 onSubmit={handleTaskSubmit}
                                             >
                                                 {/* Header */}
@@ -420,12 +420,13 @@ const WorkspaceSlideOver = ({
                                             </form>
                                             {/* Comments */}
 
-                                            <CommentFeed
-                                                taskId={taskId}
-                                                taskComments={taskComments}
-                                                boardId={boardId}
-                                                columnId={columnId}
-                                            />
+                                                <CommentFeed
+                                                    taskId={taskId}
+                                                    taskComments={taskComments}
+                                                    boardId={boardId}
+                                                    columnId={columnId}
+                                                />
+
                                         </div>
                                     </div>
                                 </Dialog.Panel>
