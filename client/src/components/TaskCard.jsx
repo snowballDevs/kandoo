@@ -7,11 +7,6 @@ import Task from './Task';
 
 const TaskCard = ({
     task,
-    taskName,
-    taskPriority,
-    taskComment,
-    taskDetail,
-    deleteTask,
     updateTask,
 }) => {
     const {
