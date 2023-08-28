@@ -11,7 +11,6 @@ const SortableColumn = ({
     containerId,
     children,
 }) => {
-    console.log(containerId);
     const {
         setNodeRef,
         attributes,

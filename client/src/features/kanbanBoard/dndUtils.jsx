@@ -1,20 +1,30 @@
 function findContainer(id, items) {
     if (id in items) {
-        console.log('find container', id);
         return id;
     }
 
-    for (const [key, value] of Object.entries(items)) {
-        for (const task of value.tasks) {
+    // for (const [key, value] of Object.entries(items)) {
+    //     for (const task of value.tasks) {
+    //         if (task._id === id) {
+    //             return key;
+    //         }
+    //     }
+    // }
+
+    let foundKey = null;
+
+    Object.entries(items).forEach(([key, value]) => {
+        value.tasks.forEach((task) => {
             if (task._id === id) {
-                return key;
+                foundKey = key;
             }
-        }
-    }
+        });
+    });
+
+    return foundKey;
 }
 
 function getTaskIds(items, containerId) {
-    console.log(items[containerId].tasks);
     return items[containerId].tasks.map((task) => task._id);
 }
 
