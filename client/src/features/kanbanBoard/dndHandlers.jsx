@@ -26,10 +26,6 @@ function handleDragOver({active, over}, items, setItems) {
         setItems((prev) => {
             const activeItems = prev[activeContainer].tasks;
             const overItems = prev[overContainer].tasks;
-            console.log(prev);
-            console.log(over.id);
-            console.log(activeItems);
-            console.log(overItems);
 
             const activeIndex = activeItems.findIndex(
                 (t) => t._id === active.id
@@ -38,8 +34,6 @@ function handleDragOver({active, over}, items, setItems) {
 
             let newIndex;
             if (over.id in prev) {
-                console.log(over.id);
-                console.log('Fired true');
                 // We're at the root droppable of a container
                 newIndex = overItems.length + 1;
             } else {
@@ -57,10 +51,7 @@ function handleDragOver({active, over}, items, setItems) {
                         : overItems.length + 1;
             }
 
-            console.log(prev);
             const updatedItems = [...prev];
-
-            console.log('Updated items prevstate', updatedItems);
 
             const updatedActiveContainerTasks = prev[
                 activeContainer
@@ -90,7 +81,7 @@ function handleDragOver({active, over}, items, setItems) {
     }
 }
 
-//Fires when a draggable item is dropped
+// Fires when a draggable item is dropped
 
 function handleDragEnd(
     {active, over},
@@ -100,12 +91,9 @@ function handleDragEnd(
     setActiveId
 ) {
     if (active.id in items && over?.id) {
-        console.log(active.id);
-        console.log(over.id);
         setContainers((containers) => {
             const activeIndex = containers.indexOf(active.id);
             const overIndex = containers.indexOf(over.id);
-            console.log(overIndex);
             return arrayMove(containers, activeIndex, overIndex);
         });
     }
