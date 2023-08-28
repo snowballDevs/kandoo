@@ -8,7 +8,6 @@ import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
 import CommentFeed from './CommentFeed';
 
-// todo: change priority in backend to string instead of number - see if i can limit string to 3 choices (high medium, low)
 // todo: review any potential changes to current task setup on the frontend and dataservice 
 // todo: move placement of priority on frotnend to elsewhere - when not in edit mode should just show the badge and not the selection
 // todo: when editing have it where it is currently. 
@@ -24,6 +23,7 @@ const WorkspaceSlideOver = ({
     createdAt,
     boardId,
     columnId,
+    priority,
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
     const [editingMode, setEditingMode] = useState(false);
@@ -31,7 +31,7 @@ const WorkspaceSlideOver = ({
     const [formData, setFormData] = useState({
         taskName,
         taskDetail,
-        tags,
+        priority,
     });
 
     const toggleEditingMode = () => {
@@ -63,7 +63,21 @@ const WorkspaceSlideOver = ({
             ...prevFormData,
             [name]: type === 'checkbox' ? checked : value,
         }));
+        console.log(formData)
     }
+    
+    const priorityDisplay = (level) => {
+        switch (level) {
+            case 'high':
+                return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-red-200 text-xs font-semibold text-red-600 uppercase">High</span>;
+            case 'medium':
+                return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-yellow-200 text-xs font-semibold text-yellow-600 uppercase">Medium</span>;
+            case 'low':
+                return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase">Low</span>;
+            default:
+                return <span className="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-200 dark:text-gray-900">N/A</span>;
+    }
+  }
 
     return (
         <Transition.Root show={isSlideOverOpen} as={Fragment}>
@@ -135,6 +149,11 @@ const WorkspaceSlideOver = ({
                                                                 )}
                                                             </p>
                                                         </div>
+                                                        <div className='text-sm'>
+
+                                                        {editingMode === false && priorityDisplay(formData.priority)}
+
+                                                    </div>
                                                         <div className='flex h-7 gap-2 items-center'>
                                                             <button
                                                                 type='button'
@@ -172,6 +191,7 @@ const WorkspaceSlideOver = ({
                                                             </button>
                                                         </div>
                                                     </div>
+                                                    
                                                 </div>
 
                                                 {/* Divider container */}
@@ -264,33 +284,36 @@ const WorkspaceSlideOver = ({
                                                         </div>
                                                     </div>
 
-                                                    {/* Tags */}
-                                                    <fieldset className='space-y-2 px-4 sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                    {/* Priority */}
+                                                    {editingMode === true && (<fieldset className='space-y-2 px-4 sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
                                                         <legend className='sr-only'>
-                                                            Tags
+                                                            Priority
                                                         </legend>
                                                         <div
                                                             className='text-sm font-medium leading-6 text-gray-900'
                                                             aria-hidden='true'
                                                         >
-                                                            Tags
+                                                            Priority
                                                         </div>
                                                         <div className='space-y-5 sm:col-span-2'>
                                                             <div className=' flex sm:mt-0'>
                                                                 <div className='relative items-start sm:col-span-3 mr-3'>
                                                                     <div className='absolute flex h-6 items-center'>
                                                                         <input
-                                                                            id='public-access'
-                                                                            name='privacy'
-                                                                            aria-describedby='public-access-description'
+                                                                            id='high-priority'
+                                                                            name='priority'
+                                                                            aria-describedby='high-priority-description'
                                                                             type='radio'
                                                                             className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
-                                                                            defaultChecked
+                                                                            value="high"
+                                                                            checked={formData.priority === 'high'}
+                                                                            onChange={handleTaskChange}
+                                                                            
                                                                         />
                                                                     </div>
                                                                     <div className='pl-7 text-sm leading-6'>
                                                                         <label
-                                                                            htmlFor='public-access'
+                                                                            htmlFor='high-priority'
                                                                             className='font-medium text-gray-900'
                                                                         >
                                                                             <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-red-200 text-xs font-semibold text-red-600 uppercase'>
@@ -302,16 +325,19 @@ const WorkspaceSlideOver = ({
                                                                 <div className='relative flex items-start'>
                                                                     <div className='absolute flex h-6 items-center'>
                                                                         <input
-                                                                            id='restricted-access'
-                                                                            name='privacy'
-                                                                            aria-describedby='restricted-access-description'
+                                                                            id='medium-priority'
+                                                                            name='priority'
+                                                                            aria-describedby='medium-priority-description'
                                                                             type='radio'
                                                                             className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
+                                                                            value="medium"
+                                                                            checked={formData.priority === 'medium'}
+                                                                            onChange={handleTaskChange}
                                                                         />
                                                                     </div>
                                                                     <div className='pl-7 text-sm leading-6 mr-3'>
                                                                         <label
-                                                                            htmlFor='restricted-access'
+                                                                            htmlFor='medium-priority'
                                                                             className='font-medium text-gray-900'
                                                                         >
                                                                             <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-yellow-200 text-xs font-semibold text-yellow-600 uppercase'>
@@ -323,16 +349,20 @@ const WorkspaceSlideOver = ({
                                                                 <div className='relative flex items-start'>
                                                                     <div className='absolute flex h-6 items-center'>
                                                                         <input
-                                                                            id='private-access'
-                                                                            name='privacy'
-                                                                            aria-describedby='private-access-description'
+                                                                            id='low-priority'
+                                                                            name='priority'
+                                                                            aria-describedby='low-priority-description'
                                                                             type='radio'
                                                                             className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
+                                                                            value="low"
+                                                                            onChange={handleTaskChange}
+                                                                            checked={formData.priority === 'low'}
+                                                                            
                                                                         />
                                                                     </div>
                                                                     <div className='pl-7 text-sm leading-6'>
                                                                         <label
-                                                                            htmlFor='private-access'
+                                                                            htmlFor='low-priority'
                                                                             className='font-medium text-gray-900'
                                                                         >
                                                                             <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase'>
@@ -381,7 +411,8 @@ const WorkspaceSlideOver = ({
                                                             </div>
                                                         </div> */}
                                                         </div>
-                                                    </fieldset>
+                                                    </fieldset>)}
+                                                    
                                                     {/* Action buttons */}
                                                     {editingMode && (
                                                         <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
@@ -390,9 +421,7 @@ const WorkspaceSlideOver = ({
                                                                     type='button'
                                                                     className='rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
                                                                     onClick={() => {
-                                                                        setIsDirty(
-                                                                            false
-                                                                        ); // Reset changes
+                                                                         // Reset changes
                                                                         setEditingMode(
                                                                             false
                                                                         );

@@ -135,6 +135,7 @@ return (
                 tags={task.tags}
                 assignedUserIds={task.assignedUserIds}
                 columnName={columnName}
+                priority={task.priority}
 
                 createdAt={task.created_at}
             />

@@ -12,7 +12,8 @@ const Task = ({
     columnName,
     createdAt,
     boardId, 
-    columnId
+    columnId,
+    priority,
 }) => {
     const {
         handleSlideOver,
@@ -33,6 +34,7 @@ const Task = ({
                 columnName={columnName}
                 createdAt={createdAt}
                 task={task}
+                priority={priority}
             />
             <div
                 className=' p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl  cursor-grab relative task'
