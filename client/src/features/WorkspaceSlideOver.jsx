@@ -8,10 +8,6 @@ import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
 import CommentFeed from './CommentFeed';
 
-// todo: review any potential changes to current task setup on the frontend and dataservice 
-// todo: move placement of priority on frotnend to elsewhere - when not in edit mode should just show the badge and not the selection
-// todo: when editing have it where it is currently. 
-
 const WorkspaceSlideOver = ({
     taskId,
     taskName,
