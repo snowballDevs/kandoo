@@ -1,10 +1,7 @@
 import {useContext, useMemo, useState, useEffect, useRef} from 'react';
 import {
     DndContext,
-    //   DragEndEvent,
-    //   DragOverEvent,
     DragOverlay,
-    //   DragStartEvent,
     PointerSensor,
     KeyboardSensor,
     MouseSensor,
@@ -67,9 +64,13 @@ const KANBAN = ({boardInfo}) => {
         }
     };
 
+    // Fires when drag event is initiated.
+
     function handleDragStart({active}) {
         setActiveId(active.id);
     }
+
+    // Fires when a draggable item is moved over a droppable container
 
     function handleDragOver({active, over}) {
         const overId = over?.id;
@@ -78,7 +79,6 @@ const KANBAN = ({boardInfo}) => {
             return;
         }
 
-        // Find the containers
         const activeContainer = findContainer(active.id);
         const overContainer = findContainer(over.id);
 
@@ -155,6 +155,8 @@ const KANBAN = ({boardInfo}) => {
         }
     }
 
+    //Fires when a draggable item is dropped
+
     function handleDragEnd({active, over}) {
         if (active.id in items && over?.id) {
             console.log(active.id);
@@ -206,8 +208,8 @@ const KANBAN = ({boardInfo}) => {
         setActiveId(null);
     }
 
-    function getIds(column) {
-        return items[column].tasks.map((task) => task._id);
+    function getTaskIds(container) {
+        return items[container].tasks.map((task) => task._id);
     }
 
     function handleAddColumn() {
@@ -220,6 +222,12 @@ const KANBAN = ({boardInfo}) => {
         setItems((items) => [...items, column]);
     }
 
+    function handleRemoveColumn(containerId) {
+        setContainers((containers) =>
+            containers.filter((id) => id !== containerId)
+        );
+    }
+
     function handleAddTask(containerId) {
         console.log(containerId);
         setItems((items) => {
@@ -230,7 +238,7 @@ const KANBAN = ({boardInfo}) => {
             const newTask = {
                 taskName: `${taskNumber + random}`,
                 // need to update this to use mongoDB id
-                //Each sortable task needs a unique id to work
+                //Each sortable task needs a unique id to work with dnd-kit
                 _id: `${taskNumber + random}`,
             };
 
@@ -285,8 +293,7 @@ const KANBAN = ({boardInfo}) => {
                     >
                         {containers.map((containerId) => {
                             // Array of tasksIds for each container
-                            const taskIds = getIds(containerId);
-                            console.log(containerId);
+                            const taskIds = getTaskIds(containerId);
 
                             return (
                                 <SortableColumn
@@ -296,8 +303,12 @@ const KANBAN = ({boardInfo}) => {
                                     id={`${containerId}`}
                                     items={taskIds}
                                     addTask={handleAddTask}
+                                    handleRemove={handleRemoveColumn}
                                 >
-                                    <SortableContext items={taskIds}>
+                                    <SortableContext
+                                        items={taskIds}
+                                        strategy={verticalListSortingStrategy}
+                                    >
                                         {taskIds.map((task, index) => {
                                             return (
                                                 <SortableTask
@@ -346,7 +357,7 @@ const KANBAN = ({boardInfo}) => {
     }
 
     function renderContainerDragOverlay(containerId) {
-        const tasks = getIds(containerId);
+        const tasks = getTaskIds(containerId);
 
         return (
             <ColumnLane column={items[containerId]} items={tasks} dragOverlay>
