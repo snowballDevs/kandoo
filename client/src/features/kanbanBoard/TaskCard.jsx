@@ -1,14 +1,11 @@
 import {useContext, useEffect, useState} from 'react';
 // import { Id, Task } from "../types";
 import {HiOutlineTrash} from 'react-icons/hi';
-import {ModalContext} from '../contexts/ModalContext/ModalContext';
-import TaskModal from './TaskModal';
-import Task from './Task';
+import {ModalContext} from '../../contexts/ModalContext/ModalContext';
+import TaskModal from '../../components/TaskModal';
+import Task from '../../components/Task';
 
-const TaskCard = ({
-    task,
-    updateTask,
-}) => {
+const TaskCard = ({task, updateTask}) => {
     const {
         handleModal,
         isModalOpen,

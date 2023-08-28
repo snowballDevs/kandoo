@@ -15,7 +15,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
-import TaskCard from "./TaskCard";
+import TaskCard from "../features/kanbanBoard/TaskCard";
 
 const defaultCols: Column[] = [
   {

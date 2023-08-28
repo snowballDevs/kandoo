@@ -1,13 +1,13 @@
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import ColumnLane from './ColumnLane';
+import Column from './Column';
 
 const SortableColumn = ({
     column,
     id,
     items,
     addTask,
-    handleRemove,
+    removeColumn,
     containerId,
     children,
 }) => {
@@ -35,15 +35,15 @@ const SortableColumn = ({
 
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            <ColumnLane
+            <Column
                 column={column}
                 items={items}
                 addTask={addTask}
                 containerId={containerId}
-                handleRemove={handleRemove}
+                removeColumn={removeColumn}
             >
                 {children}
-            </ColumnLane>
+            </Column>
         </div>
     );
 };

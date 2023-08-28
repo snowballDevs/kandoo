@@ -1,11 +1,9 @@
 import {useState} from 'react';
 import {HiOutlineTrash} from 'react-icons/hi';
 
-const ColumnHeader = ({column, items, handleRemove, containerId}) => {
+const ColumnHeader = ({column, items, removeColumn, containerId}) => {
     const [editMode, setEditMode] = useState(false);
     const [mouseIsOver, setMouseIsOver] = useState(false);
-
-    console.log(column);
 
     return (
         <div
@@ -53,7 +51,7 @@ const ColumnHeader = ({column, items, handleRemove, containerId}) => {
             </div>
             {mouseIsOver && (
                 <button
-                    onClick={() => handleRemove(containerId)}
+                    onClick={() => removeColumn(containerId)}
                     className='stroke-gray-500 hover:stroke-white hover:bg-dangerLight
               rounded px-1 py-2 '
                 >
