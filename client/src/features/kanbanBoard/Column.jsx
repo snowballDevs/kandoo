@@ -1,31 +1,21 @@
-import {
-    SortableContext,
-    useSortable,
-    verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import {CSS} from '@dnd-kit/utilities';
-import {Children, useMemo, useState} from 'react';
-import {HiPlusCircle, HiOutlineTrash} from 'react-icons/hi';
 import ColumnHeader from './ColumnHeader';
-import SortableTask from './SortableTask';
-import AddTask from './AddTask';
 
-const ColumnLane = ({
+import AddTask from '../../components/AddTask';
+
+const Column = ({
     column,
     items,
     children,
     addTask,
     containerId,
-    handleRemove,
+    removeColumn,
 }) => {
-    console.log(column);
-    console.log(containerId);
     return (
         <div className='bg-primaryLight w-[350px] h-full max-h-full rounded-md flex flex-col flex-grow  shadow-lg overflow-y-auto'>
             <ColumnHeader
                 column={column}
                 items={items}
-                handleRemove={handleRemove}
+                removeColumn={removeColumn}
                 containerId={containerId}
             />
 
@@ -39,4 +29,4 @@ const ColumnLane = ({
     );
 };
 
-export default ColumnLane;
+export default Column;

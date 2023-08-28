@@ -25,11 +25,11 @@ import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import Modal from './Modal';
 // import { Column, Id, Task } from "../types";
 import Column from './dndcolumn';
-import TaskCard from './TaskCard';
+import TaskCard from '../features/kanbanBoard/TaskCard';
 import dataService from '../services/dataService';
-import SortableColumn from './SortableColumn';
-import SortableTask from './SortableTask';
-import ColumnLane from './ColumnLane';
+import SortableColumn from '../features/kanbanBoard/SortableColumn';
+import SortableTask from '../features/kanbanBoard/SortableTask';
+import Column from '../features/kanbanBoard/Column';
 import Task from './Task';
 import colums from './data';
 
@@ -56,8 +56,7 @@ const KB = ({boardInfo}) => {
         touchSensor,
         keyboardSensor,
         pointerSensor
-    )
-
+    );
 
     function getTaskIds(containderId) {
         // need to get the tasksID within Each Column
@@ -301,7 +300,7 @@ const KB = ({boardInfo}) => {
     function renderContainerDragOverlay(containerId) {
         console.log(containerId);
         return (
-            <ColumnLane
+            <Column
                 column={items[containerId]}
                 items={items[containerId].tasks}
             />
