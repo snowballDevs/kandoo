@@ -9,7 +9,15 @@ import {Children} from 'react';
 import SortableTask from './SortableTask';
 import {useDroppable} from '@dnd-kit/core';
 
-const SortableColumn = ({column, id, items, children}) => {
+const SortableColumn = ({
+    column,
+    id,
+    items,
+    addTask,
+    containerId,
+    children,
+}) => {
+    console.log(containerId);
     const {
         setNodeRef,
         attributes,
@@ -17,7 +25,6 @@ const SortableColumn = ({column, id, items, children}) => {
         transform,
         transition,
         isDragging,
-        setActivatorNodeRef,
     } = useSortable({
         id,
         data: {
@@ -28,13 +35,18 @@ const SortableColumn = ({column, id, items, children}) => {
 
     const style = {
         transition,
-        transform: CSS.Transform.toString(transform),
+        transform: CSS.Translate.toString(transform),
         opacity: isDragging ? 0.5 : undefined,
     };
 
     return (
-        <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
-            <ColumnLane column={column} items={items}>
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            <ColumnLane
+                column={column}
+                items={items}
+                addTask={addTask}
+                containerId={containerId}
+            >
                 {children}
             </ColumnLane>
         </div>
