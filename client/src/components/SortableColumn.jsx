@@ -1,19 +1,13 @@
-import {
-    useSortable,
-    SortableContext,
-    verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import ColumnLane from './ColumnLane';
-import {Children} from 'react';
-import SortableTask from './SortableTask';
-import {useDroppable} from '@dnd-kit/core';
 
 const SortableColumn = ({
     column,
     id,
     items,
     addTask,
+    handleRemove,
     containerId,
     children,
 }) => {
@@ -46,6 +40,7 @@ const SortableColumn = ({
                 items={items}
                 addTask={addTask}
                 containerId={containerId}
+                handleRemove={handleRemove}
             >
                 {children}
             </ColumnLane>
