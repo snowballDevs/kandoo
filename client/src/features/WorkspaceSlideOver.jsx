@@ -201,6 +201,7 @@ const WorkspaceSlideOver = ({
                                                             </button>
                                                         </div>
                                                     </div>
+                                                    
                                                 </div>
 
                                                 {/* Divider container */}
