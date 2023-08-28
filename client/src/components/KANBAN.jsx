@@ -220,7 +220,30 @@ const KANBAN = ({boardInfo}) => {
         setItems((items) => [...items, column]);
     }
 
-    console.log(containers);
+    function handleAddTask(containerId) {
+        console.log(containerId);
+        setItems((items) => {
+            const taskNumber = items[containerId].tasks.length;
+
+            const random = Math.floor(Math.random() * 5000);
+
+            const newTask = {
+                taskName: `${taskNumber + random}`,
+                // need to update this to use mongoDB id
+                //Each sortable task needs a unique id to work
+                _id: `${taskNumber + random}`,
+            };
+
+            const updatedContainer = {
+                ...items[containerId],
+                tasks: [...items[containerId].tasks, newTask],
+            };
+            const updatedItems = [...items];
+            updatedItems[containerId] = updatedContainer;
+
+            return updatedItems;
+        });
+    }
 
     function getNextContainerId() {
         const containerIds = Object.keys(items);
@@ -231,20 +254,11 @@ const KANBAN = ({boardInfo}) => {
 
     return (
         <div
-            className='
-                overflox-x-scroll
-        flex
-        first:mx-auto
-        last: mx-auto
-        gap-4
-        max-w-7xl
-        xl:max-w-none
-        max-h-kanban
-        flex-start
-        bg-tertiaryLight
-        py-8
-        px-4
-        '
+            className=' bg-tertiaryLight 
+            flex
+            mx-auto
+            py-8
+            '
         >
             <DndContext
                 sensors={sensors}
@@ -252,41 +266,61 @@ const KANBAN = ({boardInfo}) => {
                 onDragOver={handleDragOver}
                 onDragEnd={handleDragEnd}
             >
-                <SortableContext items={[...containers, PLACEHOLDER_ID]}>
-                    {containers.map((containderId) => {
-                        // Array of tasksIds for each container
-                        const taskIds = getIds(containderId);
+                <SortableContext
+                    items={[...containers, PLACEHOLDER_ID]}
+                    strategy={horizontalListSortingStrategy}
+                >
+                    <div
+                        className='      
+        px-8
+        py-8        
+        gap-4
+        flex
+        max-h-kanban
+        overflow-x-auto
+        items-stretch
+        justify-stretch
 
-                        return (
-                            <SortableColumn
-                                column={items[containderId]}
-                                key={containderId}
-                                id={`${containderId}`}
-                                items={taskIds}
-                            >
-                                <SortableContext items={taskIds}>
-                                    {taskIds.map((task, index) => {
-                                        return (
-                                            <SortableTask
-                                                id={task}
-                                                task={
-                                                    items[containderId].tasks[
-                                                        index
-                                                    ]
-                                                }
-                                            />
-                                        );
-                                    })}
-                                </SortableContext>
-                            </SortableColumn>
-                        );
-                    })}
-                    <PlaceholderColumn
-                        onClick={handleAddColumn}
-                        id={PLACEHOLDER_ID}
-                        items={[]}
-                    />
+        '
+                    >
+                        {containers.map((containerId) => {
+                            // Array of tasksIds for each container
+                            const taskIds = getIds(containerId);
+                            console.log(containerId);
+
+                            return (
+                                <SortableColumn
+                                    column={items[containerId]}
+                                    key={containerId}
+                                    containerId={containerId}
+                                    id={`${containerId}`}
+                                    items={taskIds}
+                                    addTask={handleAddTask}
+                                >
+                                    <SortableContext items={taskIds}>
+                                        {taskIds.map((task, index) => {
+                                            return (
+                                                <SortableTask
+                                                    id={task}
+                                                    task={
+                                                        items[containerId]
+                                                            .tasks[index]
+                                                    }
+                                                />
+                                            );
+                                        })}
+                                    </SortableContext>
+                                </SortableColumn>
+                            );
+                        })}
+                        <PlaceholderColumn
+                            onClick={handleAddColumn}
+                            id={PLACEHOLDER_ID}
+                            items={[]}
+                        />
+                    </div>
                 </SortableContext>
+
                 {createPortal(
                     <DragOverlay>
                         {activeId

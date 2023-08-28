@@ -5,7 +5,6 @@ const PlaceholderColumn = ({onClick}) => {
             onClick={onClick}
             className='
   h-[60px]
-  w-[300px]
   min-w-[300px]
   cursor-pointer
   rounded-lg
