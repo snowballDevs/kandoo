@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import ProfileIcon from '../components/ProfileIcon';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
 import dataService from '../services/dataService';
@@ -9,16 +9,32 @@ function classNames(...classes) {
 }
 
 const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
-    const {loggedInUserFirstLast} = useAuthContext();
-
+    const [user, setUser] = useState('');
+    const {isAuthenticated} = useAuthContext();
     const [allComments, setAllComments] = useState(taskComments);
     console.log(allComments);
 
     // comment input form data
     const [commentInput, setCommentInput] = useState({
         description: '',
-        createdBy: loggedInUserFirstLast,
+        createdBy: user,
     });
+
+    useEffect(() => {
+      async function fetchUser() {
+        try {
+          const response = await dataService.getUser();
+          console.log(response)
+          if (response.status >= 200 && response.status < 300) {
+            setUser(`${response.data.user.firstName} ${response.data.user.lastName}`)
+            console.log(user)
+        }
+        } catch (error) {
+          console.error(`error from commentFeed useEffect: `, error);
+        }
+      }
+      fetchUser()
+    },[])
     // console.log(task)
     // const lookingAtTasks = () => {
     //   console.log(allComments)
@@ -94,7 +110,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
             addNewComment(commentInput, Date.now(), allComments.length);
             setCommentInput({
                 description: '',
-                createdBy: loggedInUserFirstLast,
+                createdBy: user,
             });
         } catch (error) {
             console.log(error);
@@ -223,7 +239,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
 
             {/* New comment form */}
             <div className='mt-6 flex gap-x-3 pt-4'>
-                <ProfileIcon firstLastName={loggedInUserFirstLast} />
+                <ProfileIcon firstLastName={user} />
 
                 <form
                     onSubmit={handleCommentSubmit}
