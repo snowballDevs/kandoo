@@ -17,11 +17,11 @@ const WorkspaceHeader = ({boardInfo}) => {
     const {handleModal, isModalOpen, handleClose, handleOpen} =
         useContext(ModalContext);
 
-        const [displayedModal, setDisplayedModal] = useState(null);
-        const [formData, setFormData] = useState({
-          boardName: boardInfo.boardName,
-          description: boardInfo.description,
-        })
+    const [displayedModal, setDisplayedModal] = useState(null);
+    const [formData, setFormData] = useState({
+      boardName: boardInfo.boardName,
+      description: boardInfo.description,
+    })
 
     const {
         isEditing,
@@ -35,23 +35,23 @@ const WorkspaceHeader = ({boardInfo}) => {
     const deleteProject = async (id) => {
         try {
             const data = await dataService.getUser();
-            const user = data.data.user._id
-            if(user === boardInfo.createdBy) {
-              const deletedProject = await dataService.deleteBoard(id);
-              console.log(deletedProject);
-              setCurrentPage('dashboard');
-              handleClose();
+            const user = data.data.user._id;
+            if (user === boardInfo.createdBy) {
+                const deletedProject = await dataService.deleteBoard(id);
+                console.log(deletedProject);
+                setCurrentPage('dashboard');
+                handleClose();
             } else {
-              toast.error("You don't have permission to delete this board", {
-                position: "top-center",
-                autoClose: 750,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-              })
+                toast.error("You don't have permission to delete this board", {
+                    position: 'top-center',
+                    autoClose: 750,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'colored',
+                });
             }
         } catch (err) {
             console.log(err);
@@ -76,8 +76,6 @@ const WorkspaceHeader = ({boardInfo}) => {
             console.error(error);
         }
     };
-
-    
 
     return (
         <div className='bg-whiteLight'>
@@ -107,14 +105,16 @@ const WorkspaceHeader = ({boardInfo}) => {
                     >
                         <MdFileCopy className='mr-2' /> Copy ID
                     </button>
-                      {isEditing === false && <button
-                        type='button'
-                        className='flex items-center justify-center font-semibold dark:bg-gray-900 bg-tertiaryLight text-gray-100 dark:bg-gray-600 dark:hover:bg-blue-500 dark:text-gray-100 rounded w-min-content py-2 px-2'
-                        onClick={toggleEditMode}
-                    >
-                        <MdModeEdit className='text-xl mr-2' />
-                        Edit
-                    </button>}
+                    {isEditing === false && (
+                        <button
+                            type='button'
+                            className='flex items-center justify-center font-semibold dark:bg-gray-900 bg-tertiaryLight text-gray-100 dark:bg-gray-600 dark:hover:bg-blue-500 dark:text-gray-100 rounded w-min-content py-2 px-2'
+                            onClick={toggleEditMode}
+                        >
+                            <MdModeEdit className='text-xl mr-2' />
+                            Edit
+                        </button>
+                    )}
                     <button
                         type='button'
                         onClick={() => handleDisplayedModal('confirmDelete')}

@@ -2,7 +2,7 @@ import {Fragment, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 // import {ToastContainer, toast} from 'react-toastify';
 import {BsPlus, BsXLg} from 'react-icons/bs';
-import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
+import {MdModeEdit} from 'react-icons/md';
 import dataService from '../services/dataService';
 import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
@@ -59,7 +59,6 @@ const WorkspaceSlideOver = ({
             ...prevFormData,
             [name]: type === 'checkbox' ? checked : value,
         }));
-        console.log(formData);
     }
 
     const priorityDisplay = (level) => {
@@ -259,39 +258,35 @@ const WorkspaceSlideOver = ({
                                                         </div>
                                                     </div>
 
-                                                    {/* Project description */}
-                                                    <div className='space-y-2 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
-                                                        <div>
-                                                            <label
-                                                                htmlFor='project-description'
-                                                                className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
-                                                            >
-                                                                Description
-                                                            </label>
-                                                        </div>
-                                                        <div className='sm:col-span-3'>
-                                                            {editingMode ? (
-                                                                <textarea
-                                                                    type='text'
-                                                                    rows={3}
-                                                                    value={
-                                                                        formData.taskDetail
-                                                                    }
-                                                                    name='taskDetail'
-                                                                    onChange={
-                                                                        handleTaskChange
-                                                                    }
-                                                                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
-                                                                />
-                                                            ) : (
-                                                                <p className='text-sm text-gray-500'>
-                                                                    {
-                                                                        formData.taskDetail
-                                                                    }
-                                                                </p>
-                                                            )}
-                                                        </div>
+                                                {/* Project description */}
+                                                <div className='space-y-2 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                    <div>
+                                                        <label
+                                                            htmlFor='project-description'
+                                                            className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
+                                                        >
+                                                            Description
+                                                        </label>
                                                     </div>
+                                                    <div className='sm:col-span-3'>
+                                                        {editingMode ? (
+                                                            <textarea
+                                                                type='text'
+                                                                rows={3}
+                                                                value={
+                                                                    formData.taskDetail
+                                                                }
+                                                                name='taskDetail'
+                                                                onChange={handleTaskChange}
+                                                                className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
+                                                            />
+                                                        ) : (
+                                                            <p className='text-sm text-gray-500'>
+                                                                {formData.taskDetail}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
 
                                                     {/* Priority */}
                                                     {editingMode === true && (
