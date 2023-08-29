@@ -8,8 +8,6 @@ import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
 import CommentFeed from './CommentFeed';
 
-import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
-
 const WorkspaceSlideOver = ({
     taskId,
     taskName,
