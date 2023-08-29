@@ -38,7 +38,6 @@ const ColumnHeader = ({column, items, removeColumn, containerId}) => {
                         onChange={(e) =>
                             updateColumn(column.id, e.target.value)
                         }
-                        autoFocus
                         onBlur={() => {
                             setEditMode(false);
                         }}
@@ -54,6 +53,7 @@ const ColumnHeader = ({column, items, removeColumn, containerId}) => {
                     onClick={() => removeColumn(containerId)}
                     className='stroke-gray-500 hover:stroke-white hover:bg-dangerLight
               rounded px-1 py-2 '
+                    type='button'
                 >
                     <HiOutlineTrash className='text-2xl' />
                 </button>
