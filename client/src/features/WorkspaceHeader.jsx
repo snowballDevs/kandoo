@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import BoardConfirmDelete from './BoardConfirmDelete';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import Modal from '../components/Modal';
+import useEditingMode from '../hooks/useEditingMode';
+import TextAreaEditor from '../components/textAreaEditor';
 
 const WorkspaceHeader = ({boardInfo}) => {
     const {setCurrentPage} = useRoutingContext();
@@ -16,7 +18,15 @@ const WorkspaceHeader = ({boardInfo}) => {
         useContext(ModalContext);
 
     const [displayedModal, setDisplayedModal] = useState(null);
+    const [formData, setFormData] = useState({
+      boardName: boardInfo.boardName,
+      description: boardInfo.description,
+    })
 
+    const {
+        isEditing,
+        toggleEditMode,
+    } = useEditingMode();
     const handleDisplayedModal = (modalContent) => {
         setDisplayedModal(modalContent);
         handleOpen();
@@ -24,10 +34,25 @@ const WorkspaceHeader = ({boardInfo}) => {
 
     const deleteProject = async (id) => {
         try {
-            const deletedProject = await dataService.deleteBoard(id);
-            console.log(deleteProject);
-            setCurrentPage('dashboard');
-            handleClose();
+            const data = await dataService.getUser();
+            const user = data.data.user._id
+            if(user === boardInfo.createdBy) {
+              const deletedProject = await dataService.deleteBoard(id);
+              console.log(deletedProject);
+              setCurrentPage('dashboard');
+              handleClose();
+            } else {
+              toast.error("You don't have permission to delete this board", {
+                position: "top-center",
+                autoClose: 750,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              })
+            }
         } catch (err) {
             console.log(err);
         }
@@ -52,9 +77,11 @@ const WorkspaceHeader = ({boardInfo}) => {
         }
     };
 
+    
+
     return (
-        <div>
-            <div className=' grid  w-full px-4 py-4 sm:px-6 max-w-7xl mx-auto items-center grid-cols-1 md:grid-cols-2 bg-primaryLight'>
+        <div className='bg-whiteLight'>
+            <div className=' grid mt-2 w-full px-4 py-4 sm:px-6 max-w-7xl mx-auto items-center grid-cols-1 md:grid-cols-2 bg-whiteLight'>
                 <div className='row'>
                     <p className='font-light text-md light:text-secondaryLight dark:text-secondaryLight'>
                         Project:
@@ -65,9 +92,12 @@ const WorkspaceHeader = ({boardInfo}) => {
                     <h2 className='text-gray-700 mb-4 text-sm dark:text-gray-400'>
                         Created: {formatDate(boardInfo.createdAt)}
                     </h2>
-                    <p className='text-secondaryLight line-clamp-2'>
-                        {boardInfo.description}
-                    </p>
+                    {isEditing ? ( <TextAreaEditor boardInfo={boardInfo} setFormData={setFormData} formData={formData} isEditing={isEditing} toggleEditMode={toggleEditMode} initialDescription={boardInfo.description} />
+                    ) : (
+                        <p className='text-secondaryLight line-clamp-2'>
+                            {formData.description}
+                        </p>
+                    )}
                 </div>
                 <div className='flex gap-5 mt-5 md:mt-0 justify-end'>
                     <button
@@ -77,15 +107,14 @@ const WorkspaceHeader = ({boardInfo}) => {
                     >
                         <MdFileCopy className='mr-2' /> Copy ID
                     </button>
-
-                    <button
+                      {isEditing === false && <button
                         type='button'
                         className='flex items-center justify-center font-semibold dark:bg-gray-900 bg-tertiaryLight text-gray-100 dark:bg-gray-600 dark:hover:bg-blue-500 dark:text-gray-100 rounded w-min-content py-2 px-2'
+                        onClick={toggleEditMode}
                     >
                         <MdModeEdit className='text-xl mr-2' />
                         Edit
-                    </button>
-
+                    </button>}
                     <button
                         type='button'
                         onClick={() => handleDisplayedModal('confirmDelete')}
