@@ -13,9 +13,9 @@ const ModalProvider = ({children}) => {
 
   const handleSlideOver = () => {
     setIsSlideOverOpen(prevState => !prevState)
-    
-  }
 
+  }
+  
   const modalValue = useMemo(
     () => ({isModalOpen, setIsModalOpen, handleModal, handleClose, handleOpen, isSlideOverOpen, setIsSlideOverOpen, handleSlideOver}),
     [isModalOpen, isSlideOverOpen] 
