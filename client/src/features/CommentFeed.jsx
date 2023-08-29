@@ -20,34 +20,14 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
         createdBy: user,
     });
 
-    useEffect(() => {
-      async function fetchUser() {
-        try {
-          const response = await dataService.getUser();
-          console.log(response)
-          if (response.status >= 200 && response.status < 300) {
-            setUser(`${response.data.user.firstName} ${response.data.user.lastName}`)
-            console.log(user)
-        }
-        } catch (error) {
-          console.error(`error from commentFeed useEffect: `, error);
-        }
-      }
-      fetchUser()
-    },[])
-    // console.log(task)
-    // const lookingAtTasks = () => {
-    //   console.log(allComments)
-
-    // }
-    // lookingAtTasks()
+   
 
     const addNewComment = (commentInput, dateTime, commentIdx) => {
         setAllComments([
             ...allComments,
             {
                 description: commentInput.description,
-                createdBy: commentInput.createdBy,
+                createdBy: user,
                 likes: 0,
                 commentDate: dateTime,
             },
@@ -118,6 +98,22 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
         // this stops parent forms from being submitted
         event.stopPropagation();
     };
+
+    useEffect(() => {
+      async function fetchUser() {
+        try {
+          const response = await dataService.getUser();
+          console.log(response)
+          if (response.status >= 200 && response.status < 300) {
+            setUser(`${response.data.user.firstName} ${response.data.user.lastName}`)
+            console.log(user)
+        }
+        } catch (error) {
+          console.error(`error from commentFeed useEffect: `, error);
+        }
+      }
+      fetchUser()
+    },[commentInput])
 
     return (
         <div className='space-y-2 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5 basis-2/3'>
