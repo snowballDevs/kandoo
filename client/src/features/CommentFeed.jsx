@@ -20,7 +20,6 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
         createdBy: user,
     });
 
-   
 
     const addNewComment = (commentInput, dateTime, commentIdx) => {
         setAllComments([
@@ -130,7 +129,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                 </h3>
             </div>
             {allComments.length > 0 ? (
-                <ul className='min-h-[40%] space-y-6 mt-3 overflow-y-auto'>
+                <ul className=' space-y-6 mt-3 overflow-y-auto'>
                     {allComments.map((comment, commentIdx) => (
                         <li
                             key={comment._id}
@@ -178,7 +177,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                                             {comment.likes}
                                         </p>
                                     </div>
-                                    <div className='flex-auto min-w-[25rem] rounded-md p-3 ring-1 ring-inset ring-gray-200 ml-2'>
+                                    <div className='flex-auto min-w-[34rem] rounded-md p-3 ring-1 ring-inset ring-gray-200 ml-2'>
                                         <div className='flex justify-between gap-x-4'>
                                             <div className='py-0.5 text-xs leading-5 text-gray-500'>
                                                 <span className='font-medium text-gray-900'>
@@ -246,10 +245,11 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                             Add your comment
                         </label>
                         <textarea
+                            wrap='hard'
                             rows={2}
                             name='description'
                             id='description'
-                            className='block w-full resize-none border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
+                            className='block w-full resize-y border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
                             placeholder='Add your comment...'
                             onChange={handleCommentChange}
                             // defaultValue=''

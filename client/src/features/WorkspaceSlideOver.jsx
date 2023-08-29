@@ -59,21 +59,40 @@ const WorkspaceSlideOver = ({
             ...prevFormData,
             [name]: type === 'checkbox' ? checked : value,
         }));
-        console.log(formData)
+        console.log(formData);
     }
-    
+
     const priorityDisplay = (level) => {
-        switch (level) {
-            case 'high':
-                return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-red-200 text-xs font-semibold text-red-600 uppercase">High</span>;
-            case 'medium':
-                return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-yellow-200 text-xs font-semibold text-yellow-600 uppercase">Medium</span>;
-            case 'low':
-                return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase">Low</span>;
-            default:
-                return <span className="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-200 dark:text-gray-900">N/A</span>;
-    }
-  }
+        if (level === 'high') {
+            return (
+                <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-red-200 text-xs font-semibold text-red-600 uppercase'>
+                    High
+                </span>
+            );
+        }
+        if (level === 'low') {
+            return (
+                <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase'>
+                    Low
+                </span>
+            );
+        }
+        return (
+            <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-yellow-200 text-xs font-semibold text-yellow-600 uppercase'>
+                Medium
+            </span>
+        );
+    };
+
+    // switch (level) {
+    //     case 'high':
+    //         return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-red-200 text-xs font-semibold text-red-600 uppercase">High</span>;
+    //     case 'medium':
+    //         return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-yellow-200 text-xs font-semibold text-yellow-600 uppercase">Medium</span>;
+    //     case 'low':
+    //         return <span className="inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase">Low</span>;
+    //     default:
+    //         return <span className="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-200 dark:text-gray-900">N/A</span>;
 
     return (
         <Transition.Root show={isSlideOverOpen} as={Fragment}>
@@ -133,10 +152,13 @@ const WorkspaceSlideOver = ({
                                                             </Dialog.Title>
                                                             <div className='flex'>
                                                                 <p className='text-sm text-gray-500'>
-                                                                    in
-                                                                    list: <span className='text-tertiaryLight'>{columnName}</span>
+                                                                    in list:{' '}
+                                                                    <span className='text-tertiaryLight'>
+                                                                        {
+                                                                            columnName
+                                                                        }
+                                                                    </span>
                                                                 </p>
-                                                                
                                                             </div>
                                                             <p className='text-sm text-gray-500 '>
                                                                 Created:{' '}
@@ -146,10 +168,12 @@ const WorkspaceSlideOver = ({
                                                             </p>
                                                         </div>
                                                         <div className='text-sm'>
-
-                                                        {editingMode === false && priorityDisplay(formData.priority)}
-
-                                                    </div>
+                                                            {editingMode ===
+                                                                false &&
+                                                                priorityDisplay(
+                                                                    formData.priority
+                                                                )}
+                                                        </div>
                                                         <div className='flex h-7 gap-2 items-center'>
                                                             <button
                                                                 type='button'
@@ -187,7 +211,6 @@ const WorkspaceSlideOver = ({
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    
                                                 </div>
 
                                                 {/* Divider container */}
@@ -281,97 +304,111 @@ const WorkspaceSlideOver = ({
                                                     </div>
 
                                                     {/* Priority */}
-                                                    {editingMode === true && (<fieldset className='space-y-2 px-4 sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
-                                                        <legend className='sr-only'>
-                                                            Priority
-                                                        </legend>
-                                                        <div
-                                                            className='text-sm font-medium leading-6 text-gray-900'
-                                                            aria-hidden='true'
-                                                        >
-                                                            Priority
-                                                        </div>
-                                                        <div className='space-y-5 sm:col-span-2'>
-                                                            <div className=' flex sm:mt-0'>
-                                                                <div className='relative items-start sm:col-span-3 mr-3'>
-                                                                    <div className='absolute flex h-6 items-center'>
-                                                                        <input
-                                                                            id='high-priority'
-                                                                            name='priority'
-                                                                            aria-describedby='high-priority-description'
-                                                                            type='radio'
-                                                                            className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
-                                                                            value="high"
-                                                                            checked={formData.priority === 'high'}
-                                                                            onChange={handleTaskChange}
-                                                                            
-                                                                        />
-                                                                    </div>
-                                                                    <div className='pl-7 text-sm leading-6'>
-                                                                        <label
-                                                                            htmlFor='high-priority'
-                                                                            className='font-medium text-gray-900'
-                                                                        >
-                                                                            <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-red-200 text-xs font-semibold text-red-600 uppercase'>
-                                                                                High
-                                                                            </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div className='relative flex items-start'>
-                                                                    <div className='absolute flex h-6 items-center'>
-                                                                        <input
-                                                                            id='medium-priority'
-                                                                            name='priority'
-                                                                            aria-describedby='medium-priority-description'
-                                                                            type='radio'
-                                                                            className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
-                                                                            value="medium"
-                                                                            checked={formData.priority === 'medium'}
-                                                                            onChange={handleTaskChange}
-                                                                        />
-                                                                    </div>
-                                                                    <div className='pl-7 text-sm leading-6 mr-3'>
-                                                                        <label
-                                                                            htmlFor='medium-priority'
-                                                                            className='font-medium text-gray-900'
-                                                                        >
-                                                                            <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-yellow-200 text-xs font-semibold text-yellow-600 uppercase'>
-                                                                                Medium
-                                                                            </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div className='relative flex items-start'>
-                                                                    <div className='absolute flex h-6 items-center'>
-                                                                        <input
-                                                                            id='low-priority'
-                                                                            name='priority'
-                                                                            aria-describedby='low-priority-description'
-                                                                            type='radio'
-                                                                            className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
-                                                                            value="low"
-                                                                            onChange={handleTaskChange}
-                                                                            checked={formData.priority === 'low'}
-                                                                            
-                                                                        />
-                                                                    </div>
-                                                                    <div className='pl-7 text-sm leading-6'>
-                                                                        <label
-                                                                            htmlFor='low-priority'
-                                                                            className='font-medium text-gray-900'
-                                                                        >
-                                                                            <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase'>
-                                                                                Low
-                                                                            </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
+                                                    {editingMode === true && (
+                                                        <fieldset className='space-y-2 px-4 sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                            <legend className='sr-only'>
+                                                                Priority
+                                                            </legend>
+                                                            <div
+                                                                className='text-sm font-medium leading-6 text-gray-900'
+                                                                aria-hidden='true'
+                                                            >
+                                                                Priority
                                                             </div>
+                                                            <div className='space-y-5 sm:col-span-2'>
+                                                                <div className=' flex sm:mt-0'>
+                                                                    <div className='relative items-start sm:col-span-3 mr-3'>
+                                                                        <div className='absolute flex h-6 items-center'>
+                                                                            <input
+                                                                                id='high-priority'
+                                                                                name='priority'
+                                                                                aria-describedby='high-priority-description'
+                                                                                type='radio'
+                                                                                className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
+                                                                                value='high'
+                                                                                checked={
+                                                                                    formData.priority ===
+                                                                                    'high'
+                                                                                }
+                                                                                onChange={
+                                                                                    handleTaskChange
+                                                                                }
+                                                                            />
+                                                                        </div>
+                                                                        <div className='pl-7 text-sm leading-6'>
+                                                                            <label
+                                                                                htmlFor='high-priority'
+                                                                                className='font-medium text-gray-900'
+                                                                            >
+                                                                                <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-red-200 text-xs font-semibold text-red-600 uppercase'>
+                                                                                    High
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='relative flex items-start'>
+                                                                        <div className='absolute flex h-6 items-center'>
+                                                                            <input
+                                                                                id='medium-priority'
+                                                                                name='priority'
+                                                                                aria-describedby='medium-priority-description'
+                                                                                type='radio'
+                                                                                className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
+                                                                                value='medium'
+                                                                                checked={
+                                                                                    formData.priority ===
+                                                                                    'medium'
+                                                                                }
+                                                                                onChange={
+                                                                                    handleTaskChange
+                                                                                }
+                                                                            />
+                                                                        </div>
+                                                                        <div className='pl-7 text-sm leading-6 mr-3'>
+                                                                            <label
+                                                                                htmlFor='medium-priority'
+                                                                                className='font-medium text-gray-900'
+                                                                            >
+                                                                                <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-yellow-200 text-xs font-semibold text-yellow-600 uppercase'>
+                                                                                    Medium
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='relative flex items-start'>
+                                                                        <div className='absolute flex h-6 items-center'>
+                                                                            <input
+                                                                                id='low-priority'
+                                                                                name='priority'
+                                                                                aria-describedby='low-priority-description'
+                                                                                type='radio'
+                                                                                className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
+                                                                                value='low'
+                                                                                onChange={
+                                                                                    handleTaskChange
+                                                                                }
+                                                                                checked={
+                                                                                    formData.priority ===
+                                                                                    'low'
+                                                                                }
+                                                                            />
+                                                                        </div>
+                                                                        <div className='pl-7 text-sm leading-6'>
+                                                                            <label
+                                                                                htmlFor='low-priority'
+                                                                                className='font-medium text-gray-900'
+                                                                            >
+                                                                                <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase'>
+                                                                                    Low
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                                            {/* Saving for Post MVP */}
+                                                                {/* Saving for Post MVP */}
 
-                                                            {/* <hr className='border-gray-200' /> 
+                                                                {/* <hr className='border-gray-200' /> 
                                                         <div className='flex flex-col items-start space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0'>
                                                             <div>
                                                                 <a
@@ -406,9 +443,10 @@ const WorkspaceSlideOver = ({
                                                                 </a>
                                                             </div>
                                                         </div> */}
-                                                        </div>
-                                                    </fieldset>)}
-                                                    
+                                                            </div>
+                                                        </fieldset>
+                                                    )}
+
                                                     {/* Action buttons */}
                                                     {editingMode && (
                                                         <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
@@ -417,7 +455,7 @@ const WorkspaceSlideOver = ({
                                                                     type='button'
                                                                     className='rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
                                                                     onClick={() => {
-                                                                         // Reset changes
+                                                                        // Reset changes
                                                                         setEditingMode(
                                                                             false
                                                                         );
@@ -437,24 +475,16 @@ const WorkspaceSlideOver = ({
                                                             </div>
                                                         </div>
                                                     )}
-
-                                                    {/* <p className='text-sm italic text-gray-500 space-y-2 px-4  sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
-                                                        {taskComments.length > 0
-                                                            ? taskComments
-                                                            : 
-                                                              'No comments yet'}
-                                                    </p> */}
                                                 </div>
                                             </form>
                                             {/* Comments */}
-
-                                                <CommentFeed
-                                                    taskId={taskId}
-                                                    taskComments={taskComments}
-                                                    boardId={boardId}
-                                                    columnId={columnId}
-                                                />
-
+                                          {editingMode === false && <CommentFeed
+                                                taskId={taskId}
+                                                taskComments={taskComments}
+                                                boardId={boardId}
+                                                columnId={columnId}
+                                            />}
+                                            
                                         </div>
                                     </div>
                                 </Dialog.Panel>
