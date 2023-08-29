@@ -1,16 +1,12 @@
-
 import {Fragment, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 // import {ToastContainer, toast} from 'react-toastify';
 import {BsPlus, BsXLg} from 'react-icons/bs';
 import dataService from '../services/dataService';
-import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
 import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
 
 import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
-import Column from '../components/dndcolumn';
-import Task from '../components/Task';
 
 const WorkspaceSlideOver = ({
     taskId,
@@ -30,14 +26,12 @@ const WorkspaceSlideOver = ({
     // const [editedTaskDetail, setEditedTaskDetail] = useState(taskDetail);
     // const [editedTags, setEditedTags] = useState(tags);
 
-    const [formData, setFormData] = useState(
-        {
-            taskName: taskName, 
-            taskDetail: taskDetail, 
-            tags: tags, 
-        }
-    )
-    console.log(formData.taskName)
+    const [formData, setFormData] = useState({
+        taskName: taskName,
+        taskDetail: taskDetail,
+        tags: tags,
+    });
+    console.log(formData.taskName);
 
     // const [isDirty, setIsDirty] = useState(false);
 
@@ -91,33 +85,31 @@ const WorkspaceSlideOver = ({
     // };
 
     async function handleTaskSubmit(event) {
-            event.preventDefault()
-            try {
-              const response = await dataService.updateTask(
-                            boardId,
-                            columnId,
-                            taskId,
-                            formData
-                        );
-              console.log(response)
+        event.preventDefault();
+        try {
+            const response = await dataService.updateTask(
+                boardId,
+                columnId,
+                taskId,
+                formData
+            );
+            console.log(response);
             //   setIsDirty(false);
-              toggleEditingMode()
-      
-            } catch (error) {
-              console.error(error)
-            }
-          }
+            toggleEditingMode();
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     function handleChange(event) {
         // setIsDirty(true);
-        console.log(event)
-        const {name, value, type, checked} = event.target
-        setFormData(prevFormData => ({
-                ...prevFormData,
-                [name]: type === "checkbox" ? checked : value
-            }))
+        console.log(event);
+        const {name, value, type, checked} = event.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
     }
-
 
     return (
         <Transition.Root show={isSlideOverOpen} as={Fragment}>
@@ -155,11 +147,13 @@ const WorkspaceSlideOver = ({
                                                                 <input
                                                                     type='text'
                                                                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
-                                                                    name="taskName"
+                                                                    name='taskName'
                                                                     value={
                                                                         formData.taskName
                                                                     }
-                                                                    onChange={handleChange}
+                                                                    onChange={
+                                                                        handleChange
+                                                                    }
                                                                 />
                                                             ) : (
                                                                 <div className='text-2xl font-semibold leading-6 text-gray-900'>
@@ -177,14 +171,13 @@ const WorkspaceSlideOver = ({
                                                             <p className='text-tertiaryLight'>
                                                                 {columnName}
                                                             </p>
-                                                            </div>
-                                                            <p className='text-sm text-gray-500 '>
-                                                                Created:{' '}
-                                                                {formatDate(
-                                                                    createdAt
-                                                                )}
-                                                            </p>
-                                                        
+                                                        </div>
+                                                        <p className='text-sm text-gray-500 '>
+                                                            Created:{' '}
+                                                            {formatDate(
+                                                                createdAt
+                                                            )}
+                                                        </p>
                                                     </div>
                                                     <div className='flex h-7 gap-2 items-center'>
                                                         <button
@@ -300,12 +293,16 @@ const WorkspaceSlideOver = ({
                                                                     formData.taskDetail
                                                                 }
                                                                 name='taskDetail'
-                                                                onChange={handleChange}
+                                                                onChange={
+                                                                    handleChange
+                                                                }
                                                                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
                                                             />
                                                         ) : (
                                                             <p className='text-sm text-gray-500'>
-                                                                {formData.taskDetail}
+                                                                {
+                                                                    formData.taskDetail
+                                                                }
                                                             </p>
                                                         )}
                                                     </div>
