@@ -44,7 +44,7 @@ const KanbanBoard = ({boardInfo}) => {
     const sensors = useSensors(pointerSensor, touchSensor, keyboardSensor);
 
     function renderSortableItemDragOverlay(itemId) {
-        const containerId = findContainer(itemId);
+        const containerId = findContainer(itemId, items);
         const activeIndex = items[containerId].tasks.findIndex(
             (t) => t._id === itemId
         );
@@ -54,7 +54,7 @@ const KanbanBoard = ({boardInfo}) => {
     }
 
     function renderContainerDragOverlay(containerId) {
-        const tasks = getTaskIds(containerId);
+        const tasks = getTaskIds(items, containerId);
 
         return (
             <Column column={items[containerId]} items={tasks} dragOverlay>
