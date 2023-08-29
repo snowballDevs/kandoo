@@ -1,6 +1,5 @@
 import Header from '../components/Header';
 import WorkspaceHeader from './WorkspaceHeader';
-import WorkspaceSlideOver from './WorkspaceSlideOver';
 import KanbanBoard from './kanbanBoard/KanbanBoard';
 import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
 
