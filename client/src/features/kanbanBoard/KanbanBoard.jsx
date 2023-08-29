@@ -44,7 +44,7 @@ const KanbanBoard = ({boardInfo}) => {
     const sensors = useSensors(pointerSensor, touchSensor, keyboardSensor);
 
     function renderSortableItemDragOverlay(itemId) {
-        const containerId = findContainer(itemId, items);
+        const containerId = findContainer(itemId);
         const activeIndex = items[containerId].tasks.findIndex(
             (t) => t._id === itemId
         );
@@ -53,14 +53,15 @@ const KanbanBoard = ({boardInfo}) => {
         return <TaskCard task={task} dragOverlay />;
     }
 
-    function renderContainerDragOverlay(containerId, items) {
-        const tasks = getTaskIds(items, containerId);
+    function renderContainerDragOverlay(containerId) {
+        const tasks = getTaskIds(containerId);
 
         return (
             <Column column={items[containerId]} items={tasks} dragOverlay>
                 {tasks.map((task, index) => (
                     <SortableTask
                         id={task}
+                        key={task}
                         task={items[containerId].tasks[index]}
                     />
                 ))}
@@ -99,7 +100,7 @@ const KanbanBoard = ({boardInfo}) => {
 
             const updatedContainer = {
                 ...prevItems[containerId],
-                tasks: [...prevUtems[containerId].tasks, newTask],
+                tasks: [...prevItems[containerId].tasks, newTask],
             };
             const updatedItems = [...prevItems];
             updatedItems[containerId] = updatedContainer;
@@ -161,7 +162,7 @@ const KanbanBoard = ({boardInfo}) => {
                                         {taskIds.map((task, index) => (
                                             <SortableTask
                                                 id={task}
-                                                key={index}
+                                                key={task}
                                                 task={
                                                     items[containerId].tasks[
                                                         index
@@ -185,11 +186,8 @@ const KanbanBoard = ({boardInfo}) => {
                     <DragOverlay>
                         {activeId &&
                             (containers.includes(activeId)
-                                ? renderContainerDragOverlay(activeId, items)
-                                : renderSortableItemDragOverlay(
-                                      activeId,
-                                      items
-                                  ))}
+                                ? renderContainerDragOverlay(activeId)
+                                : renderSortableItemDragOverlay(activeId))}
                     </DragOverlay>,
                     document.body
                 )}

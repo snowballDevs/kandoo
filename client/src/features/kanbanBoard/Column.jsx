@@ -9,24 +9,22 @@ const Column = ({
     addTask,
     containerId,
     removeColumn,
-}) => {
-    return (
-        <div className='bg-primaryLight w-[350px] h-full max-h-full rounded-md flex flex-col flex-grow  shadow-lg overflow-y-auto'>
-            <ColumnHeader
-                column={column}
-                items={items}
-                removeColumn={removeColumn}
-                containerId={containerId}
-            />
+}) => (
+    <div className='bg-primaryLight w-[350px] h-full max-h-full rounded-md flex flex-col flex-grow  shadow-lg overflow-y-auto'>
+        <ColumnHeader
+            column={column}
+            items={items}
+            removeColumn={removeColumn}
+            containerId={containerId}
+        />
 
-            {/* Container for all sortable tasks*/}
-            <ul className='flex flex-col flex-grow gap-2 p-2 overflow-x-hidden min-h-[500px] overflow-y-auto '>
-                {children}
-            </ul>
+        {/* Container for all sortable tasks */}
+        <ul className='flex flex-col flex-grow gap-2 p-2 overflow-x-hidden min-h-[500px] overflow-y-auto '>
+            {children}
+        </ul>
 
-            <AddTask addTask={addTask} containerId={containerId} />
-        </div>
-    );
-};
+        <AddTask addTask={addTask} containerId={containerId} />
+    </div>
+);
 
 export default Column;

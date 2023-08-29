@@ -31,6 +31,7 @@ module.exports = {
                 extensions: ['.jsx'],
             },
         ],
+        'react/jsx-no-bind': [0],
         'react/jsx-props-no-spreading': 'off',
         'react/function-component-definition': [
             'error',
