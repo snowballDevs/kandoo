@@ -77,9 +77,11 @@ const WorkspaceHeader = ({boardInfo}) => {
         }
     };
 
+    
+
     return (
-        <div>
-            <div className=' grid  w-full px-4 py-4 sm:px-6 max-w-7xl mx-auto items-center grid-cols-1 md:grid-cols-2 bg-primaryLight'>
+        <div className='bg-whiteLight'>
+            <div className=' grid mt-2 w-full px-4 py-4 sm:px-6 max-w-7xl mx-auto items-center grid-cols-1 md:grid-cols-2 bg-whiteLight'>
                 <div className='row'>
                     <p className='font-light text-md light:text-secondaryLight dark:text-secondaryLight'>
                         Project:
@@ -105,8 +107,7 @@ const WorkspaceHeader = ({boardInfo}) => {
                     >
                         <MdFileCopy className='mr-2' /> Copy ID
                     </button>
-
-                    {isEditing === false && <button
+                      {isEditing === false && <button
                         type='button'
                         className='flex items-center justify-center font-semibold dark:bg-gray-900 bg-tertiaryLight text-gray-100 dark:bg-gray-600 dark:hover:bg-blue-500 dark:text-gray-100 rounded w-min-content py-2 px-2'
                         onClick={toggleEditMode}
