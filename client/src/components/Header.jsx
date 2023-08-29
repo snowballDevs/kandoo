@@ -2,7 +2,7 @@ import {useContext} from 'react';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
-import PageHeading from './PageHeading';
+// import PageHeading from './PageHeading';
 
 const Header = ({formDisplay}) => {
     const {handleOpen} = useContext(ModalContext);
@@ -39,6 +39,16 @@ const Header = ({formDisplay}) => {
                         KANDOO
                     </a>
                 </div>
+                <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
+                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
+                  <h3
+                    className="inline-flex capitalize items-center px-1 pt-1 text-md font-medium text-gray-900"
+                  >
+                    {currentPage !== 'landingPage' && currentPage}
+                  </h3>
+                  
+                </div>
+                {/* user profile icon */}
                 <div className='flex-none px-4'>
                     <div className='dropdown dropdown-end'>
                         <button
