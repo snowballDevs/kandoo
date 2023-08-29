@@ -8,6 +8,8 @@ import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
 import CommentFeed from './CommentFeed';
 
+import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
+
 const WorkspaceSlideOver = ({
     taskId,
     taskName,
@@ -30,6 +32,7 @@ const WorkspaceSlideOver = ({
       taskDetail,
       priority,
   });
+
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
@@ -61,6 +64,7 @@ const WorkspaceSlideOver = ({
             [name]: type === 'checkbox' ? checked : value,
         }));
     }
+
 
     const priorityDisplay = (level) => {
         if (level === 'high') {
@@ -162,6 +166,7 @@ const WorkspaceSlideOver = ({
                                                                 false &&
                                                                 priorityDisplay(
                                                                     formData.priority
+
                                                                 )}
                                                         </div>
                                                         <div className='flex h-7 gap-2 items-center'>
@@ -284,7 +289,9 @@ const WorkspaceSlideOver = ({
                                                             />
                                                         ) : (
                                                             <p className='text-sm text-gray-500'>
-                                                                {formData.taskDetail}
+                                                                {
+                                                                    formData.taskDetail
+                                                                }
                                                             </p>
                                                         )}
                                                     </div>

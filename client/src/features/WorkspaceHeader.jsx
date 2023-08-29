@@ -10,7 +10,7 @@ import BoardConfirmDelete from './BoardConfirmDelete';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import Modal from '../components/Modal';
 import useEditingMode from '../hooks/useEditingMode';
-import TextAreaEditor from '../components/textAreaEditor';
+import TextAreaEditor from '../components/TextAreaEditor';
 
 const WorkspaceHeader = ({boardInfo}) => {
     const {setCurrentPage} = useRoutingContext();
@@ -19,14 +19,11 @@ const WorkspaceHeader = ({boardInfo}) => {
 
     const [displayedModal, setDisplayedModal] = useState(null);
     const [formData, setFormData] = useState({
-      boardName: boardInfo.boardName,
-      description: boardInfo.description,
-    })
+        boardName: boardInfo.boardName,
+        description: boardInfo.description,
+    });
 
-    const {
-        isEditing,
-        toggleEditMode,
-    } = useEditingMode();
+    const {isEditing, toggleEditMode} = useEditingMode();
     const handleDisplayedModal = (modalContent) => {
         setDisplayedModal(modalContent);
         handleOpen();
@@ -90,7 +87,15 @@ const WorkspaceHeader = ({boardInfo}) => {
                     <h2 className='text-gray-700 mb-4 text-sm dark:text-gray-400'>
                         Created: {formatDate(boardInfo.createdAt)}
                     </h2>
-                    {isEditing ? ( <TextAreaEditor boardInfo={boardInfo} setFormData={setFormData} formData={formData} isEditing={isEditing} toggleEditMode={toggleEditMode} initialDescription={boardInfo.description} />
+                    {isEditing ? (
+                        <TextAreaEditor
+                            boardInfo={boardInfo}
+                            setFormData={setFormData}
+                            formData={formData}
+                            isEditing={isEditing}
+                            toggleEditMode={toggleEditMode}
+                            initialDescription={boardInfo.description}
+                        />
                     ) : (
                         <p className='text-secondaryLight line-clamp-2'>
                             {formData.description}

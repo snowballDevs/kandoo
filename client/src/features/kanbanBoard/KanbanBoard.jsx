@@ -32,6 +32,7 @@ const KanbanBoard = ({boardInfo}) => {
     const [containers, setContainers] = useState(Object.keys(items));
     const [activeId, setActiveId] = useState(null);
     console.log(boardInfo)
+
     const PLACEHOLDER_ID = 'placeholder';
 
     const pointerSensor = useSensor(PointerSensor, {
@@ -176,7 +177,6 @@ const KanbanBoard = ({boardInfo}) => {
                                                 boardId={boardInfo._id}
                                                 columnId={items[containerId]._id}
                                                 priority={items[containerId].tasks[index].priority}
-
                                             />
                                         ))}
                                     </SortableContext>

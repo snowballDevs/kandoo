@@ -15,6 +15,7 @@ const SortableTask = ({
     columnId,
     priority,
 }) => {
+
     const {
         setNodeRef,
         attributes,
@@ -49,6 +50,7 @@ const SortableTask = ({
                 columnId= {columnId}
                 priority= {priority}
             />
+
         </div>
     );
 };

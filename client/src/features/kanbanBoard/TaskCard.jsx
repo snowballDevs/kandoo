@@ -17,7 +17,6 @@ const TaskCard = ({
     priority,
 }) => {
     const {handleSlideOver} = useContext(ModalContext);
-
     const [mouseIsOver, setMouseIsOver] = useState(false);
     const [editMode, setEditMode] = useState(false);
 
