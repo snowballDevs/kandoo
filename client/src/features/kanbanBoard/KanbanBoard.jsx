@@ -31,6 +31,7 @@ const KanbanBoard = ({boardInfo}) => {
     const [items, setItems] = useState(columns);
     const [containers, setContainers] = useState(Object.keys(items));
     const [activeId, setActiveId] = useState(null);
+    console.log(boardInfo)
 
     const PLACEHOLDER_ID = 'placeholder';
 
@@ -49,7 +50,6 @@ const KanbanBoard = ({boardInfo}) => {
             (t) => t._id === itemId
         );
         const task = items[containerId].tasks[activeIndex];
-
         return <TaskCard task={task} dragOverlay />;
     }
 
@@ -168,6 +168,15 @@ const KanbanBoard = ({boardInfo}) => {
                                                         index
                                                     ]
                                                 }
+                                                taskName={items[containerId].tasks[index].taskName}
+                                                taskComments={items[containerId].tasks[index].comments}
+                                                tags={items[containerId].tasks[index].tags}
+                                                assignedUserIds={items[containerId].tasks[index].assignedUserIds}
+                                                columnName={items[containerId].title}
+                                                createdAt={items[containerId].tasks[index].created_at}
+                                                boardId={boardInfo._id}
+                                                columnId={items[containerId]._id}
+                                                priority={items[containerId].tasks[index].priority}
                                             />
                                         ))}
                                     </SortableContext>

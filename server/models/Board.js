@@ -20,7 +20,8 @@ const taskSchema = new mongoose.Schema({
 
     created_at: {type: Date, default: Date.now},
 
-    priority: {type: Number, required: false},
+    // changed from a Number -> String to accommodate High/Medium/Low client selection 
+    priority: {type: String, required: false},
 
     // column: {columnSchema},
 

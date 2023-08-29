@@ -76,7 +76,7 @@ const WorkspaceHeader = ({boardInfo}) => {
 
     return (
         <div className='bg-whiteLight'>
-            <div className=' grid w-full px-4 py-4 sm:px-6 max-w-7xl mx-auto items-center grid-cols-1 md:grid-cols-2 bg-whiteLight'>
+            <div className=' grid mt-2 w-full px-4 py-4 sm:px-6 max-w-7xl mx-auto items-center grid-cols-1 md:grid-cols-2 bg-whiteLight'>
                 <div className='row'>
                     <p className='font-light text-md light:text-secondaryLight dark:text-secondaryLight'>
                         Project:

@@ -12,6 +12,7 @@ const useAuthContext = () => useContext(AuthContext);
 // a provider is a component that allows you to share context with its nested components
 const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    
     const {setCurrentPage} = useRoutingContext(); // temp
 
     useEffect(() => {
@@ -20,9 +21,12 @@ const AuthProvider = ({children}) => {
                 const data = await dataService.getUser();
 
                 if (data.data.isLoggedIn) {
-                    console.log('HI');
-                    setIsAuthenticated(true);
+                    console.log(data);
+                    
+                    setIsAuthenticated(true);                  
                     setCurrentPage('dashboard');
+                    // setting state for logged in user's first and last name
+                    // console.log(`${data.data.user.firstName} ${data.data.user.lastName}`)
                 } else {
                     setCurrentPage('landingPage');
                 }
@@ -44,6 +48,7 @@ const AuthProvider = ({children}) => {
             console.log(response);
             setIsAuthenticated(true);
             console.log(isAuthenticated);
+            
         } catch (err) {
             console.log(err);
         }
@@ -57,6 +62,7 @@ const AuthProvider = ({children}) => {
             console.log(response);
             setIsAuthenticated(false);
             setCurrentPage('landingPage');
+            
         } catch (err) {
             console.log(err);
         }

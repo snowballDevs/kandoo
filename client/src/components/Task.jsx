@@ -12,7 +12,8 @@ const Task = ({
     columnName,
     createdAt,
     boardId, 
-    columnId
+    columnId,
+    priority,
 }) => {
     const {
         handleSlideOver,
@@ -32,15 +33,19 @@ const Task = ({
                 assignedUserIds={assignedUserIds}
                 columnName={columnName}
                 createdAt={createdAt}
+                task={task}
+                priority={priority}
             />
             <div
                 className=' p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl  cursor-grab relative task'
-                onClick={() => handleSlideOver()}
+                // onClick={() => handleSlideOver()}
             >
                 <h3 className='task-name'>{taskName}</h3>
             </div>
         </div>
     );
 };
+
+// const {taskTitle, taskPriority, taskDetail, taskComment, deleteTask, updateTask} = task;
 
 export default Task;
