@@ -82,10 +82,6 @@ const Header = ({formDisplay}) => {
                     </div>
                 </div>
             </nav>
-
-            {/* {currentPage !== 'landingPage' && (
-                <PageHeading currentPage={currentPage} />
-            )} */}
         </header>
     );
 };

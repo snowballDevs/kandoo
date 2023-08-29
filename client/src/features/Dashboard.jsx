@@ -8,6 +8,9 @@ const Dashboard = ({clickedCardId, setClickedCardId}) => {
     const [user, setUser] = useState(null);
     const {isAuthenticated} = useAuthContext();
 
+  
+
+
     useEffect(() => {
         async function fetchUser() {
             try {
@@ -26,9 +29,10 @@ const Dashboard = ({clickedCardId, setClickedCardId}) => {
         <div>
             <Header />
             <div className='p-10'>
-            <div className='flex flex-col text-center text-secondaryLight'>
+                <div className='flex flex-col text-center text-secondaryLight'>
                     <p className='text-3xl'>
-                        Welcome back, <span className='font-bold text-3xl'>{user}</span>{' '}
+                        Welcome back,{' '}
+                        <span className='font-bold text-3xl'>{user}</span>{' '}
                     </p>
                     <h1 className='text-4xl font-bold'>Your Projects</h1>
                 </div>
@@ -37,6 +41,7 @@ const Dashboard = ({clickedCardId, setClickedCardId}) => {
                 clickedCardId={clickedCardId}
                 setClickedCardId={setClickedCardId}
             />
+           
         </div>
     );
 };

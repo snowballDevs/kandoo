@@ -1,3 +1,4 @@
+
 import {Fragment, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 // import {ToastContainer, toast} from 'react-toastify';
@@ -6,6 +7,10 @@ import dataService from '../services/dataService';
 import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
 import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
+
+import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
+import Column from '../components/dndcolumn';
+import Task from '../components/Task';
 
 const WorkspaceSlideOver = ({
     taskId,

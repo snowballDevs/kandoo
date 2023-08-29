@@ -11,6 +11,8 @@ import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import Modal from '../components/Modal';
 import useEditingMode from '../hooks/useEditingMode';
 import TextAreaEditor from '../components/textAreaEditor';
+import useEditingMode from '../hooks/useEditingMode';
+import TextAreaEditor from '../components/textAreaEditor';
 
 const WorkspaceHeader = ({boardInfo}) => {
     const {setCurrentPage} = useRoutingContext();
@@ -22,7 +24,15 @@ const WorkspaceHeader = ({boardInfo}) => {
       boardName: boardInfo.boardName,
       description: boardInfo.description,
     })
+    const [formData, setFormData] = useState({
+      boardName: boardInfo.boardName,
+      description: boardInfo.description,
+    })
 
+    const {
+        isEditing,
+        toggleEditMode,
+    } = useEditingMode();
     const {
         isEditing,
         toggleEditMode,
@@ -92,6 +102,12 @@ const WorkspaceHeader = ({boardInfo}) => {
                     <h2 className='text-gray-700 mb-4 text-sm dark:text-gray-400'>
                         Created: {formatDate(boardInfo.createdAt)}
                     </h2>
+                    {isEditing ? ( <TextAreaEditor boardInfo={boardInfo} setFormData={setFormData} formData={formData} isEditing={isEditing} toggleEditMode={toggleEditMode} initialDescription={boardInfo.description} />
+                    ) : (
+                        <p className='text-secondaryLight line-clamp-2'>
+                            {formData.description}
+                        </p>
+                    )}
                     {isEditing ? ( <TextAreaEditor boardInfo={boardInfo} setFormData={setFormData} formData={formData} isEditing={isEditing} toggleEditMode={toggleEditMode} initialDescription={boardInfo.description} />
                     ) : (
                         <p className='text-secondaryLight line-clamp-2'>
