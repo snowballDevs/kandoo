@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 const {Board} = require('../models/Board');
-const getUserNamesByIds = require('../middleware/usernames')
 
 module.exports = {
     // used on the dashboard to get all the boards
