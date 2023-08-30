@@ -19,7 +19,7 @@ const LandingPage = () => {
         handleFormChange('register');
     };
 
-    useEffect(() => {
+    useEffect(() => { // Added this for removing the scrolling bar
             document.body.classList.add('overflow-hidden');
     }, [isModalOpen]);
 
