@@ -6,8 +6,9 @@ module.exports = {
     getUser: (req, res) => {
         console.log(req.isAuthenticated());
         if (req.isAuthenticated()) {
-            const {firstName, lastName, _id} = req.user;
-            return res.json({firstName, lastName, _id});
+            console.log('responding from server, the user is: ', req.user);
+
+            return res.json({user: req.user.toJSON()});
         }
         console.log('Not signed in');
         return res.json(null);
@@ -31,12 +32,11 @@ module.exports = {
                     return next(err);
                 }
 
-                console.log(user);
                 // Authentication and login successful
-                const {firstName, lastName, _id} = req.user;
+
                 return res.status(200).json({
                     message: 'Login successful',
-                    user: {firstName, lastName, fullname, _id},
+                    user: user.toJSON(),
                 });
             });
         })(req, res, next);
@@ -65,9 +65,11 @@ module.exports = {
                     return res.status(500).json({error: 'Login error'});
                 }
                 // User is logged in
-                return res
-                    .status(200)
-                    .json({message: 'Signup and login successful'});
+                console.log(user);
+                return res.status(200).json({
+                    message: 'Signup and login successful',
+                    user: user.toJSON(),
+                });
             });
         } catch (err) {
             next(err);
@@ -75,9 +77,14 @@ module.exports = {
     },
 
     logout: (req, res) => {
-        req.logout(() => {
-            console.log('User has logged out.');
-        });
-        res.json({message: 'Logged out successfully'});
+        try {
+            req.logout(() => {
+                console.log('User has logged out.');
+            });
+
+            res.json({message: 'Logged out successfully'});
+        } catch (e) {
+            console.log('This E', e);
+        }
     },
 };

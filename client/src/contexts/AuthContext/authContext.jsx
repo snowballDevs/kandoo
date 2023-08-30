@@ -13,31 +13,32 @@ const useAuthContext = () => useContext(AuthContext);
 // a provider is a component that allows you to share context with its nested components
 const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
-    console.log(useModalContext);
-    const {setCurrentPage} = useRoutingContext(); // temp
+    const {setCurrentPage} = useRoutingContext();
     const {handleClose} = useModalContext();
 
+    // To check if there is already a user session
     useEffect(() => {
-        async function authenticated() {
+        async function authCheck() {
             try {
-                const data = await dataService.getUser();
-                console.log(data);
-                const user = data.data;
+                const response = await dataService.getUser();
+                console.log(response);
+                const user = response.data;
                 console.log('Get User', user);
+
+                // is user session, save user's info to the context
                 if (user instanceof Object) {
                     console.log(user);
                     setUser(user);
                     setCurrentPage('dashboard');
-                    // setting state for logged in user's first and last name
-                    // console.log(`${data.data.user.firstName} ${data.data.user.lastName}`)
                 } else {
+                    setUser(null);
                     setCurrentPage('landingPage');
                 }
             } catch (err) {
                 console.log(err);
             }
         }
-        authenticated();
+        authCheck();
     }, []);
 
     const login = async (data) => {
@@ -45,7 +46,7 @@ const AuthProvider = ({children}) => {
 
         try {
             const response = await dataService.login(data);
-
+            console.log(response);
             if (response.status >= 200 && response.status < 300) {
                 const user = response.data.user;
                 setUser(user);
@@ -62,7 +63,6 @@ const AuthProvider = ({children}) => {
 
         try {
             const response = await dataService.logout();
-            console.log(response);
             setUser(null);
             setCurrentPage('landingPage');
         } catch (err) {
@@ -70,8 +70,25 @@ const AuthProvider = ({children}) => {
         }
     };
 
+    const signUp = async (data) => {
+        try {
+            const response = await dataService.signup(data);
+            if (response.status >= 200 && response.status < 300) {
+                const user = response.data.user;
+                setUser(user);
+                handleClose();
+                setCurrentPage('dashboard');
+            }
+        } catch (error) {
+            console.error('Error message: ', error.message);
+        }
+    };
+
     // useMemo is a Hook that lets you cache the result of a calculation between re-renders.
-    const authValue = useMemo(() => ({user, setUser, login, logout}), [user]);
+    const authValue = useMemo(
+        () => ({user, setUser, login, logout, signUp}),
+        [user]
+    );
 
     return (
         <AuthContext.Provider value={authValue}>

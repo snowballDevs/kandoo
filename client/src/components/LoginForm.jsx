@@ -31,11 +31,8 @@ const LoginForm = () => {
         event.preventDefault();
         try {
             const response = await login(formData);
-            console.log(response);
+            
             // handle response
-            if (response.status >= 200 && response.status < 300) {
-                handleClose();
-            }
         } catch (error) {
             console.error('Error: ', error.message);
         }
