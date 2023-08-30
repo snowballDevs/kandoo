@@ -31,6 +31,7 @@ module.exports = {
                 extensions: ['.jsx'],
             },
         ],
+        'react/jsx-no-bind': [0],
         'react/jsx-props-no-spreading': 'off',
         'react/function-component-definition': [
             'error',
@@ -40,6 +41,7 @@ module.exports = {
             },
         ],
         'react/prop-types': 0,
+        'no-underscore-dangle': ['error', {allow: ['_id']}],
     },
     settings: {
         react: {

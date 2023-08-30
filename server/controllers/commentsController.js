@@ -109,7 +109,19 @@ module.exports = {
                 res.json('Column not found');
             }
 
-            column.tasks.id(taskId).comments.id(commentId).$inc('likes', 1);
+            const task = column.tasks.id(taskId)
+            if(!task) {
+              return res.json('Task not found');
+            }
+
+            const comment = task.comments.id(commentId)
+            if(!comment) {
+              return res.json('Comment not found');
+            }
+            comment.$inc('likes', 1);
+            // column.tasks.id(taskId).comments.id(commentId).$inc('likes', 1);
+
+            // comment.likes+=1
             await board.save();
 
             return res.json(board);

@@ -29,7 +29,7 @@ module.exports = {
                     tasks: [
                         {
                             taskName: 'Add your tasks here!',
-                            priority: 1,
+                            priority: "medium",
                             taskDetail:
                                 'Add more in-depth task information here!',
                         },
