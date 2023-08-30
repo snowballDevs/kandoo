@@ -12,7 +12,7 @@ const RegisterForm = ({formDisplay}) => {
 
     const {handleClose} = useContext(ModalContext);
 
-    const {setIsAuthenticated} = useAuthContext();
+    const {setUser} = useAuthContext();
 
     const {setCurrentPage} = useRoutingContext();
 
@@ -33,7 +33,7 @@ const RegisterForm = ({formDisplay}) => {
                 console.log('Registration successful: ', response);
                 handleClose();
                 setCurrentPage('dashboard');
-                setIsAuthenticated(true);
+                setUser(true);
             }
         } catch (error) {
             console.error('Error message: ', error.message);

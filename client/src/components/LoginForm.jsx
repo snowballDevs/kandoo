@@ -8,7 +8,7 @@ import {useAuthContext} from '../contexts/AuthContext/authContext';
 const LoginForm = () => {
     const {handleClose} = useContext(ModalContext);
 
-    const {setIsAuthenticated} = useAuthContext();
+    const {setUser, login, logout} = useAuthContext();
 
     const {setCurrentPage} = useRoutingContext();
 
@@ -30,12 +30,10 @@ const LoginForm = () => {
         // prevent refreshing the form
         event.preventDefault();
         try {
-            const response = await dataService.login(formData);
+            const response = await login(formData);
+            console.log(response);
             // handle response
             if (response.status >= 200 && response.status < 300) {
-                console.log('Request Successful', response);
-                setCurrentPage('dashboard');
-                setIsAuthenticated(true);
                 handleClose();
             }
         } catch (error) {

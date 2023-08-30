@@ -9,24 +9,22 @@ function classNames(...classes) {
 }
 
 const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
-    const [user, setUser] = useState('');
-    const {isAuthenticated} = useAuthContext();
+    const {user} = useAuthContext();
     const [allComments, setAllComments] = useState(taskComments);
-    console.log(allComments);
+
+    console.log(user);
 
     // comment input form data
     const [commentInput, setCommentInput] = useState({
         description: '',
-        createdBy: user,
     });
-
 
     const addNewComment = (commentInput, dateTime, commentIdx) => {
         setAllComments([
             ...allComments,
             {
                 description: commentInput.description,
-                createdBy: user,
+                createdBy: user._id,
                 likes: 0,
                 commentDate: dateTime,
             },
@@ -43,28 +41,34 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
             );
             console.log(response);
 
-            setAllComments(prevComments =>
-              prevComments.map(comment =>
-                  comment._id === commentid
-                      ? { ...comment, likes: comment.likes + 1 }
-                      : comment
-              )
-          );
-            
+            setAllComments((prevComments) =>
+                prevComments.map((comment) =>
+                    comment._id === commentid
+                        ? {...comment, likes: comment.likes + 1}
+                        : comment
+                )
+            );
         } catch (error) {
             console.error(error);
         }
     };
 
-    const deleteComment = async ( commentid) => {
-      try {
-        const response = await dataService.deleteComment(boardId, columnId, taskId, commentid)
-        console.log(response)
-        setAllComments(oldComments => oldComments.filter(cmts => cmts._id !== commentid))
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    const deleteComment = async (commentid) => {
+        try {
+            const response = await dataService.deleteComment(
+                boardId,
+                columnId,
+                taskId,
+                commentid
+            );
+            console.log(response);
+            setAllComments((oldComments) =>
+                oldComments.filter((cmts) => cmts._id !== commentid)
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const handleCommentChange = (event) => {
         const {name, value} = event.target;
@@ -84,12 +88,14 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                 taskId,
                 commentInput
             );
-            console.log(response);
+
+            const comment = response.data;
             // resets comment textarea
-            addNewComment(commentInput, Date.now(), allComments.length);
+
+            setAllComments((prevComments) => [...prevComments, comment]);
+            console.log(allComments);
             setCommentInput({
                 description: '',
-                createdBy: user,
             });
         } catch (error) {
             console.log(error);
@@ -97,22 +103,6 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
         // this stops parent forms from being submitted
         event.stopPropagation();
     };
-
-    useEffect(() => {
-      async function fetchUser() {
-        try {
-          const response = await dataService.getUser();
-          console.log(response)
-          if (response.status >= 200 && response.status < 300) {
-            setUser(`${response.data.user.firstName} ${response.data.user.lastName}`)
-            console.log(user)
-        }
-        } catch (error) {
-          console.error(`error from commentFeed useEffect: `, error);
-        }
-      }
-      fetchUser()
-    },[commentInput])
 
     return (
         <div className='space-y-2 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5 basis-2/3'>
@@ -148,7 +138,8 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                             <div>
                                 <div className='ml-8'>
                                     <ProfileIcon
-                                        firstLastName={comment.createdBy}
+                                        firstName={user.firstName}
+                                        lastName={user.lastName}
                                     />
                                 </div>
                                 <div className='flex'>
@@ -202,7 +193,9 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                                             <button
                                                 type='button'
                                                 className='items-end'
-                                                onClick={() => deleteComment(comment._id)}
+                                                onClick={() =>
+                                                    deleteComment(comment._id)
+                                                }
                                             >
                                                 <svg
                                                     xmlns='http://www.w3.org/2000/svg'
@@ -234,7 +227,10 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
 
             {/* New comment form */}
             <div className='mt-6 flex gap-x-3 pt-4'>
-                <ProfileIcon firstLastName={user} />
+                <ProfileIcon
+                    firstName={user.firstName}
+                    lastName={user.lastName}
+                />
 
                 <form
                     onSubmit={handleCommentSubmit}

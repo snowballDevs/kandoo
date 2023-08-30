@@ -2,6 +2,7 @@ import {useState, useContext} from 'react';
 import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
 import {ToastContainer, toast} from 'react-toastify';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
+import {useAuthContext} from '../contexts/AuthContext/authContext';
 import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
 import dataService from '../services/dataService';
 import formatDate from '../utils/formatDate';
@@ -16,6 +17,7 @@ const WorkspaceHeader = ({boardInfo}) => {
     const {setCurrentPage} = useRoutingContext();
     const {handleModal, isModalOpen, handleClose, handleOpen} =
         useContext(ModalContext);
+    const {user} = useAuthContext();
 
     const [displayedModal, setDisplayedModal] = useState(null);
     const [formData, setFormData] = useState({
@@ -31,8 +33,7 @@ const WorkspaceHeader = ({boardInfo}) => {
 
     const deleteProject = async (id) => {
         try {
-            const data = await dataService.getUser();
-            const user = data.data.user._id;
+            const user = user._id;
             if (user === boardInfo.createdBy) {
                 const deletedProject = await dataService.deleteBoard(id);
                 console.log(deletedProject);

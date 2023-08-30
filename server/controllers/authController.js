@@ -6,11 +6,11 @@ module.exports = {
     getUser: (req, res) => {
         console.log(req.isAuthenticated());
         if (req.isAuthenticated()) {
-            console.log('responding from server, the user is: ',req.user);
-            return res.json({isLoggedIn: true, user: req.user});
+            const {firstName, lastName, _id} = req.user;
+            return res.json({firstName, lastName, _id});
         }
         console.log('Not signed in');
-        return res.json({isLoggedIn: false});
+        return res.json(null);
     },
 
     login: (req, res, next) => {
@@ -33,7 +33,11 @@ module.exports = {
 
                 console.log(user);
                 // Authentication and login successful
-                return res.status(200).json({message: 'Login successful'});
+                const {firstName, lastName, _id} = req.user;
+                return res.status(200).json({
+                    message: 'Login successful',
+                    user: {firstName, lastName, fullname, _id},
+                });
             });
         })(req, res, next);
     },

@@ -45,7 +45,7 @@ module.exports = {
             task.comments.push(comment);
             board.save();
 
-            return res.json(board);
+            return res.json(board.column.task);
         } catch (error) {
             console.error(error);
         }
