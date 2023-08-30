@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
 import {
     DndContext,
@@ -24,14 +24,18 @@ import SortableTask from './SortableTask';
 import SortableColumn from './SortableColumn';
 import TaskCard from './TaskCard';
 import PlaceholderColumn from './PlaceHolderColumn';
+import { useModalContext } from '../../contexts/ModalContext/ModalContext';
+import { useSelectedBoardContext } from '../../contexts/BoardContext/boardContext';
 
 const KanbanBoard = ({boardInfo}) => {
     const {columns} = boardInfo;
+    const {handleSlideOver, isSlideOverOpen} = useModalContext();
+    const {selectedTask, setSelectedTask} = useSelectedBoardContext()
 
     const [items, setItems] = useState(columns);
     const [containers, setContainers] = useState(Object.keys(items));
     const [activeId, setActiveId] = useState(null);
-    console.log(boardInfo)
+    // console.log(boardInfo)
 
     const PLACEHOLDER_ID = 'placeholder';
 
@@ -109,6 +113,17 @@ const KanbanBoard = ({boardInfo}) => {
         });
     }
 
+    const handleTaskSlideOver = (task) => {
+        setSelectedTask(task)
+        // console.log(selectedTask)
+        handleSlideOver();
+    };
+
+    // Debugging what selected task is
+    useEffect(() => {
+      console.log('clicked on the following task: ',selectedTask)
+    },[selectedTask])
+
     return (
         <div className=' bg-tertiaryLight flex mx-auto py-8'>
             <DndContext
@@ -160,6 +175,7 @@ const KanbanBoard = ({boardInfo}) => {
                                         strategy={verticalListSortingStrategy}
                                     >
                                         {taskIds.map((task, index) => (
+                                          <button type='button' key={task} onClick={() => handleTaskSlideOver(items[containerId].tasks[index])}>
                                             <SortableTask
                                                 id={task}
                                                 key={task}
@@ -168,16 +184,8 @@ const KanbanBoard = ({boardInfo}) => {
                                                         index
                                                     ]
                                                 }
-                                                taskName={items[containerId].tasks[index].taskName}
-                                                taskComments={items[containerId].tasks[index].comments}
-                                                tags={items[containerId].tasks[index].tags}
-                                                assignedUserIds={items[containerId].tasks[index].assignedUserIds}
-                                                columnName={items[containerId].title}
-                                                createdAt={items[containerId].tasks[index].created_at}
-                                                boardId={boardInfo._id}
-                                                columnId={items[containerId]._id}
-                                                priority={items[containerId].tasks[index].priority}
-                                            />
+                                                />
+                                                </button>
                                         ))}
                                     </SortableContext>
                                 </SortableColumn>

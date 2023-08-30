@@ -470,12 +470,12 @@ const WorkspaceSlideOver = ({
                                                 </div>
                                             </form>
                                             {/* Comments */}
-                                          {editingMode === false && <CommentFeed
+                                          {/* {editingMode === false && <CommentFeed
                                                 taskId={taskId}
                                                 taskComments={taskComments}
                                                 boardId={boardId}
                                                 columnId={columnId}
-                                            />}
+                                            />} */}
                                             
                                         </div>
                                     </div>
