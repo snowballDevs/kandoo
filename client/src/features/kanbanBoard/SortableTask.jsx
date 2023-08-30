@@ -14,6 +14,7 @@ const SortableTask = ({
     boardId,
     columnId,
     priority,
+    usersId
 }) => {
 
     const {
@@ -43,6 +44,7 @@ const SortableTask = ({
                 taskName ={taskName}
                 taskComments = {taskComments}
                 tags = {tags}
+                usersId = {usersId}
                 assignedUserIds = {assignedUserIds}
                 columnName = {columnName}
                 createdAt= {createdAt}

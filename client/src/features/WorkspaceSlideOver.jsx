@@ -2,11 +2,14 @@ import {Fragment, useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 // import {ToastContainer, toast} from 'react-toastify';
 import {BsPlus, BsXLg} from 'react-icons/bs';
-import {MdModeEdit} from 'react-icons/md';
+import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
 import dataService from '../services/dataService';
 import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
 import CommentFeed from './CommentFeed';
+import AssignmentBox from '../components/AssignmentBox';
+
+
 
 const WorkspaceSlideOver = ({
     taskId,
@@ -14,6 +17,7 @@ const WorkspaceSlideOver = ({
     taskDetail,
     taskComments,
     tags,
+    usersId,
     assignedUserIds,
     columnName,
     createdAt,
@@ -31,36 +35,38 @@ const WorkspaceSlideOver = ({
       priority,
   });
 
+  console.log(usersId)
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
     };
 
     async function handleTaskSubmit(event) {
-        event.preventDefault();
-        try {
-            const response = await dataService.updateTask(
-                boardId,
-                columnId,
-                taskId,
-                formData
-            );
-            console.log(response);
+            event.preventDefault()
+            try {
+              const response = await dataService.updateTask(
+                            boardId,
+                            columnId,
+                            taskId,
+                            formData
+                        );
+              console.log(response)
             //   setIsDirty(false);
-            toggleEditingMode();
-        } catch (error) {
-            console.error(error);
-        }
-    }
+              toggleEditingMode()
+      
+            } catch (error) {
+              console.error(error)
+            }
+          }
 
     function handleTaskChange(event) {
         // setIsDirty(true);
-        console.log(event);
-        const {name, value, type, checked} = event.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
+        console.log(event)
+        const {name, value, type, checked} = event.target
+        setFormData(prevFormData => ({
+                ...prevFormData,
+                [name]: type === "checkbox" ? checked : value
+            }))
     }
 
 
@@ -218,6 +224,9 @@ const WorkspaceSlideOver = ({
                                                         </div>
                                                         <div className='sm:col-span-2 text-sm font-medium leading-6 text-gray-900 '>
                                                             <div className='flex space-x-2'>
+                                                                <AssignmentBox 
+                                                                    usersId = {usersId}
+                                                                    />
                                                                 {assignedUserIds &&
                                                                     assignedUserIds.map(
                                                                         (
@@ -287,9 +296,7 @@ const WorkspaceSlideOver = ({
                                                             />
                                                         ) : (
                                                             <p className='text-sm text-gray-500'>
-                                                                {
-                                                                    formData.taskDetail
-                                                                }
+                                                                {formData.taskDetail}
                                                             </p>
                                                         )}
                                                     </div>

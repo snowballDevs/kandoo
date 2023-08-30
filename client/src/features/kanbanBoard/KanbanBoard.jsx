@@ -171,6 +171,7 @@ const KanbanBoard = ({boardInfo}) => {
                                                 taskName={items[containerId].tasks[index].taskName}
                                                 taskComments={items[containerId].tasks[index].comments}
                                                 tags={items[containerId].tasks[index].tags}
+                                                usersId={[boardInfo.users]}
                                                 assignedUserIds={items[containerId].tasks[index].assignedUserIds}
                                                 columnName={items[containerId].title}
                                                 createdAt={items[containerId].tasks[index].created_at}

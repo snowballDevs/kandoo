@@ -9,6 +9,7 @@ const TaskCard = ({
     taskDetail,
     taskComments,
     tags,
+    usersId,
     assignedUserIds,
     columnName,
     createdAt,
@@ -52,6 +53,7 @@ const TaskCard = ({
                 taskDetail={taskDetail}
                 taskComments={taskComments}
                 tags={tags}
+                usersId={usersId}
                 assignedUserIds={assignedUserIds}
                 columnName={columnName}
                 createdAt={createdAt}
