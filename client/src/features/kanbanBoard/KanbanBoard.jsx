@@ -29,8 +29,8 @@ import { useSelectedBoardContext } from '../../contexts/BoardContext/boardContex
 
 const KanbanBoard = ({boardInfo}) => {
     const {columns} = boardInfo;
-    const {handleSlideOver, isSlideOverOpen} = useModalContext();
-    const {selectedTask, setSelectedTask} = useSelectedBoardContext()
+    const {handleSlideOver, isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
+    const {selectedTask, setSelectedTask, selectedColumn, setSelectedColumn} = useSelectedBoardContext()
 
     const [items, setItems] = useState(columns);
     const [containers, setContainers] = useState(Object.keys(items));
@@ -113,16 +113,17 @@ const KanbanBoard = ({boardInfo}) => {
         });
     }
 
-    const handleTaskSlideOver = (task) => {
+    const handleTaskSlideOver = (task, column) => {
         setSelectedTask(task)
-        // console.log(selectedTask)
-        handleSlideOver();
+        setSelectedColumn(column)
+        setIsSlideOverOpen(true)
     };
 
     // Debugging what selected task is
-    useEffect(() => {
-      console.log('clicked on the following task: ',selectedTask)
-    },[selectedTask])
+    // useEffect(() => {
+    //   console.log('clicked on the following task: ',selectedTask)
+    //   console.log('column!: ',selectedColumn)
+    // },[selectedTask])
 
     return (
         <div className=' bg-tertiaryLight flex mx-auto py-8'>
@@ -175,7 +176,7 @@ const KanbanBoard = ({boardInfo}) => {
                                         strategy={verticalListSortingStrategy}
                                     >
                                         {taskIds.map((task, index) => (
-                                          <button type='button' key={task} onClick={() => handleTaskSlideOver(items[containerId].tasks[index])}>
+                                          <button type='button' key={task} onClick={() => handleTaskSlideOver(items[containerId].tasks[index], items[containerId] )}>
                                             <SortableTask
                                                 id={task}
                                                 key={task}
