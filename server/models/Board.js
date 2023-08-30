@@ -23,7 +23,6 @@ const taskSchema = new mongoose.Schema({
     priority: {type: String, required: false},
 
     // column: {columnSchema},
-
     tags: {type: Array, required: false},
 
     taskDetail: {type: String, required: false},

@@ -245,6 +245,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                             rows={2}
                             name='description'
                             id='description'
+                            required
                             className='block w-full resize-y border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
                             placeholder='Add your comment...'
                             onChange={handleCommentChange}
