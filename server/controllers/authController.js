@@ -6,35 +6,40 @@ module.exports = {
     getUser: (req, res) => {
         console.log(req.isAuthenticated());
         if (req.isAuthenticated()) {
-            console.log('responding from server, the user is: ',req.user);
-            return res.json({isLoggedIn: true, user: req.user});
+            console.log('responding from server, the user is: ', req.user);
+
+            return res.json({user: req.user.toJSON()});
         }
         console.log('Not signed in');
-        return res.json({isLoggedIn: false});
+        return res.json(null);
     },
 
     login: (req, res, next) => {
-        console.log(req.body);
-        passport.authenticate('local', (err, user, info) => {
-            if (err) {
+        passport.authenticate('local', (authErr, user, info) => {
+            if (authErr) {
                 // Handle authentication error
-                return next(err);
+                return next(authErr);
             }
             if (!user) {
                 // Handle authentication failure
                 return res.status(401).json({message: info.message});
             }
 
-            req.login(user, (err) => {
-                if (err) {
+            req.login(user, (loginErr) => {
+                if (loginErr) {
                     // Handle login error
-                    return next(err);
+                    return next(loginErr);
                 }
 
-                console.log(user);
                 // Authentication and login successful
-                return res.status(200).json({message: 'Login successful'});
+
+                return res.status(200).json({
+                    message: 'Login successful',
+                    user: user.toJSON(),
+                });
             });
+
+            return undefined;
         })(req, res, next);
     },
 
@@ -61,9 +66,11 @@ module.exports = {
                     return res.status(500).json({error: 'Login error'});
                 }
                 // User is logged in
-                return res
-                    .status(200)
-                    .json({message: 'Signup and login successful'});
+                console.log(user);
+                return res.status(200).json({
+                    message: 'Signup and login successful',
+                    user: user.toJSON(),
+                });
             });
         } catch (err) {
             next(err);
@@ -71,9 +78,14 @@ module.exports = {
     },
 
     logout: (req, res) => {
-        req.logout(() => {
-            console.log('User has logged out.');
-        });
-        res.json({message: 'Logged out successfully'});
+        try {
+            req.logout(() => {
+                console.log('User has logged out.');
+            });
+
+            res.json({message: 'Logged out successfully'});
+        } catch (e) {
+            console.log('This E', e);
+        }
     },
 };
