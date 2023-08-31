@@ -21,13 +21,13 @@ const TaskCard = ({
     const [mouseIsOver, setMouseIsOver] = useState(false);
     const [editMode, setEditMode] = useState(false);
 
-    const getPriorityColor = (priority) => {
-        const priorityColorMap = {
-            high: 'red-200',    // Change 'high' to the actual priority value
-            medium: 'yellow-200', // Change 'medium' to the actual priority value
-        };
-        return priorityColorMap[priority] || 'blue-200'; // Default to low priority color 
-    };
+    // const getPriorityColor = (priority) => {
+    //     const priorityColorMap = {
+    //         high: 'red-200',    // Change 'high' to the actual priority value
+    //         medium: 'yellow-200', // Change 'medium' to the actual priority value
+    //     };
+    //     return priorityColorMap[priority] || 'blue-200'; // Default to low priority color 
+    // };
     
 
     if (editMode) {
@@ -51,10 +51,10 @@ const TaskCard = ({
         );
     }
 
-    const taskStyle = {
-        backgroundColor: 'whiteLight',
-        borderLeft: `5px solid ${getPriorityColor(priority)}`,
-    };
+    // const taskStyle = {
+    //     backgroundColor: 'whiteLight',
+    //     borderLeft: `5px solid ${getPriorityColor(priority)}`,
+    // };
 
 
     return (
@@ -76,9 +76,10 @@ const TaskCard = ({
                 priority={priority}
             />
             
-            {/* task -- if you try to change the template literals, they will stop working until you re-type them. Idk why. --Michelle */}
+
             <div
-                className={`px-2 py-4 items-center flex text-left hover:ring-1 hover:ring hover:ring-pinkLight cursor-grab relative task border-l-4 border-${getPriorityColor(priority)}`}
+                className={`px-2 py-4 items-center flex text-left hover:ring-1 hover:ring-pinkLight cursor-grab relative task border-l-4 bg-white
+                ${priority === "high" && "border-l-red-200 "} ${priority === "medium" && "border-l-yellow-200"} ${priority === "low" && "border-l-blue-200"}`}
                 onMouseEnter={() => {
                     setMouseIsOver(true);
                 }}
@@ -87,10 +88,10 @@ const TaskCard = ({
                 }}
                 onClick={() => handleSlideOver()}
 
-                style={{
-                    backgroundColor: 'white',
-                    borderLeft: `5px solid ${getPriorityColor(priority)}`,
-                }}
+                // style={{
+                //     backgroundColor: 'white',
+                //     borderLeft: `5px solid ${getPriorityColor(priority)}`,
+                // }}
             >
                 <p className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-black'>
                     {taskName}

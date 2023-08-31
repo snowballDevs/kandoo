@@ -44,19 +44,6 @@ $ Include server port & connection in .env file
 $ To start project: concurrently "cd server && npm run dev" "cd client && npm run dev"
 ```
 
-## API Routes
-
-The app provides the following API routes:
-
-* GET /: Main route, serving basic app information.
-* GET /boards: Get all boards.
-* POST /boards: Create a new board.
-* GET /boards/:boardId: Get details of a specific board.
-* PUT /boards/:boardId: Update a specific board.
-* DELETE /boards/:boardId: Delete a specific board.
-* Other routes as needed for columns, tasks, and comments.
-
-For detailed information on each route's functionalities and parameters, refer to the source code and API documentation.
 
 
 ## Contributors
