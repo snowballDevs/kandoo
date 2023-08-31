@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import ProfileIcon from '../components/ProfileIcon';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
+import { useSelectedBoardContext } from '../contexts/BoardContext/boardContext';
 import dataService from '../services/dataService';
 import formattedDate from '../utils/formatDate';
 
@@ -8,11 +9,13 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
-const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
+const CommentFeed = ({ boardId, columnId, taskId}) => {
     const {user} = useAuthContext();
-    const [allComments, setAllComments] = useState(taskComments);
+    const { selectedComments, setSelectedComments, selectedTask, setSelectedTask, selectedBoard, setSelectedBoard, selectedColumn} = useSelectedBoardContext();
+    
+    // const [selectedComments, setSelectedComments] = useState(taskComments);
 
-    console.log(allComments);
+    // console.log(selectedComments);
 
     // comment input form data
     const [commentInput, setCommentInput] = useState({
@@ -29,7 +32,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
             );
             // console.log(response);
 
-            setAllComments((prevComments) =>
+            setSelectedComments((prevComments) =>
                 prevComments.map((comment) =>
                     comment._id === commentid
                         ? {...comment, likes: comment.likes + 1}
@@ -49,8 +52,8 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                 taskId,
                 commentid
             );
-            console.log(response);
-            setAllComments((oldComments) =>
+            // console.log(response);
+            setSelectedComments((oldComments) =>
                 oldComments.filter((cmts) => cmts._id !== commentid)
             );
         } catch (error) {
@@ -64,7 +67,6 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
             ...prevComment,
             [name]: value,
         }));
-        // console.log(event.target.value);
     };
 
     const handleCommentSubmit = async (event) => {
@@ -77,12 +79,19 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                 commentInput
             );
 
-            console.log(response);
+            setSelectedBoard(response.data.board)
+            setSelectedTask(response.data.task)
+            setSelectedComments(response.data.task.comments)
+            
+            // setSelectedBoard(response.data)
+            // setSelectedTask(response.data)
+            // setSelectedTask(response.data)
+            
+            // setSelectedComments(response.data.comments)
+    
 
-            const comment = response.data;
-            // resets comment textarea
-
-            setAllComments((prevComments) => [...prevComments, comment]);
+            // setSelectedComments((prevComments) => [...prevComments, comment]);
+            // console.log(selectedComments)
 
             setCommentInput({
                 description: '',
@@ -91,7 +100,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
             console.log(error);
         }
         // this stops parent forms from being submitted
-        event.stopPropagation();
+        // event.stopPropagation();
     };
 
     return (
@@ -101,23 +110,23 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                     htmlFor='project-comments'
                     className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5 mb-3'
                 >
-                    {allComments.length > 0
-                        ? `${allComments.length} Comment${
-                              allComments.length === 1 ? '' : 's'
+                    {selectedComments.length > 0
+                        ? `${selectedComments.length} Comment${
+                              selectedComments.length === 1 ? '' : 's'
                           }`
                         : 'No Comments (Yet)'}
                 </h3>
             </div>
-            {allComments.length > 0 ? (
-                <ul className=' space-y-6 mt-3 overflow-y-auto'key={allComments}>
-                    {allComments.map((comment, commentIdx) => (
+            {selectedComments.length > 0 ? (
+                <ul className=' space-y-6 mt-3 overflow-y-auto'key={selectedComments}>
+                    {selectedComments.map((comment, commentIdx) => (
                         <li
                             key={comment._id}
                             className='relative flex gap-x-4 my-2'
                         >
                             <div
                                 className={classNames(
-                                    commentIdx === allComments.length - 1
+                                    commentIdx === selectedComments.length - 1
                                         ? 'h-6'
                                         : '-bottom-6',
                                     'absolute left-0 top-0 flex w-6 justify-center'

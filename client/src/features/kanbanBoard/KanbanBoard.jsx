@@ -27,15 +27,21 @@ import PlaceholderColumn from './PlaceHolderColumn';
 import { useModalContext } from '../../contexts/ModalContext/ModalContext';
 import { useSelectedBoardContext } from '../../contexts/BoardContext/boardContext';
 
-const KanbanBoard = ({boardInfo}) => {
-    const {columns} = boardInfo;
+const KanbanBoard = () => {
+  const {selectedTask, setSelectedTask, selectedColumn, setSelectedColumn, selectedComments, setSelectedComments, selectedBoard} = useSelectedBoardContext()
+    // const {columns} = selectedBoard;
+    // console.log(columns)
     const {handleSlideOver, isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
-    const {selectedTask, setSelectedTask, selectedColumn, setSelectedColumn, selectedComments, setSelectedComments} = useSelectedBoardContext()
 
-    const [items, setItems] = useState(columns);
+    const [items, setItems] = useState(selectedBoard.columns);
     const [containers, setContainers] = useState(Object.keys(items));
     const [activeId, setActiveId] = useState(null);
-    // console.log(boardInfo)
+
+    useEffect(() => {
+      setItems(selectedBoard.columns)
+      // console.log(selectedBoard.columns[0].tasks[0].comments)
+      console.log(items)
+    }, [selectedBoard])
 
     const PLACEHOLDER_ID = 'placeholder';
 

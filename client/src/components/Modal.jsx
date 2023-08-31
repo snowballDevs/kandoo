@@ -5,10 +5,10 @@ const Modal = ({children}) => {
     const {isModalOpen, handleClose} = useContext(ModalContext);
 
     useEffect(() => {
-        console.log('Rendered');
+        // console.log('Rendered');
 
         function handleEscapeKey(event) {
-            console.log(event);
+            // console.log(event);
             if (event.code === 'Escape') {
                 handleClose();
             }
@@ -17,7 +17,7 @@ const Modal = ({children}) => {
 
         // cleanup when unmounting/removing this component
         return () => {
-            console.log('removed');
+            // console.log('removed');
             document.removeEventListener('keydown', handleEscapeKey);
         };
     }, []);

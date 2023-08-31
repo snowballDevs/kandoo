@@ -18,6 +18,8 @@ function DataService() {
     // Board
     this.getBoards = () => instance.get(`/boards`);
 
+    this.getBoard = (boardId) => instance.get(`boards/${boardId}`)
+
     this.createBoard = (data) => instance.post(`/boards`, data);
 
     this.joinBoard = (data) => instance.post('/boards/joinBoard', data);

@@ -47,7 +47,13 @@ module.exports = {
 
             const addedComment = task.comments[task.comments.length - 1];
 
-            return res.json(addedComment);
+            const serverResponse = {
+                board,
+                task,
+                addedComment
+            }
+
+            return res.json(serverResponse);
         } catch (error) {
             console.error(error);
         }

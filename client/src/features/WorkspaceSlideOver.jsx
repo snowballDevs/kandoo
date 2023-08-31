@@ -1,4 +1,4 @@
-import {Fragment, useState} from 'react';
+import {Fragment, useState, useEffect } from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 // import {ToastContainer, toast} from 'react-toastify';
 import {BsPlus, BsXLg} from 'react-icons/bs';
@@ -12,11 +12,11 @@ import CommentFeed from './CommentFeed';
 const WorkspaceSlideOver = ({
   boardInfo, 
   taskInfo, 
-  columnInfo
-  
+  columnInfo,
+  updateBoardInfo,
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
-    const {setSelectedTask, setSelectedColumn} = useSelectedBoardContext();
+    const {setSelectedTask, setSelectedColumn, setSelectedComments, selectedComments, } = useSelectedBoardContext();
     const [editingMode, setEditingMode] = useState(false);
     
 
@@ -51,8 +51,14 @@ const WorkspaceSlideOver = ({
     const clearTaskOnClose = () => {
       setSelectedTask(null)
       setSelectedColumn(null)
+      setSelectedComments(null)
       setIsSlideOverOpen(false)
     }
+
+    useEffect(() => {
+      updateBoardInfo(boardInfo._id)
+      console.log(boardInfo)
+    }, [setIsSlideOverOpen])
 
     function handleTaskChange(event) {
         // setIsDirty(true);

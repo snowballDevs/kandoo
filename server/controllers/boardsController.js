@@ -16,6 +16,19 @@ module.exports = {
         }
     },
 
+    getBoard: async (req, res) => {
+      try {
+        const {boardId} = req.params
+        const board = await Board.findById(boardId)
+
+        if(board) {
+          return res.json(board)
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     // used on the boardForm to create a new board on Dashboard
     createBoard: async (req, res) => {
         try {

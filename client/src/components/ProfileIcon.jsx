@@ -1,6 +1,5 @@
 // expectation is the input is `FirstName LastName` like `Keanu Reeves`
 const ProfileIcon = ({firstName, lastName}) => {
-    console.log(firstName, lastName);
 
     const initials = `${firstName[0]}${lastName[0]}`;
 
