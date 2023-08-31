@@ -27,12 +27,13 @@ module.exports = {
         try {
             const {boardId, columnId} = req.params;
             // console.log(req.params);
-            const {taskName, priority, taskDetail} = req.body;
+            const {taskName, priority, taskDetail, assignedUserIds} = req.body;
 
             const task = {
                 taskName,
                 priority,
                 taskDetail,
+                assignedUserIds,
             };
             const board = await Board.findById(boardId);
             const column = board.columns.id(columnId)
@@ -54,15 +55,16 @@ module.exports = {
     updateTask: async (req, res) => {
         try {
             const {boardId, columnId, taskId} = req.params;
-            const {taskName, priority, taskDetail} = req.body;
+            const {taskName, priority, taskDetail, assignedUserIds} = req.body;
             // const board = await Board.findById(boardId)
-            console.log(boardId);
+            // console.log(boardId);
 
             const updatedTask = {
                 // may need to use spread operator to get all of the task properties
                 taskName,
                 priority,
-                taskDetail
+                taskDetail,
+                assignedUserIds
             };
 
             const board = await Board.findById(boardId);

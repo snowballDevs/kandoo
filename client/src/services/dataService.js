@@ -27,6 +27,8 @@ function DataService() {
 
     this.deleteBoard = (boardId) => instance.delete(`/boards/${boardId}`);
 
+    this.getBoardUserNames = (boardId) => instance.get(`/boards/${boardId}`)
+
     // Column
     this.createColumn = (data) =>
         instance.post(`boards/${boardId}/columns`, data);
