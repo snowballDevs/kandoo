@@ -28,19 +28,18 @@ import { useModalContext } from '../../contexts/ModalContext/ModalContext';
 import { useSelectedBoardContext } from '../../contexts/BoardContext/boardContext';
 
 const KanbanBoard = () => {
-  const {selectedTask, setSelectedTask, selectedColumn, setSelectedColumn, selectedComments, setSelectedComments, selectedBoard} = useSelectedBoardContext()
+  const {setSelectedTask, setSelectedColumn, setSelectedComments, selectedBoard} = useSelectedBoardContext()
     // const {columns} = selectedBoard;
     // console.log(columns)
-    const {handleSlideOver, isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
+    const {setIsSlideOverOpen} = useModalContext();
 
     const [items, setItems] = useState(selectedBoard.columns);
     const [containers, setContainers] = useState(Object.keys(items));
     const [activeId, setActiveId] = useState(null);
 
+    // This helps re-render the items state with latest board information
     useEffect(() => {
       setItems(selectedBoard.columns)
-      // console.log(selectedBoard.columns[0].tasks[0].comments)
-      console.log(items)
     }, [selectedBoard])
 
     const PLACEHOLDER_ID = 'placeholder';

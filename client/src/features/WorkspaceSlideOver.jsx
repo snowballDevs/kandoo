@@ -13,13 +13,10 @@ const WorkspaceSlideOver = ({
   boardInfo, 
   taskInfo, 
   columnInfo,
-  updateBoardInfo,
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
     const {setSelectedTask, setSelectedColumn, setSelectedComments, selectedComments, } = useSelectedBoardContext();
     const [editingMode, setEditingMode] = useState(false);
-    
-
     
     const [formData, setFormData] = useState({
       taskName: taskInfo.taskName,
@@ -55,10 +52,7 @@ const WorkspaceSlideOver = ({
       setIsSlideOverOpen(false)
     }
 
-    useEffect(() => {
-      updateBoardInfo(boardInfo._id)
-      console.log(boardInfo)
-    }, [setIsSlideOverOpen])
+    
 
     function handleTaskChange(event) {
         // setIsDirty(true);

@@ -38,7 +38,7 @@ const Workspace = () => {
             <Header />
             <WorkspaceHeader boardInfo={selectedBoard} />
             <KanbanBoard boardInfo={selectedBoard} />
-            {isSlideOverOpen&&<WorkspaceSlideOver  boardInfo={selectedBoard} taskInfo={selectedTask} columnInfo={selectedColumn} updateBoardInfo={updateBoardInfo} />}
+            {isSlideOverOpen&&<WorkspaceSlideOver  boardInfo={selectedBoard} taskInfo={selectedTask} columnInfo={selectedColumn} />}
             {/* <WorkspaceSlideOver  boardInfo={boardInfo} taskInfo={selectedTask}/> */}
         </div>
     );

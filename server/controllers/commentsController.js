@@ -45,12 +45,11 @@ module.exports = {
             task.comments.push(comment);
             board.save();
 
-            const addedComment = task.comments[task.comments.length - 1];
+            // const addedComment = task.comments[task.comments.length - 1];
 
             const serverResponse = {
                 board,
                 task,
-                addedComment
             }
 
             return res.json(serverResponse);
@@ -132,7 +131,7 @@ module.exports = {
             // comment.likes+=1
             await board.save();
 
-            return res.json(board);
+            return res.json(comment);
         } catch (error) {
             console.error(error);
             return res.status(500);
@@ -151,10 +150,11 @@ module.exports = {
             // )
             const board = await Board.findById(boardId);
             const column = board.columns.id(columnId);
-            column.tasks.id(taskId).comments.id(commentId).deleteOne();
+            const task = column.tasks.id(taskId)
+            task.comments.id(commentId).deleteOne();
             await board.save();
-            console.log(board);
-            return res.json(board);
+            console.log(task);
+            return res.json(task);
         } catch (error) {
             console.error(error);
             return res.status(500);

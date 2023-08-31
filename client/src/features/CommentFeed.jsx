@@ -11,6 +11,7 @@ function classNames(...classes) {
 
 const CommentFeed = ({ boardId, columnId, taskId}) => {
     const {user} = useAuthContext();
+    console.log(user)
     const { selectedComments, setSelectedComments, selectedTask, setSelectedTask, selectedBoard, setSelectedBoard, selectedColumn} = useSelectedBoardContext();
     
     // const [selectedComments, setSelectedComments] = useState(taskComments);
@@ -78,18 +79,14 @@ const CommentFeed = ({ boardId, columnId, taskId}) => {
                 taskId,
                 commentInput
             );
+            // TBD on how performant this is compared to setting to response.data.*
+            const incomingData = response.data
 
-            setSelectedBoard(response.data.board)
-            setSelectedTask(response.data.task)
-            setSelectedComments(response.data.task.comments)
-            
-            // setSelectedBoard(response.data)
-            // setSelectedTask(response.data)
-            // setSelectedTask(response.data)
+            setSelectedBoard(incomingData.board)
+            setSelectedTask(incomingData.task)
+            setSelectedComments(incomingData.task.comments)
             
             // setSelectedComments(response.data.comments)
-    
-
             // setSelectedComments((prevComments) => [...prevComments, comment]);
             // console.log(selectedComments)
 
