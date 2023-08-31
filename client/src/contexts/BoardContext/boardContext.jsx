@@ -10,11 +10,14 @@ const useSelectedBoardContext = () => useContext(SelectedBoardContext);
 // a provider is a component that allows you to share context with its nested components
 const SelectedBoardProvider = ({children}) => {
     const [selectedBoard, setSelectedBoard] = useState(null);
+    const [selectedColumn, setSelectedColumn] = useState(null);
+    const [selectedTask, setSelectedTask] = useState(null)
+
 
     // useMemo is a Hook that lets you cache the result of a calculation between re-renders.
     const boardValue = useMemo(
-        () => ({selectedBoard, setSelectedBoard}),
-        [selectedBoard]
+        () => ({selectedBoard, setSelectedBoard,selectedTask, setSelectedTask, selectedColumn, setSelectedColumn}),
+        [selectedBoard, selectedTask, selectedColumn]
     );
 
     return (

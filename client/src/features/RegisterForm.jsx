@@ -12,7 +12,7 @@ const RegisterForm = ({formDisplay}) => {
 
     const {handleClose} = useContext(ModalContext);
 
-    const {setIsAuthenticated} = useAuthContext();
+    const {setUser, signUp} = useAuthContext();
 
     const {setCurrentPage} = useRoutingContext();
 
@@ -28,18 +28,10 @@ const RegisterForm = ({formDisplay}) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await dataService.signup(formData);
-            if (response.status >= 200 && response.status < 300) {
-                console.log('Registration successful: ', response);
-                handleClose();
-                setCurrentPage('dashboard');
-                setIsAuthenticated(true);
-            }
-        } catch (error) {
-            console.error('Error message: ', error.message);
+            const response = await signUp(formData);
+        } catch (e) {
+            console.log(e);
         }
-
-        console.log(event);
     };
 
     return (

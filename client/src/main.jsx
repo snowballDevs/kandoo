@@ -10,13 +10,13 @@ import {SelectedBoardProvider} from './contexts/BoardContext/boardContext';
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <RoutingProvider>
-            <AuthProvider>
-                <SelectedBoardProvider>
-                    <ModalProvider>
+            <ModalProvider>
+                <AuthProvider>
+                    <SelectedBoardProvider>
                         <App />
-                    </ModalProvider>
-                </SelectedBoardProvider>
-            </AuthProvider>
+                    </SelectedBoardProvider>
+                </AuthProvider>
+            </ModalProvider>
         </RoutingProvider>
     </React.StrictMode>
 );

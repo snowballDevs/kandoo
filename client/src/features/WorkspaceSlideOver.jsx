@@ -6,58 +6,56 @@ import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
 import dataService from '../services/dataService';
 import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
+import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext'
 import CommentFeed from './CommentFeed';
 import AssignmentBox from '../components/AssignmentBox';
 
 
 
 const WorkspaceSlideOver = ({
-    taskId,
-    taskName,
-    taskDetail,
-    taskComments,
-    tags,
-    usersId,
-    assignedUserIds,
-    columnName,
-    createdAt,
-    boardId,
-    columnId,
-    priority,
-    task
+  boardInfo, 
+  taskInfo, 
+  columnInfo
+  
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
+    const {setSelectedTask, setSelectedColumn} = useSelectedBoardContext();
     const [editingMode, setEditingMode] = useState(false);
+    
 
+    
     const [formData, setFormData] = useState({
-      taskName,
-      taskDetail,
-      priority,
-  });
-
-  console.log(usersId)
+      taskName: taskInfo.taskName,
+      taskDetail: taskInfo.taskDetail,
+      priority: taskInfo.priority,
+    });
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
     };
 
     async function handleTaskSubmit(event) {
-            event.preventDefault()
-            try {
-              const response = await dataService.updateTask(
-                            boardId,
-                            columnId,
-                            taskId,
-                            formData
-                        );
-              console.log(response)
+        event.preventDefault();
+        try {
+            const response = await dataService.updateTask(
+                boardInfo._id,
+                columnInfo._id,
+                taskInfo._id,
+                formData
+            );
+            console.log(response);
             //   setIsDirty(false);
-              toggleEditingMode()
-      
-            } catch (error) {
-              console.error(error)
-            }
-          }
+            toggleEditingMode();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const clearTaskOnClose = () => {
+      setSelectedTask(null)
+      setSelectedColumn(null)
+      setIsSlideOverOpen(false)
+    }
 
     function handleTaskChange(event) {
         // setIsDirty(true);
@@ -68,7 +66,6 @@ const WorkspaceSlideOver = ({
                 [name]: type === "checkbox" ? checked : value
             }))
     }
-
 
     const priorityDisplay = (level) => {
         if (level === 'high') {
@@ -97,7 +94,7 @@ const WorkspaceSlideOver = ({
             <Dialog
                 as='div'
                 className='relative z-10'
-                onClose={() => setIsSlideOverOpen(false)}
+                onClose={() => clearTaskOnClose()}
             >
                 <div className='fixed inset-0' />
 
@@ -144,7 +141,7 @@ const WorkspaceSlideOver = ({
                                                                         {
                                                                             formData.taskName
                                                                         }
-                                                                        {tags}
+                                                                        {/* {taskInfo.tags} */}
                                                                     </div>
                                                                 )}
                                                             </Dialog.Title>
@@ -153,7 +150,7 @@ const WorkspaceSlideOver = ({
                                                                     in list:{' '}
                                                                     <span className='text-tertiaryLight'>
                                                                         {
-                                                                            columnName
+                                                                            columnInfo.title
                                                                         }
                                                                     </span>
                                                                 </p>
@@ -161,7 +158,7 @@ const WorkspaceSlideOver = ({
                                                             <p className='text-sm text-gray-500 '>
                                                                 Created:{' '}
                                                                 {formatDate(
-                                                                    createdAt
+                                                                    taskInfo.created_at
                                                                 )}
                                                             </p>
                                                         </div>
@@ -170,7 +167,6 @@ const WorkspaceSlideOver = ({
                                                                 false &&
                                                                 priorityDisplay(
                                                                     formData.priority
-
                                                                 )}
                                                         </div>
                                                         <div className='flex h-7 gap-2 items-center'>
@@ -194,9 +190,7 @@ const WorkspaceSlideOver = ({
                                                                 type='button'
                                                                 className='relative text-gray-400 hover:text-gray-500'
                                                                 onClick={() =>
-                                                                    setIsSlideOverOpen(
-                                                                        false
-                                                                    )
+                                                                  clearTaskOnClose()
                                                                 }
                                                             >
                                                                 <span className='absolute -inset-2.5' />
@@ -210,7 +204,6 @@ const WorkspaceSlideOver = ({
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    
                                                 </div>
 
                                                 {/* Divider container */}
@@ -227,8 +220,8 @@ const WorkspaceSlideOver = ({
                                                                 <AssignmentBox 
                                                                     usersId = {usersId}
                                                                     />
-                                                                {assignedUserIds &&
-                                                                    assignedUserIds.map(
+                                                                {taskInfo.assignedUserIds &&
+                                                                    taskInfo.assignedUserIds.map(
                                                                         (
                                                                             person
                                                                         ) => (
@@ -272,35 +265,39 @@ const WorkspaceSlideOver = ({
                                                         </div>
                                                     </div>
 
-                                                {/* Project description */}
-                                                <div className='space-y-2 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
-                                                    <div>
-                                                        <label
-                                                            htmlFor='project-description'
-                                                            className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
-                                                        >
-                                                            Description
-                                                        </label>
+                                                    {/* Project description */}
+                                                    <div className='space-y-2 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                        <div>
+                                                            <label
+                                                                htmlFor='project-description'
+                                                                className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
+                                                            >
+                                                                Description
+                                                            </label>
+                                                        </div>
+                                                        <div className='sm:col-span-3'>
+                                                            {editingMode ? (
+                                                                <textarea
+                                                                    type='text'
+                                                                    rows={3}
+                                                                    value={
+                                                                        formData.taskDetail
+                                                                    }
+                                                                    name='taskDetail'
+                                                                    onChange={
+                                                                        handleTaskChange
+                                                                    }
+                                                                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
+                                                                />
+                                                            ) : (
+                                                                <p className='text-sm text-gray-500'>
+                                                                    {
+                                                                        formData.taskDetail
+                                                                    }
+                                                                </p>
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                    <div className='sm:col-span-3'>
-                                                        {editingMode ? (
-                                                            <textarea
-                                                                type='text'
-                                                                rows={3}
-                                                                value={
-                                                                    formData.taskDetail
-                                                                }
-                                                                name='taskDetail'
-                                                                onChange={handleTaskChange}
-                                                                className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-tertiaryLight sm:text-sm sm:leading-6'
-                                                            />
-                                                        ) : (
-                                                            <p className='text-sm text-gray-500'>
-                                                                {formData.taskDetail}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                </div>
 
                                                     {/* Priority */}
                                                     {editingMode === true && (
@@ -477,13 +474,14 @@ const WorkspaceSlideOver = ({
                                                 </div>
                                             </form>
                                             {/* Comments */}
-                                          {editingMode === false && <CommentFeed
-                                                taskId={taskId}
-                                                taskComments={taskComments}
-                                                boardId={boardId}
-                                                columnId={columnId}
-                                            />}
-                                            
+                                            {editingMode === false && (
+                                                <CommentFeed
+                                                    taskId={taskInfo._id}
+                                                    taskComments={taskInfo.comments}
+                                                    boardId={boardInfo._id}
+                                                    columnId={columnInfo._id}
+                                                />
+                                            )}
                                         </div>
                                     </div>
                                 </Dialog.Panel>
