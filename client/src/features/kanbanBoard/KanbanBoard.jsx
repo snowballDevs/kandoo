@@ -24,14 +24,14 @@ import SortableTask from './SortableTask';
 import SortableColumn from './SortableColumn';
 import TaskCard from './TaskCard';
 import PlaceholderColumn from './PlaceHolderColumn';
-
+import dataService from '../../services/dataService';
 const KanbanBoard = ({boardInfo}) => {
     const {columns} = boardInfo;
 
     const [items, setItems] = useState(columns);
     const [containers, setContainers] = useState(Object.keys(items));
     const [activeId, setActiveId] = useState(null);
-    console.log(boardInfo)
+    console.log(boardInfo);
 
     const PLACEHOLDER_ID = 'placeholder';
 
@@ -85,29 +85,44 @@ const KanbanBoard = ({boardInfo}) => {
         );
     }
 
-    function handleAddTask(containerId) {
+
+    async function handleAddTask(containerId) {
+       
+        // Replace with actual input values from your UI or generate dynamic data
+
+        const data = {
+            taskName: 'New Task Name', // Example: taskNameInputValue
+            priority: 'High', // Example: priorityInputValue
+            taskDetail: 'Task details...', // Example: taskDetailInputValue
+        };
+
+        const response = await dataService.createTask(
+            boardInfo._id, 
+            containerId, 
+            data 
+        );
+       
+
+        
+
+        console.log(`${JSON.stringify(response)} response`);
+
+        console.log(`${JSON.stringify(boardInfo._id)}  boardInfo._id`);
+
+        console.log(`${JSON.stringify(containerId)} responsecontainerId`);
+
         setItems((prevItems) => {
-            const taskNumber = prevItems[containerId].tasks.length;
-
-            const random = Math.floor(Math.random() * 5000);
-
-            const newTask = {
-                taskName: `${taskNumber + random}`,
-                // need to update this to use mongoDB id
-                // Each sortable task needs a unique id to work with dnd-kit
-                _id: `${taskNumber + random}`,
-            };
-
             const updatedContainer = {
                 ...prevItems[containerId],
-                tasks: [...prevItems[containerId].tasks, newTask],
+                tasks: [...prevItems[containerId].tasks, data],
             };
-            const updatedItems = [...prevItems];
+            const updatedItems = {...prevItems};
             updatedItems[containerId] = updatedContainer;
 
             return updatedItems;
         });
-    }
+   
+}
 
     return (
         <div className=' bg-tertiaryLight flex mx-auto py-8'>
@@ -168,15 +183,43 @@ const KanbanBoard = ({boardInfo}) => {
                                                         index
                                                     ]
                                                 }
-                                                taskName={items[containerId].tasks[index].taskName}
-                                                taskComments={items[containerId].tasks[index].comments}
-                                                tags={items[containerId].tasks[index].tags}
-                                                assignedUserIds={items[containerId].tasks[index].assignedUserIds}
-                                                columnName={items[containerId].title}
-                                                createdAt={items[containerId].tasks[index].created_at}
+                                                taskName={
+                                                    items[containerId].tasks[
+                                                        index
+                                                    ].taskName
+                                                }
+                                                taskComments={
+                                                    items[containerId].tasks[
+                                                        index
+                                                    ].comments
+                                                }
+                                                tags={
+                                                    items[containerId].tasks[
+                                                        index
+                                                    ].tags
+                                                }
+                                                assignedUserIds={
+                                                    items[containerId].tasks[
+                                                        index
+                                                    ].assignedUserIds
+                                                }
+                                                columnName={
+                                                    items[containerId].title
+                                                }
+                                                createdAt={
+                                                    items[containerId].tasks[
+                                                        index
+                                                    ].created_at
+                                                }
                                                 boardId={boardInfo._id}
-                                                columnId={items[containerId]._id}
-                                                priority={items[containerId].tasks[index].priority}
+                                                columnId={
+                                                    items[containerId]._id
+                                                }
+                                                priority={
+                                                    items[containerId].tasks[
+                                                        index
+                                                    ].priority
+                                                }
                                             />
                                         ))}
                                     </SortableContext>
