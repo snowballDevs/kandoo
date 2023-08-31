@@ -19,17 +19,6 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
         description: '',
     });
 
-    const addNewComment = (commentInput, dateTime, commentIdx) => {
-        setAllComments([
-            ...allComments,
-            {
-                description: commentInput.description,
-                createdBy: user._id,
-                likes: 0,
-                commentDate: dateTime,
-            },
-        ]);
-    };
     // currently as of 8-27, users who make comments and like their own comments will not see their likes being saved until the board is saved and they like their own comments.
     const addLike = async (commentid) => {
         try {
@@ -89,11 +78,13 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                 commentInput
             );
 
+            console.log(response);
+
             const comment = response.data;
             // resets comment textarea
 
             setAllComments((prevComments) => [...prevComments, comment]);
-            console.log(allComments);
+
             setCommentInput({
                 description: '',
             });

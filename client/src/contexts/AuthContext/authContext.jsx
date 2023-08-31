@@ -22,7 +22,7 @@ const AuthProvider = ({children}) => {
             try {
                 const response = await dataService.getUser();
                 console.log(response);
-                const user = response.data;
+                const user = response.data.user;
                 console.log('Get User', user);
 
                 // is user session, save user's info to the context
