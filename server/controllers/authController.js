@@ -15,21 +15,20 @@ module.exports = {
     },
 
     login: (req, res, next) => {
-        console.log(req.body);
-        passport.authenticate('local', (err, user, info) => {
-            if (err) {
+        passport.authenticate('local', (authErr, user, info) => {
+            if (authErr) {
                 // Handle authentication error
-                return next(err);
+                return next(authErr);
             }
             if (!user) {
                 // Handle authentication failure
                 return res.status(401).json({message: info.message});
             }
 
-            req.login(user, (err) => {
-                if (err) {
+            req.login(user, (loginErr) => {
+                if (loginErr) {
                     // Handle login error
-                    return next(err);
+                    return next(loginErr);
                 }
 
                 // Authentication and login successful
@@ -39,6 +38,8 @@ module.exports = {
                     user: user.toJSON(),
                 });
             });
+
+            return undefined;
         })(req, res, next);
     },
 
