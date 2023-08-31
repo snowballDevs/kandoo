@@ -12,14 +12,13 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
     const {user} = useAuthContext();
     const [allComments, setAllComments] = useState(taskComments);
 
-    console.log(user);
+    console.log(allComments);
 
     // comment input form data
     const [commentInput, setCommentInput] = useState({
         description: '',
     });
 
-    // currently as of 8-27, users who make comments and like their own comments will not see their likes being saved until the board is saved and they like their own comments.
     const addLike = async (commentid) => {
         try {
             const response = await dataService.likeComment(

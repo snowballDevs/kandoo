@@ -30,7 +30,7 @@ import { useSelectedBoardContext } from '../../contexts/BoardContext/boardContex
 const KanbanBoard = ({boardInfo}) => {
     const {columns} = boardInfo;
     const {handleSlideOver, isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
-    const {selectedTask, setSelectedTask, selectedColumn, setSelectedColumn} = useSelectedBoardContext()
+    const {selectedTask, setSelectedTask, selectedColumn, setSelectedColumn, selectedComments, setSelectedComments} = useSelectedBoardContext()
 
     const [items, setItems] = useState(columns);
     const [containers, setContainers] = useState(Object.keys(items));
@@ -116,13 +116,15 @@ const KanbanBoard = ({boardInfo}) => {
     const handleTaskSlideOver = (task, column) => {
         setSelectedTask(task)
         setSelectedColumn(column)
+        setSelectedComments(task.comments)
         setIsSlideOverOpen(true)
     };
 
-    // Debugging what selected task is
+    // * Debugging what selected context is * 
     // useEffect(() => {
     //   console.log('clicked on the following task: ',selectedTask)
     //   console.log('column!: ',selectedColumn)
+    //   console.log('comments are as follows: ', selectedComments)
     // },[selectedTask])
 
     return (
