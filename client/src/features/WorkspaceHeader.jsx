@@ -33,8 +33,8 @@ const WorkspaceHeader = ({boardInfo}) => {
 
     const deleteProject = async (id) => {
         try {
-            const user = user._id;
-            if (user === boardInfo.createdBy) {
+            const userId = user._id;
+            if (userId === boardInfo.createdBy) {
                 const deletedProject = await dataService.deleteBoard(id);
                 console.log(deletedProject);
                 setCurrentPage('dashboard');
