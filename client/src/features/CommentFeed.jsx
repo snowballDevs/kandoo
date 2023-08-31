@@ -129,8 +129,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                             <div>
                                 <div className='ml-8'>
                                     <ProfileIcon
-                                        firstName={user.firstName}
-                                        lastName={user.lastName}
+                                        fullName={comment.createdBy}
                                     />
                                 </div>
                                 <div className='flex'>
@@ -219,8 +218,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
             {/* New comment form */}
             <div className='mt-6 flex gap-x-3 pt-4'>
                 <ProfileIcon
-                    firstName={user.firstName}
-                    lastName={user.lastName}
+                    fullName={user.fullName}
                 />
 
                 <form

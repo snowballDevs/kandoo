@@ -1,6 +1,7 @@
 // expectation is the input is `FirstName LastName` like `Keanu Reeves`
-const ProfileIcon = ({firstLastName}) => {
-    console.log(firstLastName);
+const ProfileIcon = ({fullName}) => {
+    console.log(fullName);
+
 
     const getHashOfString = (str) => {
         let hash = 0;
@@ -14,9 +15,9 @@ const ProfileIcon = ({firstLastName}) => {
     const normalizeHash = (hash, min, max) =>
         Math.floor((hash % (max - min)) + min);
     
-    const hRange = [75, 235];
-    const sRange = [55, 65];
-    const lRange = [55, 65];
+    const hRange = [37, 222];
+    const sRange = [50, 75];
+    const lRange = [50, 60];
     
     const generateHSL = (name) => {
         const hash = getHashOfString(name);
@@ -26,17 +27,17 @@ const ProfileIcon = ({firstLastName}) => {
         return [h, s, l];
     };
     
-    const initials = firstLastName
+    const initials = fullName
         .split(' ')
         .map((n) => n[0])
         .join('');
 
-        const hslColor = generateHSL(firstLastName);
+        const hslColor = generateHSL(fullName);
         const hslString = `hsl(${hslColor[0]}, ${hslColor[1]}%, ${hslColor[2]}%)`;
 
     return (
         <span 
-            className='inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-500'
+            className='inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-500'
             style={{ backgroundColor: hslString }}
         >
             <span className='text-xs font-medium leading-none text-white'>

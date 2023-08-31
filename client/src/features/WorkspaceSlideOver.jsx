@@ -1,4 +1,4 @@
-import {Fragment, useState} from 'react';
+import {Fragment, useState, useEffect} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 // import {ToastContainer, toast} from 'react-toastify';
 import {BsPlus, BsXLg} from 'react-icons/bs';
@@ -8,9 +8,8 @@ import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
 import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext'
 import CommentFeed from './CommentFeed';
+import ProfileIcon from '../components/ProfileIcon';
 import AssignmentBox from '../components/AssignmentBox';
-
-
 
 const WorkspaceSlideOver = ({
   boardInfo, 
@@ -20,31 +19,81 @@ const WorkspaceSlideOver = ({
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
     const {setSelectedTask, setSelectedColumn} = useSelectedBoardContext();
+    const [usersData, setUsersData] = useState([]);
     const [editingMode, setEditingMode] = useState(false);
-    
+    const [selectedUserId, setSelectedUserId] = useState([null]); 
 
     
+
+
+    useEffect(() => {
+        dataService.getBoardUserNames(boardInfo._id) // Pass the actual board ID
+          .then(response => {
+            const userData = response.data; // Assuming response.data contains the user data
+            setUsersData(userData);
+          })
+          .catch(error => {
+            console.error('Error fetching user data:', error);
+          });
+      }, []);
+
+    console.log(usersData)
+    
+
     const [formData, setFormData] = useState({
       taskName: taskInfo.taskName,
       taskDetail: taskInfo.taskDetail,
       priority: taskInfo.priority,
+      assignedUserIds: taskInfo.assignedUserIds,
     });
+
+    const assignedUserId = formData.assignedUserIds[0];
+const assignedUser = usersData.find(user => user.id === assignedUserId);
+const assignedUserName = assignedUser
+    ? `${assignedUser.firstName} ${assignedUser.lastName}`
+    : 'None';
+
+    console.log(assignedUserName)
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
     };
 
+    console.log(formData)
+
+    // async function handleTaskSubmit(event) {
+    //     event.preventDefault();
+    //     try {
+    //         const response = await dataService.updateTask(
+    //             boardInfo._id,
+    //             columnInfo._id,
+    //             taskInfo._id,
+    //             formData
+    //         );
+    //         console.log(response);
+    //         //   setIsDirty(false);
+    //         toggleEditingMode();
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
+
     async function handleTaskSubmit(event) {
         event.preventDefault();
         try {
+            const selectedUser = usersData.find((user) => user.id === selectedUserId);
+
             const response = await dataService.updateTask(
                 boardInfo._id,
                 columnInfo._id,
                 taskInfo._id,
-                formData
+                {
+                    ...formData,
+                    assignedUserIds: [selectedUserId],
+                    assignedUserName: `${selectedUser.firstName} ${selectedUser.lastName}` 
+                }
             );
             console.log(response);
-            //   setIsDirty(false);
             toggleEditingMode();
         } catch (error) {
             console.error(error);
@@ -59,12 +108,19 @@ const WorkspaceSlideOver = ({
 
     function handleTaskChange(event) {
         // setIsDirty(true);
-        console.log(event)
-        const {name, value, type, checked} = event.target
-        setFormData(prevFormData => ({
+        console.log(event);
+        const {name, value, type, checked} = event.target;
+        if (name === 'assignedUserIds') {
+            setFormData((prevFormData) => ({
                 ...prevFormData,
-                [name]: type === "checkbox" ? checked : value
-            }))
+                [name]: type === 'checkbox' ? checked : [selectedUserId],
+            }));
+        } else {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: type === 'checkbox' ? checked : value,
+            }));
+        }
     }
 
     const priorityDisplay = (level) => {
@@ -210,14 +266,46 @@ const WorkspaceSlideOver = ({
                                                 <div className='space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0'>
                                                     {/* Assignees */}
                                                     <div className='space-y-2 px-4 flex sm:items-center sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                        <div className='block text-sm font-medium leading-6 text-gray-900'>
+                                                            Assigned to
+                                                        </div>
                                                         <div>
-                                                            <h3 className='text-sm font-medium leading-6 text-gray-900'>
-                                                                Assignees
-                                                            </h3>
+                                                            {editingMode ? (
+                                                                <AssignmentBox
+                                                                    usersData={
+                                                                        usersData
+                                                                    }
+                                                                    selectedUserId={
+                                                                        selectedUserId
+                                                                    }
+                                                                    setSelectedUserId={
+                                                                        setSelectedUserId
+                                                                    }
+                                                                />
+                                                            ) : (
+                                                                <div className='flex items-center space-x-2'>
+                                                                    {formData.assignedUserIds.length > 0 ? (
+                                                                        <div className='flex items-center space-x-2'>
+                                                                            <ProfileIcon
+                                                                                fullName={
+                                                                                    assignedUserName
+                                                                                }
+                                                                            />
+                                                                            <span className='text-gray-900'>
+                                                                            {assignedUserName}
+                                                                            </span>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <span className='text-gray-500'>
+                                                                            None
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                            )}
                                                         </div>
                                                         <div className='sm:col-span-2 text-sm font-medium leading-6 text-gray-900 '>
                                                             <div className='flex space-x-2'>
-                                                                <AssignmentBox 
+                                                                {/* <AssignmentBox 
                                                                     usersId = {usersId}
                                                                     />
                                                                 {taskInfo.assignedUserIds &&
@@ -260,7 +348,7 @@ const WorkspaceSlideOver = ({
                                                                         className='h-5 w-5'
                                                                         aria-hidden='true'
                                                                     />
-                                                                </button>
+                                                                </button> */}
                                                             </div>
                                                         </div>
                                                     </div>
