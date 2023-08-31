@@ -28,7 +28,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                 taskId,
                 commentid
             );
-            console.log(response);
+            // console.log(response);
 
             setAllComments((prevComments) =>
                 prevComments.map((comment) =>
@@ -65,7 +65,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
             ...prevComment,
             [name]: value,
         }));
-        console.log(event.target.value);
+        // console.log(event.target.value);
     };
 
     const handleCommentSubmit = async (event) => {
@@ -110,7 +110,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                 </h3>
             </div>
             {allComments.length > 0 ? (
-                <ul className=' space-y-6 mt-3 overflow-y-auto'>
+                <ul className=' space-y-6 mt-3 overflow-y-auto'key={allComments}>
                     {allComments.map((comment, commentIdx) => (
                         <li
                             key={comment._id}

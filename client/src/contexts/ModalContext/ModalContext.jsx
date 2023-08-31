@@ -30,6 +30,7 @@ const ModalProvider = ({children}) => {
         [isModalOpen, isSlideOverOpen]
     );
 
+
     return (
         <ModalContext.Provider value={modalValue}>
             {children}
