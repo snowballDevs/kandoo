@@ -45,7 +45,9 @@ module.exports = {
             task.comments.push(comment);
             board.save();
 
-            return res.json(board);
+            const addedComment = task.comments[task.comments.length - 1];
+
+            return res.json(addedComment);
         } catch (error) {
             console.error(error);
         }
@@ -109,14 +111,14 @@ module.exports = {
                 res.json('Column not found');
             }
 
-            const task = column.tasks.id(taskId)
-            if(!task) {
-              return res.json('Task not found');
+            const task = column.tasks.id(taskId);
+            if (!task) {
+                return res.json('Task not found');
             }
 
-            const comment = task.comments.id(commentId)
-            if(!comment) {
-              return res.json('Comment not found');
+            const comment = task.comments.id(commentId);
+            if (!comment) {
+                return res.json('Comment not found');
             }
             comment.$inc('likes', 1);
             // column.tasks.id(taskId).comments.id(commentId).$inc('likes', 1);

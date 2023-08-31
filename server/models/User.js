@@ -24,11 +24,23 @@ const UserSchema = new mongoose.Schema({
     },
 });
 
-UserSchema.virtual('fullName').get(function () {
+// Allows virtual properties to be included
+UserSchema.set('toJSON', {virtuals: true});
+UserSchema.set('toObject', {getters: true});
+
+UserSchema.virtual('fullName').get(function getFullName() {
     return `${this.firstName} ${this.lastName}`;
 });
 
-UserSchema.statics.signup = async function (
+// Removes the email and password from the userObject when called
+UserSchema.methods.toJSON = function toJSON() {
+    const userObject = this.toObject();
+    delete userObject.password;
+    delete userObject.email;
+    return userObject;
+};
+
+UserSchema.statics.signup = async function signup(
     email,
     password,
     firstName,
