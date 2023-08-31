@@ -6,31 +6,25 @@ import {MdModeEdit} from 'react-icons/md';
 import dataService from '../services/dataService';
 import formatDate from '../utils/formatDate';
 import {useModalContext} from '../contexts/ModalContext/ModalContext';
+import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext'
 import CommentFeed from './CommentFeed';
 
 const WorkspaceSlideOver = ({
-    taskId,
-    taskName,
-    taskDetail,
-    taskComments,
-    tags,
-    assignedUserIds,
-    columnName,
-    createdAt,
-    boardId,
-    columnId,
-    priority,
-    task
+  boardInfo, 
+  taskInfo, 
+  columnInfo
 }) => {
     const {isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
+    const {setSelectedTask, setSelectedColumn} = useSelectedBoardContext();
     const [editingMode, setEditingMode] = useState(false);
+    
 
+    
     const [formData, setFormData] = useState({
-      taskName,
-      taskDetail,
-      priority,
-  });
-
+      taskName: taskInfo.taskName,
+      taskDetail: taskInfo.taskDetail,
+      priority: taskInfo.priority,
+    });
 
     const toggleEditingMode = () => {
         setEditingMode(!editingMode);
@@ -40,9 +34,9 @@ const WorkspaceSlideOver = ({
         event.preventDefault();
         try {
             const response = await dataService.updateTask(
-                boardId,
-                columnId,
-                taskId,
+                boardInfo._id,
+                columnInfo._id,
+                taskInfo._id,
                 formData
             );
             console.log(response);
@@ -51,6 +45,12 @@ const WorkspaceSlideOver = ({
         } catch (error) {
             console.error(error);
         }
+    }
+
+    const clearTaskOnClose = () => {
+      setSelectedTask(null)
+      setSelectedColumn(null)
+      setIsSlideOverOpen(false)
     }
 
     function handleTaskChange(event) {
@@ -91,7 +91,7 @@ const WorkspaceSlideOver = ({
             <Dialog
                 as='div'
                 className='relative z-10'
-                onClose={() => setIsSlideOverOpen(false)}
+                onClose={() => clearTaskOnClose()}
             >
                 <div className='fixed inset-0' />
 
@@ -138,7 +138,7 @@ const WorkspaceSlideOver = ({
                                                                         {
                                                                             formData.taskName
                                                                         }
-                                                                        {tags}
+                                                                        {/* {taskInfo.tags} */}
                                                                     </div>
                                                                 )}
                                                             </Dialog.Title>
@@ -147,7 +147,7 @@ const WorkspaceSlideOver = ({
                                                                     in list:{' '}
                                                                     <span className='text-tertiaryLight'>
                                                                         {
-                                                                            columnName
+                                                                            columnInfo.title
                                                                         }
                                                                     </span>
                                                                 </p>
@@ -155,7 +155,7 @@ const WorkspaceSlideOver = ({
                                                             <p className='text-sm text-gray-500 '>
                                                                 Created:{' '}
                                                                 {formatDate(
-                                                                    createdAt
+                                                                    taskInfo.created_at
                                                                 )}
                                                             </p>
                                                         </div>
@@ -188,9 +188,7 @@ const WorkspaceSlideOver = ({
                                                                 type='button'
                                                                 className='relative text-gray-400 hover:text-gray-500'
                                                                 onClick={() =>
-                                                                    setIsSlideOverOpen(
-                                                                        false
-                                                                    )
+                                                                  clearTaskOnClose()
                                                                 }
                                                             >
                                                                 <span className='absolute -inset-2.5' />
@@ -218,8 +216,8 @@ const WorkspaceSlideOver = ({
                                                         </div>
                                                         <div className='sm:col-span-2 text-sm font-medium leading-6 text-gray-900 '>
                                                             <div className='flex space-x-2'>
-                                                                {assignedUserIds &&
-                                                                    assignedUserIds.map(
+                                                                {taskInfo.assignedUserIds &&
+                                                                    taskInfo.assignedUserIds.map(
                                                                         (
                                                                             person
                                                                         ) => (
@@ -471,10 +469,10 @@ const WorkspaceSlideOver = ({
                                             </form>
                                             {/* Comments */}
                                           {editingMode === false && <CommentFeed
-                                                taskId={taskId}
-                                                taskComments={taskComments}
-                                                boardId={boardId}
-                                                columnId={columnId}
+                                                taskId={taskInfo._id}
+                                                taskComments={taskInfo.comments}
+                                                boardId={boardInfo._id}
+                                                columnId={columnInfo._id}
                                             />}
                                             
                                         </div>
