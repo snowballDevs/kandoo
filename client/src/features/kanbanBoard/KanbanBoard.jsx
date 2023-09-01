@@ -26,6 +26,7 @@ import TaskCard from './TaskCard';
 import PlaceholderColumn from './PlaceHolderColumn';
 import { useModalContext } from '../../contexts/ModalContext/ModalContext';
 import { useSelectedBoardContext } from '../../contexts/BoardContext/boardContext';
+import dataService from '../../services/dataService';
 
 const KanbanBoard = ({boardInfo}) => {
     const {columns} = boardInfo;
@@ -89,16 +90,18 @@ const KanbanBoard = ({boardInfo}) => {
         );
     }
 
+ 
+    let newTask = {};
+
     function handleAddTask(containerId) {
         setItems((prevItems) => {
             const taskNumber = prevItems[containerId].tasks.length;
-
             const random = Math.floor(Math.random() * 5000);
 
-            const newTask = {
+            newTask = {
                 taskName: `${taskNumber + random}`,
-                // need to update this to use mongoDB id
-                // Each sortable task needs a unique id to work with dnd-kit
+                 // need to update this to use mongoDB id
+                 // Each sortable task needs a unique id to work with dnd-kit
                 _id: `${taskNumber + random}`,
             };
 
@@ -111,6 +114,19 @@ const KanbanBoard = ({boardInfo}) => {
 
             return updatedItems;
         });
+
+        dataService
+            .createTask(
+                boardInfo._id, 
+                items[containerId]._id, 
+                newTask 
+            )
+            .then((response) => {
+                console.log('Task created successfully:', response);
+            })
+            .catch((error) => {
+                console.error('Error creating task:', error);
+            });
     }
 
     const handleTaskSlideOver = (task, column) => {
