@@ -56,7 +56,7 @@ const WorkspaceSlideOver = ({
 
     function handleTaskChange(event) {
         // setIsDirty(true);
-        console.log(event);
+        // console.log(event);
         const {name, value, type, checked} = event.target;
         setFormData((prevFormData) => ({
             ...prevFormData,

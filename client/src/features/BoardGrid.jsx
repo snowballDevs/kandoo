@@ -34,7 +34,7 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
         try {
             console.log('Sending Request');
             const response = await dataService.getBoards();
-            console.log(response);
+            // console.log(response);
             setBoards(response.data.boards);
         } catch (err) {
             console.log(err);
@@ -51,7 +51,7 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
     const navigateToBoard = (e) => {
         const {id} = e.currentTarget;
         const board = boards.find((board) => board._id === id);
-        console.log(board);
+        // console.log(board);
         setSelectedBoard(board);
         setCurrentPage('workspace');
     };
