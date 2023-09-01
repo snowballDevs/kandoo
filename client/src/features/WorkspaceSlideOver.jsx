@@ -87,7 +87,7 @@ const WorkspaceSlideOver = ({
     };
 
     return (
-        <Transition.Root show={isSlideOverOpen} as={Fragment}>
+        <Transition appear show={isSlideOverOpen} as={Fragment}>
             <Dialog
                 as='div'
                 className='relative z-10'
@@ -484,7 +484,7 @@ const WorkspaceSlideOver = ({
                     </div>
                 </div>
             </Dialog>
-        </Transition.Root>
+        </Transition>
     );
 };
 

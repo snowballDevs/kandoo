@@ -8,6 +8,11 @@ const commentSchema = new mongoose.Schema({
     createdBy: {type: String, required: true},
 
     likes: {type: Number, default: 0},
+
+    createdById: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+  },
 });
 
 const taskSchema = new mongoose.Schema({

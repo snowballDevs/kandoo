@@ -30,6 +30,7 @@ module.exports = {
             const comment = {
                 description: req.body.description,
                 createdBy: req.user.fullName,
+                createdById: req.user.id
             };
             const board = await Board.findById(boardId);
 
@@ -153,7 +154,7 @@ module.exports = {
             const task = column.tasks.id(taskId)
             task.comments.id(commentId).deleteOne();
             await board.save();
-            console.log(task);
+            // console.log(task);
             return res.json(task);
         } catch (error) {
             console.error(error);

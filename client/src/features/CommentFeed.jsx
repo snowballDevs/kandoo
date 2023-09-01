@@ -11,9 +11,8 @@ function classNames(...classes) {
 
 const CommentFeed = ({ boardId, columnId, taskId}) => {
     const {user} = useAuthContext();
-    console.log(user)
     const { selectedComments, setSelectedComments, selectedTask, setSelectedTask, selectedBoard, setSelectedBoard, selectedColumn} = useSelectedBoardContext();
-    
+    // console.log(user)
     // const [selectedComments, setSelectedComments] = useState(taskComments);
 
     // console.log(selectedComments);
@@ -47,6 +46,8 @@ const CommentFeed = ({ boardId, columnId, taskId}) => {
 
     const deleteComment = async (commentid) => {
         try {
+          // const userId = user._id
+          // if(userId === )
             const response = await dataService.deleteComment(
                 boardId,
                 columnId,
@@ -85,10 +86,6 @@ const CommentFeed = ({ boardId, columnId, taskId}) => {
             setSelectedBoard(incomingData.board)
             setSelectedTask(incomingData.task)
             setSelectedComments(incomingData.task.comments)
-            
-            // setSelectedComments(response.data.comments)
-            // setSelectedComments((prevComments) => [...prevComments, comment]);
-            // console.log(selectedComments)
 
             setCommentInput({
                 description: '',
@@ -134,8 +131,9 @@ const CommentFeed = ({ boardId, columnId, taskId}) => {
                             <div>
                                 <div className='ml-8'>
                                     <ProfileIcon
-                                        firstName={user.firstName}
-                                        lastName={user.lastName}
+                                    // user object returns createdBy as fullname with a space
+                                        firstName={comment.createdBy.split(' ')[0]}
+                                        lastName={comment.createdBy.split(' ')[1]}
                                     />
                                 </div>
                                 <div className='flex'>
@@ -185,6 +183,7 @@ const CommentFeed = ({ boardId, columnId, taskId}) => {
                                             {comment.description}
                                         </p>
                                         {/* Delete button */}
+                                        {user.id === comment.createdById &&
                                         <div className='flex space-x-5 place-content-end'>
                                             <button
                                                 type='button'
@@ -208,7 +207,7 @@ const CommentFeed = ({ boardId, columnId, taskId}) => {
                                                     />
                                                 </svg>
                                             </button>
-                                        </div>
+                                        </div>}
                                     </div>
                                 </div>
                             </div>
@@ -239,6 +238,7 @@ const CommentFeed = ({ boardId, columnId, taskId}) => {
                         <textarea
                             wrap='hard'
                             rows={2}
+                            cols={20}
                             name='description'
                             id='description'
                             required
