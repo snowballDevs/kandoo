@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const {Board} = require('../models/Board');
+// const getUserNamesByIds = require('../middleware/usernames')
 
 module.exports = {
     // used on the dashboard to get all the boards
@@ -50,7 +51,10 @@ module.exports = {
             console.log('board created successfully!');
 
             console.log(board);
-            res.json({board});
+
+            const usersWithNames = await getUserNamesByIds(board.users);
+
+            res.json({board, usersWithNames});
         } catch (error) {
             console.error(error);
         }

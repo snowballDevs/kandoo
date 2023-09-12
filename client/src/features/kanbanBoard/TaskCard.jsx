@@ -2,6 +2,7 @@
 import {useContext, useState} from 'react';
 import {ModalContext} from '../../contexts/ModalContext/ModalContext';
 import WorkspaceSlideOver from '../WorkspaceSlideOver';
+import {useModalContext} from '../../contexts/ModalContext/ModalContext';
 
 const TaskCard = ({
     task,
@@ -10,6 +11,7 @@ const TaskCard = ({
     taskDetail,
     taskComments,
     tags,
+    usersId,
     assignedUserIds,
     columnName,
     createdAt,
@@ -69,6 +71,7 @@ const TaskCard = ({
                 taskDetail={taskDetail}
                 taskComments={taskComments}
                 tags={tags}
+                usersId={usersId}
                 assignedUserIds={assignedUserIds}
                 columnName={columnName}
                 createdAt={createdAt}
@@ -88,11 +91,32 @@ const TaskCard = ({
                 }}
                 onClick={() => handleSlideOver()}
 
-                // style={{
-                //     backgroundColor: 'white',
-                //     borderLeft: `5px solid ${getPriorityColor(priority)}`,
-                // }}
+                style={{
+                    position: "relative",
+                }}
             >
+                {/* Assigned User Icons */}
+                <div
+                    className="flex absolute top-2 right-2 space-x-2"
+                    style={{
+                        zIndex: 0, // Ensure the icons are above the task content
+                    }}
+                >
+                    {assignedUserIds.map((person) => (
+                        <a
+                            key={person.email}
+                            href={person.href}
+                            className="rounded-full hover:opacity-75"
+                        >
+                            <img
+                                className="inline-block h-8 w-8 rounded-full"
+                                src={person.imageUrl}
+                                alt={person.name}
+                            />
+                    </a>
+                ))}
+            </div>
+
                 <p className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-black'>
                     {taskName}
                 </p>
