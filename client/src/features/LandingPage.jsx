@@ -19,9 +19,6 @@ const LandingPage = () => {
         handleFormChange('register');
     };
 
-    useEffect(() => {
-            document.body.classList.add('overflow-hidden');
-    }, [isModalOpen]);
 
     return (
         <div>
