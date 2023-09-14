@@ -27,23 +27,28 @@ module.exports = {
         try {
             const {boardId, columnId} = req.params;
             // console.log(req.params);
-            const {taskName, priority, taskDetail} = req.body;
-
-            const task = {
-                taskName,
-                priority,
-                taskDetail,
-            };
+            const {taskName} = req.body;
+            console.log(taskName);
             const board = await Board.findById(boardId);
-            const column = board.columns.id(columnId);
-            if (!column) {
-                res.json('Column not found');
+
+            if (!board) {
+                return res.status(404).json({error: 'Board not found'});
             }
 
-            column.tasks.push(task);
+            const column = board.columns.id(columnId);
+
+            if (!column) {
+                return res.status(404).json({error: 'Column not found'});
+            }
+
+            column.tasks.push({taskName: taskName});
+
             board.save();
 
-            return res.json(board);
+            const task = column.tasks[column.tasks.length - 1];
+
+            console.log(task);
+            return res.json(task);
         } catch (error) {
             console.error(error);
         }
