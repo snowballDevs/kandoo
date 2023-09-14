@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import Modal from '../components/Modal';
 
 const LandingPage = () => {
-    const { handleOpen, isModalOpen } = useContext(ModalContext);
+    const {handleOpen, isModalOpen} = useContext(ModalContext);
 
     const [displayedForm, setDisplayedForm] = useState('register');
 
@@ -19,6 +19,9 @@ const LandingPage = () => {
         handleFormChange('register');
     };
 
+    useEffect(() => {
+        document.body.classList.add('overflow-hidden');
+    }, [isModalOpen]);
 
     return (
         <div>
