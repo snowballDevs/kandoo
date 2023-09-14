@@ -1,4 +1,4 @@
-import {createContext, useContext, useState, useMemo} from 'react';
+import {createContext, useContext, useState, useMemo, useEffect} from 'react';
 
 // Create a named context
 const SelectedBoardContext = createContext();
@@ -10,14 +10,40 @@ const useSelectedBoardContext = () => useContext(SelectedBoardContext);
 // a provider is a component that allows you to share context with its nested components
 const SelectedBoardProvider = ({children}) => {
     const [selectedBoard, setSelectedBoard] = useState(null);
-    const [selectedColumn, setSelectedColumn] = useState(null);
-    const [selectedTask, setSelectedTask] = useState(null)
+    console.log(selectedBoard);
+    const [items, setItems] = useState(selectedBoard?.columns || []);
+    const [containers, setContainers] = useState(Object.keys(items));
 
+    const [selectedColumnId, setSelectedColumn] = useState(null);
+    const [selectedTaskId, setSelectedTask] = useState(null);
+
+    useEffect(() => {
+        // Check if selectedBoard and its columns are available
+        if (selectedBoard && selectedBoard.columns) {
+            setItems(selectedBoard.columns);
+            setContainers(Object.keys(selectedBoard.columns));
+        } else {
+            // Handle the case when selectedBoard or its columns are null or undefined
+            setItems([]);
+            setContainers([]);
+        }
+    }, [selectedBoard]);
 
     // useMemo is a Hook that lets you cache the result of a calculation between re-renders.
     const boardValue = useMemo(
-        () => ({selectedBoard, setSelectedBoard,selectedTask, setSelectedTask, selectedColumn, setSelectedColumn}),
-        [selectedBoard, selectedTask, selectedColumn]
+        () => ({
+            selectedBoard,
+            setSelectedBoard,
+            selectedTaskId,
+            setSelectedTask,
+            selectedColumnId,
+            setSelectedColumn,
+            items,
+            setItems,
+            containers,
+            setContainers,
+        }),
+        [selectedBoard, selectedTaskId, selectedColumnId, items, containers]
     );
 
     return (

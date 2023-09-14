@@ -22,16 +22,15 @@ const AuthProvider = ({children}) => {
             try {
                 const response = await dataService.getUser();
                 console.log(response);
-                const user = response.data.user;
+                const userData = response.data;
                 console.log('Get User', user);
 
+                setUser(userData);
                 // is user session, save user's info to the context
-                if (user instanceof Object) {
+                if (userData instanceof Object) {
                     console.log(user);
-                    setUser(user);
                     setCurrentPage('dashboard');
                 } else {
-                    setUser(null);
                     setCurrentPage('landingPage');
                 }
             } catch (err) {

@@ -24,18 +24,29 @@ import SortableTask from './SortableTask';
 import SortableColumn from './SortableColumn';
 import TaskCard from './TaskCard';
 import PlaceholderColumn from './PlaceHolderColumn';
-import { useModalContext } from '../../contexts/ModalContext/ModalContext';
-import { useSelectedBoardContext } from '../../contexts/BoardContext/boardContext';
+import {useModalContext} from '../../contexts/ModalContext/ModalContext';
+import {useSelectedBoardContext} from '../../contexts/BoardContext/boardContext';
+import WorkspaceSlideOver from '../WorkspaceSlideover/WorkspaceSlideOver';
 
 const KanbanBoard = ({boardInfo}) => {
-    const {columns} = boardInfo;
-    const {handleSlideOver, isSlideOverOpen, setIsSlideOverOpen} = useModalContext();
-    const {selectedTask, setSelectedTask, selectedColumn, setSelectedColumn} = useSelectedBoardContext()
+    const {handleSlideOver, isSlideOverOpen, setIsSlideOverOpen} =
+        useModalContext();
+    const {
+        selectedTaskId,
+        setSelectedTask,
+        selectedColumnId,
+        setSelectedColumn,
+        selectedBoard,
+        items,
+        setItems,
+        containers,
+        setContainers,
+    } = useSelectedBoardContext();
 
-    const [items, setItems] = useState(columns);
-    const [containers, setContainers] = useState(Object.keys(items));
     const [activeId, setActiveId] = useState(null);
     // console.log(boardInfo)
+
+    console.log(items);
 
     const PLACEHOLDER_ID = 'placeholder';
 
@@ -114,9 +125,9 @@ const KanbanBoard = ({boardInfo}) => {
     }
 
     const handleTaskSlideOver = (task, column) => {
-        setSelectedTask(task)
-        setSelectedColumn(column)
-        setIsSlideOverOpen(true)
+        setSelectedTask(task);
+        setSelectedColumn(column);
+        setIsSlideOverOpen(true);
     };
 
     // Debugging what selected task is
@@ -176,17 +187,26 @@ const KanbanBoard = ({boardInfo}) => {
                                         strategy={verticalListSortingStrategy}
                                     >
                                         {taskIds.map((task, index) => (
-                                          <button type='button' key={task} onClick={() => handleTaskSlideOver(items[containerId].tasks[index], items[containerId] )}>
-                                            <SortableTask
-                                                id={task}
+                                            <button
+                                                type='button'
                                                 key={task}
-                                                task={
-                                                    items[containerId].tasks[
-                                                        index
-                                                    ]
+                                                onClick={() =>
+                                                    handleTaskSlideOver(
+                                                        items[containerId]
+                                                            .tasks[index]._id,
+                                                        items[containerId]._id
+                                                    )
                                                 }
+                                            >
+                                                <SortableTask
+                                                    id={task}
+                                                    key={task}
+                                                    task={
+                                                        items[containerId]
+                                                            .tasks[index]
+                                                    }
                                                 />
-                                                </button>
+                                            </button>
                                         ))}
                                     </SortableContext>
                                 </SortableColumn>
@@ -210,6 +230,7 @@ const KanbanBoard = ({boardInfo}) => {
                     document.body
                 )}
             </DndContext>
+            <WorkspaceSlideOver key={selectedTaskId} />
         </div>
     );
 };
