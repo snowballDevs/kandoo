@@ -1,6 +1,6 @@
 import ColumnHeader from './ColumnHeader';
 
-import AddTask from '../../components/AddTask';
+import AddTask from './AddTask';
 
 const Column = ({
     column,
@@ -23,7 +23,7 @@ const Column = ({
             {children}
         </ul>
 
-        <AddTask addTask={addTask} containerId={containerId} />
+        <AddTask addTask={addTask} containerId={containerId} column={column} />
     </div>
 );
 

@@ -14,30 +14,23 @@ import EditActionButtons from './EditActionButtons';
 import ActionButtons from './ActionButtons';
 
 const WorkspaceSlideOver = ({boardInfo}) => {
-    const {
-        isSlideOverOpen,
-        setIsSlideOverOpen,
-        handleSlideOver,
-
-    } = useModalContext();
+    const {isSlideOverOpen, setIsSlideOverOpen, handleSlideOver} =
+        useModalContext();
     const {
         selectedTaskId,
         selectedColumnId,
         selectedBoard,
         setSelectedTask,
+        items,
+        setItems,
         setSelectedColumn,
         setSelectedBoard,
     } = useSelectedBoardContext();
     const [editingMode, setEditingMode] = useState(false);
     console.log(selectedTaskId);
-
-    const column = selectedBoard.columns.find(
-        (column) => column._id === selectedColumnId
-    );
-
-    const task = selectedBoard.columns
-        .find((column) => column._id === selectedColumnId)
-        ?.tasks.find((task) => task._id === selectedTaskId);
+    console.log(items.find((col) => col._id === selectedColumnId));
+    const column = items.find((column) => column._id === selectedColumnId);
+    const task = column?.tasks.find((task) => task._id === selectedTaskId);
 
     console.log(task);
 
@@ -65,24 +58,22 @@ const WorkspaceSlideOver = ({boardInfo}) => {
 
             const updatedTask = response.data;
             console.log(updatedTask);
-            setSelectedBoard((prev) => {
-                const updatedBoard = {...prev}; // Make a copy of the selectedBoard
 
-                const columnIndex = updatedBoard.columns.findIndex(
+            setItems((prev) => {
+                const updatedColumns = [...prev];
+
+                const columnIndex = updatedColumns.findIndex(
                     (c) => c._id === column._id
                 );
-                const taskIndex = updatedBoard.columns[
-                    columnIndex
-                ].tasks.findIndex((t) => t._id === task._id);
 
-                // Update the task within the selectedBoard
-                updatedBoard.columns[columnIndex].tasks[taskIndex] =
-                    updatedTask;
+                const taskIndex = updatedColumns[columnIndex].tasks.findIndex(
+                    (t) => t._id === task._id
+                );
 
-                // Set the updated selectedBoard in your state
-                return updatedBoard;
+                updatedColumns[columnIndex].tasks[taskIndex] = updatedTask;
+
+                return updatedColumns;
             });
-
             toggleEditingMode();
         } catch (error) {
             console.error(error);
@@ -99,21 +90,20 @@ const WorkspaceSlideOver = ({boardInfo}) => {
             );
             console.log(response);
 
-            setSelectedBoard((prev) => {
-                const updatedBoard = {...prev}; // Make a copy of the selectedBoard
+            setItems((prev) => {
+                const updatedColumns = [...prev];
 
-                const columnIndex = updatedBoard.columns.findIndex(
+                const columnIndex = updatedColumns.findIndex(
                     (c) => c._id === column._id
                 );
 
-                // Update the task within the selectedBoard
-                const updatedTasks = updatedBoard.columns[
-                    columnIndex
-                ].tasks.filter((t) => t._id !== task._id);
+                const updatedTasks = updatedColumns[columnIndex].tasks.filter(
+                    (t) => t._id !== task._id
+                );
 
-                updatedBoard.columns[columnIndex].tasks = updatedTasks;
-                // Set the updated selectedBoard in your state
-                return updatedBoard;
+                updatedColumns[columnIndex].tasks = updatedTasks;
+
+                return updatedColumns;
             });
         } catch (error) {
             console.error(error);

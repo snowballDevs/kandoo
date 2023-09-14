@@ -27,6 +27,7 @@ import PlaceholderColumn from './PlaceHolderColumn';
 import {useModalContext} from '../../contexts/ModalContext/ModalContext';
 import {useSelectedBoardContext} from '../../contexts/BoardContext/boardContext';
 import WorkspaceSlideOver from '../WorkspaceSlideover/WorkspaceSlideOver';
+import dataService from '../../services/dataService';
 
 const KanbanBoard = ({boardInfo}) => {
     const {handleSlideOver, isSlideOverOpen, setIsSlideOverOpen} =
@@ -100,22 +101,23 @@ const KanbanBoard = ({boardInfo}) => {
         );
     }
 
-    function handleAddTask(containerId) {
+    async function handleAddTask(containerId) {
+        const boardId = selectedBoard._id;
+        const columnId = selectedBoard.columns[containerId]._id;
+
+        const taskName = `Task ${items[containerId].tasks.length + 1}`;
+
+        console.log(taskName);
+        const response = await dataService.createTask(boardId, columnId, {
+            taskName,
+        });
+
+        const task = response.data;
+
         setItems((prevItems) => {
-            const taskNumber = prevItems[containerId].tasks.length;
-
-            const random = Math.floor(Math.random() * 5000);
-
-            const newTask = {
-                taskName: `${taskNumber + random}`,
-                // need to update this to use mongoDB id
-                // Each sortable task needs a unique id to work with dnd-kit
-                _id: `${taskNumber + random}`,
-            };
-
             const updatedContainer = {
                 ...prevItems[containerId],
-                tasks: [...prevItems[containerId].tasks, newTask],
+                tasks: [...prevItems[containerId].tasks, task],
             };
             const updatedItems = [...prevItems];
             updatedItems[containerId] = updatedContainer;
