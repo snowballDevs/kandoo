@@ -1,4 +1,4 @@
-import {Fragment, useState} from 'react';
+import {Fragment, useState, useEffect, forwardRef} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 // import {ToastContainer, toast} from 'react-toastify';
 import {BsPlus, BsXLg} from 'react-icons/bs';
@@ -11,10 +11,15 @@ import CommentFeed from '../CommentFeed';
 import PriorityDisplay from './PriorityDisplay';
 import TaskDescription from './TaskDescription';
 import EditActionButtons from './EditActionButtons';
+import ActionButtons from './ActionButtons';
 
 const WorkspaceSlideOver = ({boardInfo}) => {
-    const {isSlideOverOpen, setIsSlideOverOpen, handleSlideOver} =
-        useModalContext();
+    const {
+        isSlideOverOpen,
+        setIsSlideOverOpen,
+        handleSlideOver,
+
+    } = useModalContext();
     const {
         selectedTaskId,
         selectedColumnId,
@@ -84,6 +89,37 @@ const WorkspaceSlideOver = ({boardInfo}) => {
         }
     }
 
+    async function handleTaskDelete() {
+        try {
+            handleClose();
+            const response = await dataService.deleteTask(
+                selectedBoard._id,
+                column._id,
+                task._id
+            );
+            console.log(response);
+
+            setSelectedBoard((prev) => {
+                const updatedBoard = {...prev}; // Make a copy of the selectedBoard
+
+                const columnIndex = updatedBoard.columns.findIndex(
+                    (c) => c._id === column._id
+                );
+
+                // Update the task within the selectedBoard
+                const updatedTasks = updatedBoard.columns[
+                    columnIndex
+                ].tasks.filter((t) => t._id !== task._id);
+
+                updatedBoard.columns[columnIndex].tasks = updatedTasks;
+                // Set the updated selectedBoard in your state
+                return updatedBoard;
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     function handleClose() {
         handleSlideOver();
     }
@@ -105,8 +141,13 @@ const WorkspaceSlideOver = ({boardInfo}) => {
     }
 
     return (
-        <Transition.Root show={isSlideOverOpen} as={Fragment}>
-            {selectedTaskId ? (
+        <div>
+            <Transition
+                show={isSlideOverOpen}
+                as='div'
+                afterLeave={() => setSelectedTask(null)}
+                afterEnter={() => setSelectedTask(task)}
+            >
                 <Dialog
                     as='div'
                     className='relative z-10'
@@ -118,7 +159,7 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                         <div className='absolute inset-0 overflow-hidden'>
                             <div className='pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16'>
                                 <Transition.Child
-                                    as={Fragment}
+                                    as='div'
                                     enter='transform transition ease-in-out duration-500 sm:duration-700'
                                     enterFrom='translate-x-full'
                                     enterTo='translate-x-0'
@@ -165,64 +206,43 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                                     <p className='text-sm text-gray-500'>
                                                                         in list:{' '}
                                                                         <span className='text-tertiaryLight'>
-                                                                            {
-                                                                                column.title
-                                                                            }
+                                                                            {column
+                                                                                ? column.title
+                                                                                : ''}
                                                                         </span>
                                                                     </p>
                                                                 </div>
                                                                 <p className='text-sm text-gray-500 '>
                                                                     Created:{' '}
-                                                                    {formatDate(
-                                                                        task.created_at
-                                                                    )}
+                                                                    {task
+                                                                        ? formatDate(
+                                                                              task.created_at
+                                                                          )
+                                                                        : ''}
                                                                 </p>
                                                             </div>
 
                                                             {!editingMode && (
                                                                 <PriorityDisplay
                                                                     level={
-                                                                        task.priority
+                                                                        task
+                                                                            ? task.priority
+                                                                            : ''
                                                                     }
                                                                 />
                                                             )}
 
-                                                            <div className='flex h-7 gap-2 items-center'>
-                                                                <button
-                                                                    type='button'
-                                                                    className='relative text-gray-400 hover:text-gray-500'
-                                                                    onClick={
-                                                                        toggleEditingMode
-                                                                    }
-                                                                >
-                                                                    <span className='absolute -inset-2.5' />
-                                                                    <span className='sr-only'>
-                                                                        Edit
-                                                                        panel
-                                                                    </span>
-                                                                    <MdModeEdit
-                                                                        className='h-5 w-5'
-                                                                        aria-hidden='true'
-                                                                    />
-                                                                </button>
-                                                                <button
-                                                                    type='button'
-                                                                    className='relative text-gray-400 hover:text-gray-500'
-                                                                    onClick={() =>
-                                                                        clearTaskOnClose()
-                                                                    }
-                                                                >
-                                                                    <span className='absolute -inset-2.5' />
-                                                                    <span className='sr-only'>
-                                                                        Close
-                                                                        panel
-                                                                    </span>
-                                                                    <BsXLg
-                                                                        className='h-6 w-6'
-                                                                        aria-hidden='true'
-                                                                    />
-                                                                </button>
-                                                            </div>
+                                                            <ActionButtons
+                                                                toggleEditMode={
+                                                                    toggleEditingMode
+                                                                }
+                                                                handleDelete={
+                                                                    handleTaskDelete
+                                                                }
+                                                                handleClose={
+                                                                    handleClose
+                                                                }
+                                                            />
                                                         </div>
                                                     </div>
 
@@ -237,7 +257,7 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                             </div>
                                                             <div className='sm:col-span-2 text-sm font-medium leading-6 text-gray-900 '>
                                                                 <div className='flex space-x-2'>
-                                                                    {task.assignedUserIds &&
+                                                                    {task?.assignedUserIds &&
                                                                         task.assignedUserIds.map(
                                                                             (
                                                                                 person
@@ -455,18 +475,14 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                     </div>
                                                 </form>
                                                 {/* Comments */}
-                                                {editingMode === false && (
-                                                    <CommentFeed
-                                                        taskId={task._id}
-                                                        taskComments={
-                                                            task.comments
-                                                        }
-                                                        boardId={
-                                                            selectedBoard._id
-                                                        }
-                                                        columnId={column._id}
-                                                    />
-                                                )}
+                                                {/* {!editingMode && (
+                                                <CommentFeed
+                                                    taskId={task._id}
+                                                    taskComments={task.comments}
+                                                    boardId={selectedBoard._id}
+                                                    columnId={column._id}
+                                                />
+                                            )} */}
                                             </div>
                                         </div>
                                     </Dialog.Panel>
@@ -475,8 +491,8 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                         </div>
                     </div>
                 </Dialog>
-            ) : null}
-        </Transition.Root>
+            </Transition>
+        </div>
     );
 };
 
