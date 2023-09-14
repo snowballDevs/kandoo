@@ -38,6 +38,7 @@ const KanbanBoard = ({boardInfo}) => {
         selectedColumnId,
         setSelectedColumn,
         selectedBoard,
+        setSelectedBoard,
         items,
         setItems,
         containers,
@@ -85,20 +86,33 @@ const KanbanBoard = ({boardInfo}) => {
         );
     }
 
-    function handleAddColumn() {
-        const newContainerId = getNextContainerId(items);
-        const column = {
-            title: `Column ${newContainerId}`,
-            tasks: [],
-        };
-        setContainers((prevContainers) => [...prevContainers, newContainerId]);
-        setItems((prevItems) => [...prevItems, column]);
+    async function handleAddColumn() {
+        const boardId = selectedBoard._id;
+        const columnTitle = `Column ${items.length + 1}`;
+        const response = await dataService.createColumn(boardId, {
+            columnTitle,
+        });
+
+        console.log(response);
+        const column = response.data;
+
+        setSelectedBoard((prev) => ({
+            ...prev,
+            columns: [...prev.columns, column],
+        }));
     }
 
-    function handleRemoveColumn(containerId) {
-        setContainers((prevContainers) =>
-            prevContainers.filter((id) => id !== containerId)
-        );
+    async function handleRemoveColumn(id) {
+        const boardId = selectedBoard._id;
+        const columnId = id;
+
+        const response = await dataService.deleteColumn(boardId, columnId);
+        console.log(response);
+
+        setSelectedBoard((prev) => ({
+            ...prev,
+            columns: prev.columns.filter((col) => col._id !== columnId),
+        }));
     }
 
     async function handleAddTask(containerId) {

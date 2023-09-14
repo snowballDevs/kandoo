@@ -50,7 +50,7 @@ const ColumnHeader = ({column, items, removeColumn, containerId}) => {
             </div>
             {mouseIsOver && (
                 <button
-                    onClick={() => removeColumn(containerId)}
+                    onClick={() => removeColumn(column._id)}
                     className='stroke-gray-500 hover:stroke-white hover:bg-dangerLight
               rounded px-1 py-2 '
                     type='button'
