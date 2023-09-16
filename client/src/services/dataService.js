@@ -31,7 +31,7 @@ function DataService() {
     this.createColumn = (boardId, data) =>
         instance.post(`boards/${boardId}/columns`, data);
 
-    this.updateColumn = (data) =>
+    this.updateColumn = (boardId, columnId, data) =>
         instance.put(`/boards/${boardId}/columns/${columnId}`, data);
 
     this.deleteColumn = (boardId, columnId) =>

@@ -9,12 +9,14 @@ const Column = ({
     addTask,
     containerId,
     removeColumn,
+    updateColumn,
 }) => (
     <div className='bg-primaryLight w-[350px] h-full max-h-full rounded-md flex flex-col flex-grow  shadow-lg overflow-y-auto'>
         <ColumnHeader
             column={column}
             items={items}
             removeColumn={removeColumn}
+            updateColumn={updateColumn}
             containerId={containerId}
         />
 

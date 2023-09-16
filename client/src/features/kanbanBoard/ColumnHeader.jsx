@@ -1,9 +1,24 @@
 import {useState} from 'react';
-import {HiOutlineTrash} from 'react-icons/hi';
+import {HiOutlineTrash, HiCheck} from 'react-icons/hi';
 
-const ColumnHeader = ({column, items, removeColumn, containerId}) => {
+const ColumnHeader = ({
+    column,
+    items,
+    containerId,
+    removeColumn,
+    updateColumn,
+}) => {
     const [editMode, setEditMode] = useState(false);
     const [mouseIsOver, setMouseIsOver] = useState(false);
+    const [columnName, setColumnName] = useState(column?.title || '');
+
+   
+
+    function handleColumnTitle(e) {
+        console.log(e);
+        const {value} = e.target;
+        setColumnName(value);
+    }
 
     return (
         <div
@@ -27,30 +42,46 @@ const ColumnHeader = ({column, items, removeColumn, containerId}) => {
                             setEditMode(true);
                         }}
                     >
-                        {column.title}
+                        {columnName}
                     </div>
                 )}
 
                 {editMode && (
-                    <input
-                        className='bg-primaryLight focus:border-redLight border rounded outline-none px-2 max-w-[200px]'
-                        value={column.title}
-                        onChange={(e) =>
-                            updateColumn(column.id, e.target.value)
-                        }
-                        onBlur={() => {
-                            setEditMode(false);
-                        }}
-                        onKeyDown={(e) => {
-                            if (e.key !== 'Enter') return;
-                            setEditMode(false);
-                        }}
-                    />
+                    <div className='flex items-center gap-2'>
+                        <input
+                            className='bg-primaryLight focus:border-redLight border rounded outline-none px-2 max-w-[200px]'
+                            value={columnName}
+                            autoFocus
+                            onChange={handleColumnTitle}
+                            onBlur={() => {
+                                setEditMode(false);
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key !== 'Enter') {
+                                    console.log(e);
+                                    return;
+                                }
+                                setEditMode(false);
+                            }}
+                        />
+
+                        <button
+                            className='stroke-gray-500 hover:stroke-white hover:bg-successLight
+            rounded px-1 py-2 '
+                            onMouseDown={(e) => {
+                                e.stopPropagation();
+                                updateColumn(column._id, columnName);
+                            }}
+                        >
+                            <span className='sr-only'>Save Column</span>
+                            <HiCheck className='h-6 w-6' aria-hidden='true' />
+                        </button>
+                    </div>
                 )}
             </div>
-            {mouseIsOver && (
+            {mouseIsOver && !editMode && (
                 <button
-                    onClick={() => removeColumn(column._id)}
+                    onClick={() => removeColumn(column._id, containerId)}
                     className='stroke-gray-500 hover:stroke-white hover:bg-dangerLight
               rounded px-1 py-2 '
                     type='button'

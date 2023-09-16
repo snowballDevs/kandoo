@@ -58,8 +58,7 @@ const KanbanBoard = ({boardInfo}) => {
         },
     });
     const touchSensor = useSensor(TouchSensor);
-    const keyboardSensor = useSensor(KeyboardSensor);
-    const sensors = useSensors(pointerSensor, touchSensor, keyboardSensor);
+    const sensors = useSensors(pointerSensor, touchSensor);
 
     function renderSortableItemDragOverlay(itemId) {
         const containerId = findContainer(itemId, items);
@@ -89,35 +88,82 @@ const KanbanBoard = ({boardInfo}) => {
     async function handleAddColumn() {
         const boardId = selectedBoard._id;
         const columnTitle = `Column ${items.length + 1}`;
+
         const response = await dataService.createColumn(boardId, {
             columnTitle,
         });
 
+        const newContainerId = getNextContainerId(items);
+        console.log(newContainerId);
         console.log(response);
         const column = response.data;
 
-        setSelectedBoard((prev) => ({
-            ...prev,
-            columns: [...prev.columns, column],
-        }));
+        setContainers((prev) => [...prev, newContainerId]);
+        setItems((prev) => [...prev, column]);
     }
 
-    async function handleRemoveColumn(id) {
+    async function handleRemoveColumn(id, containerId) {
         const boardId = selectedBoard._id;
         const columnId = id;
+
+        console.log(containerId);
 
         const response = await dataService.deleteColumn(boardId, columnId);
         console.log(response);
 
-        setSelectedBoard((prev) => ({
-            ...prev,
-            columns: prev.columns.filter((col) => col._id !== columnId),
-        }));
+        console.log(containers);
+
+        setContainers((prev) =>
+            prev.filter((contIdx) => contIdx !== containerId)
+        );
+
+        setItems((prev) => prev.filter((col) => col._id !== columnId));
+
+        // setItems((prev) => {
+        //     const copiedItems = [...prev];
+
+        //     const updatedItems = copiedItems.filter(
+        //         (col) => col._id !== columnId
+        //     );
+
+        //     console.log(updatedItems);
+        //     return updatedItems;
+        // });
+
+        // setSelectedBoard((prev) => ({
+        //     ...prev,
+        //     columns: prev.columns.filter((col) => col._id !== columnId),
+        // }));
+    }
+
+    async function handleColumnUpdate(id, title) {
+        const boardId = selectedBoard._id;
+        const columnId = id;
+
+        const response = await dataService.updateColumn(boardId, columnId, {
+            title,
+        });
+
+        console.log(response);
+
+        const column = response.data;
+
+        setItems((prev) => {
+            const copiedItems = [...prev];
+
+            const updatedItems = copiedItems.map((col) =>
+                col._id === column._id ? column : col
+            );
+
+            return updatedItems;
+        });
+
+        console.log(column);
     }
 
     async function handleAddTask(containerId) {
         const boardId = selectedBoard._id;
-        const columnId = selectedBoard.columns[containerId]._id;
+        const columnId = items[containerId]._id;
 
         const taskName = `Task ${items[containerId].tasks.length + 1}`;
 
@@ -184,46 +230,54 @@ const KanbanBoard = ({boardInfo}) => {
                                 items-stretch
                                 justify-stretch'
                     >
-                        {containers.map((containerId) => {
+                        {containers.map((containerId, index) => {
                             // Array of tasksIds for each container
-                            const taskIds = getTaskIds(items, containerId);
 
+                            const taskIds = getTaskIds(items, containerId);
+                            console.log(containerId);
+                            console.log(items[containerId]);
+                            console.log(items[containerId]?._id);
                             return (
                                 <SortableColumn
                                     column={items[containerId]}
-                                    key={containerId}
-                                    containerId={containerId}
-                                    id={`${containerId}`}
+                                    key={items[containerId]?._id}
+                                    containerId={`${containerId}`}
+                                    id={containerId}
                                     items={taskIds}
                                     addTask={handleAddTask}
                                     removeColumn={handleRemoveColumn}
+                                    updateColumn={handleColumnUpdate}
                                 >
                                     <SortableContext
                                         items={taskIds}
                                         strategy={verticalListSortingStrategy}
                                     >
-                                        {taskIds.map((task, index) => (
-                                            <button
-                                                type='button'
-                                                key={task}
-                                                onClick={() =>
-                                                    handleTaskSlideOver(
-                                                        items[containerId]
-                                                            .tasks[index]._id,
-                                                        items[containerId]._id
-                                                    )
-                                                }
-                                            >
-                                                <SortableTask
-                                                    id={task}
+                                        {getTaskIds(items, containerId).map(
+                                            (task, index) => (
+                                                <button
+                                                    type='button'
                                                     key={task}
-                                                    task={
-                                                        items[containerId]
-                                                            .tasks[index]
+                                                    onClick={() =>
+                                                        handleTaskSlideOver(
+                                                            items[containerId]
+                                                                .tasks[index]
+                                                                ._id,
+                                                            items[containerId]
+                                                                ._id
+                                                        )
                                                     }
-                                                />
-                                            </button>
-                                        ))}
+                                                >
+                                                    <SortableTask
+                                                        id={task}
+                                                        key={task}
+                                                        task={
+                                                            items[containerId]
+                                                                .tasks[index]
+                                                        }
+                                                    />
+                                                </button>
+                                            )
+                                        )}
                                     </SortableContext>
                                 </SortableColumn>
                             );

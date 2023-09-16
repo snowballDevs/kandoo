@@ -24,14 +24,36 @@ function findContainer(id, items) {
     return foundKey;
 }
 
+// function getTaskIds(items, containerId) {
+//     return items[containerId]?.tasks.map((task) => task._id);
+// }
+
 function getTaskIds(items, containerId) {
-    return items[containerId].tasks.map((task) => task._id);
+    const container = items[containerId];
+    if (container) {
+        return container?.tasks.map((task) => task._id) || [];
+    }
+    return [];
 }
 
 function getNextContainerId(items) {
+    if (!items.length) {
+        return '0';
+    }
+
     const containerIds = Object.keys(items);
-    const lastContainerId = Number(containerIds[containerIds.length - 1]) + 1;
-    return `${lastContainerId}`;
+    const lastContainerId = containerIds[containerIds.length - 1];
+    console.log(lastContainerId);
+    return String.fromCharCode(lastContainerId.charCodeAt(0) + 1);
+
+    // const containerIds = Object.keys(items);
+    // const lastContainerId = containerIds[containerIds.length - 1];
+    // console.log(lastContainerId);
+    // return `${lastContainerId}` + 1;
+
+    // const containerIds = Object.keys(items);
+
+    // return String.fromCharCode(lastContainerId.charCodeAt(0) + 1);
 }
 
 export {findContainer, getTaskIds, getNextContainerId};
