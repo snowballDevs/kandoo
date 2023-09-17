@@ -6,31 +6,20 @@ const TaskCard = ({task, updateTask}) => {
     const [editMode, setEditMode] = useState(false);
     const {isSlideOverOpen, handleSlideOver} = useModalContext();
 
-    if (editMode) {
-        return (
-            <div className='bg-mainBackgroundColor px-2 py-4 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative'>
-                <textarea
-                    className='
-            h-[90%]
-            w-full resize-none border-none rounded bg-transparent text-white focus:outline-none
-          '
-                    placeholder='Task content here'
-                    onBlur={toggleEditMode}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter' && e.shiftKey) {
-                            toggleEditMode();
-                        }
-                    }}
-                    onChange={(e) => updateTask(task.id, e.target.value)}
-                />
-            </div>
-        );
-    }
+    console.log(task);
+
+    const priorityColorMap = {
+        high: 'border-red-500',
+        medium: 'border-yellow-500',
+    };
+    const priorityColor = priorityColorMap[task.priority] || 'border-blue-500';
+
+
 
     return (
-        
+        <div className=' hover:ring-gray-900 hover:ring-2 rounded'>
             <div
-                className='bg-secondaryLight px-2 py-4  items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset hover:ring-pinkLight cursor-grab relative task'
+                className={`bg-gray-700  px-2 py-4 items-center flex text-left rounded cursor-grab  border-l-8 ${priorityColor}`}
                 onMouseEnter={() => {
                     setMouseIsOver(true);
                 }}
@@ -38,11 +27,11 @@ const TaskCard = ({task, updateTask}) => {
                     setMouseIsOver(false);
                 }}
             >
-                <p className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap text-white'>
+                <p className='my-auto w-full h-[90%] overflow-y-auto overflow-x-hidden   whitespace-pre-wrap text-white'>
                     {task.taskName}
                 </p>
             </div>
-        
+        </div>
     );
 };
 
