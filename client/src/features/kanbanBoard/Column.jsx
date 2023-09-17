@@ -25,7 +25,7 @@ const Column = ({
             {children}
         </ul>
 
-        <AddTask addTask={addTask} containerId={containerId} column={column} />
+        <AddTask addTask={addTask} column={column} containerId={containerId} />
     </div>
 );
 

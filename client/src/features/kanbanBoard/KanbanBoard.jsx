@@ -98,8 +98,13 @@ const KanbanBoard = ({boardInfo}) => {
         console.log(response);
         const column = response.data;
 
-        setContainers((prev) => [...prev, newContainerId]);
-        setItems((prev) => [...prev, column]);
+        setSelectedBoard((prev) => ({
+            ...prev,
+            columns: [...prev.columns, column],
+        }));
+
+        // setContainers((prev) => [...prev, newContainerId]);
+        // setItems((prev) => [...prev, column]);
     }
 
     async function handleRemoveColumn(id, containerId) {
@@ -113,11 +118,16 @@ const KanbanBoard = ({boardInfo}) => {
 
         console.log(containers);
 
-        setContainers((prev) =>
-            prev.filter((contIdx) => contIdx !== containerId)
-        );
+        setSelectedBoard((prev) => ({
+            ...prev,
+            columns: prev.columns.filter((col) => col._id !== columnId),
+        }));
 
-        setItems((prev) => prev.filter((col) => col._id !== columnId));
+        // setContainers((prev) =>
+        //     prev.filter((contIdx) => contIdx !== containerId)
+        // );
+
+        // setItems((prev) => prev.filter((col) => col._id !== columnId));
 
         // setItems((prev) => {
         //     const copiedItems = [...prev];
@@ -129,11 +139,6 @@ const KanbanBoard = ({boardInfo}) => {
         //     console.log(updatedItems);
         //     return updatedItems;
         // });
-
-        // setSelectedBoard((prev) => ({
-        //     ...prev,
-        //     columns: prev.columns.filter((col) => col._id !== columnId),
-        // }));
     }
 
     async function handleColumnUpdate(id, title) {
@@ -148,23 +153,28 @@ const KanbanBoard = ({boardInfo}) => {
 
         const column = response.data;
 
-        setItems((prev) => {
-            const copiedItems = [...prev];
+        setSelectedBoard((prev) => ({
+            ...prev,
+            columns: prev.columns.map((col) =>
+                col._id === columnId ? column : col
+            ),
+        }));
 
-            const updatedItems = copiedItems.map((col) =>
-                col._id === column._id ? column : col
-            );
+        // setItems((prev) => {
+        //     const copiedItems = [...prev];
 
-            return updatedItems;
-        });
+        //     const updatedItems = copiedItems.map((col) =>
+        //         col._id === column._id ? column : col
+        //     );
+
+        //     return updatedItems;
+        // });
 
         console.log(column);
     }
 
-    async function handleAddTask(containerId) {
+    async function handleAddTask(columnId, containerId) {
         const boardId = selectedBoard._id;
-        const columnId = items[containerId]._id;
-
         const taskName = `Task ${items[containerId].tasks.length + 1}`;
 
         console.log(taskName);
@@ -174,16 +184,25 @@ const KanbanBoard = ({boardInfo}) => {
 
         const task = response.data;
 
-        setItems((prevItems) => {
-            const updatedContainer = {
-                ...prevItems[containerId],
-                tasks: [...prevItems[containerId].tasks, task],
-            };
-            const updatedItems = [...prevItems];
-            updatedItems[containerId] = updatedContainer;
+        setSelectedBoard((prev) => ({
+            ...prev,
+            columns: prev.columns.map((col) =>
+                col._id === columnId
+                    ? {...col, tasks: [...col.tasks, task]}
+                    : col
+            ),
+        }));
 
-            return updatedItems;
-        });
+        // setItems((prevItems) => {
+        //     const updatedContainer = {
+        //         ...prevItems[containerId],
+        //         tasks: [...prevItems[containerId].tasks, task],
+        //     };
+        //     const updatedItems = [...prevItems];
+        //     updatedItems[containerId] = updatedContainer;
+
+        //     return updatedItems;
+        // });
     }
 
     const handleTaskSlideOver = (task, column) => {
@@ -199,7 +218,7 @@ const KanbanBoard = ({boardInfo}) => {
     // },[selectedTask])
 
     return (
-        <div className=' bg-tertiaryLight flex mx-auto py-8'>
+        <div className=' bg-tertiaryLight flex mx-auto py-8 min-h-[700px]'>
             <DndContext
                 sensors={sensors}
                 onDragStart={(e) => handleDragStart(e, setActiveId)}

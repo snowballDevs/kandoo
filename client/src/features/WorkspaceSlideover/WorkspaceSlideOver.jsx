@@ -59,21 +59,37 @@ const WorkspaceSlideOver = ({boardInfo}) => {
             const updatedTask = response.data;
             console.log(updatedTask);
 
-            setItems((prev) => {
-                const updatedColumns = [...prev];
+            setSelectedBoard((prev) => ({
+                ...prev,
+                columns: prev.columns.map((col) =>
+                    col._id === column._id
+                        ? {
+                              ...col,
+                              tasks: col.tasks.map((task) =>
+                                  task._id === updatedTask._id
+                                      ? updatedTask
+                                      : task
+                              ),
+                          }
+                        : col
+                ),
+            }));
 
-                const columnIndex = updatedColumns.findIndex(
-                    (c) => c._id === column._id
-                );
+            // setItems((prev) => {
+            //     const updatedColumns = [...prev];
 
-                const taskIndex = updatedColumns[columnIndex].tasks.findIndex(
-                    (t) => t._id === task._id
-                );
+            //     const columnIndex = updatedColumns.findIndex(
+            //         (c) => c._id === column._id
+            //     );
 
-                updatedColumns[columnIndex].tasks[taskIndex] = updatedTask;
+            //     const taskIndex = updatedColumns[columnIndex].tasks.findIndex(
+            //         (t) => t._id === task._id
+            //     );
 
-                return updatedColumns;
-            });
+            //     updatedColumns[columnIndex].tasks[taskIndex] = updatedTask;
+
+            //     return updatedColumns;
+            // });
             toggleEditingMode();
         } catch (error) {
             console.error(error);
@@ -90,21 +106,35 @@ const WorkspaceSlideOver = ({boardInfo}) => {
             );
             console.log(response);
 
-            setItems((prev) => {
-                const updatedColumns = [...prev];
+            setSelectedBoard((prev) => ({
+                ...prev,
+                columns: prev.columns.map((col) =>
+                    col._id === column._id
+                        ? {
+                              ...col,
+                              tasks: col.tasks.filter(
+                                  (t) => t._id !== task._id
+                              ),
+                          }
+                        : col
+                ),
+            }));
 
-                const columnIndex = updatedColumns.findIndex(
-                    (c) => c._id === column._id
-                );
+            // setItems((prev) => {
+            //     const updatedColumns = [...prev];
 
-                const updatedTasks = updatedColumns[columnIndex].tasks.filter(
-                    (t) => t._id !== task._id
-                );
+            //     const columnIndex = updatedColumns.findIndex(
+            //         (c) => c._id === column._id
+            //     );
 
-                updatedColumns[columnIndex].tasks = updatedTasks;
+            //     const updatedTasks = updatedColumns[columnIndex].tasks.filter(
+            //         (t) => t._id !== task._id
+            //     );
 
-                return updatedColumns;
-            });
+            //     updatedColumns[columnIndex].tasks = updatedTasks;
+
+            //     return updatedColumns;
+            // });
         } catch (error) {
             console.error(error);
         }
