@@ -2,20 +2,7 @@ import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import TaskCard from './TaskCard';
 
-const SortableTask = ({
-    task,
-    id,
-    taskName,
-    taskComments,
-    tags,
-    assignedUserIds,
-    columnName,
-    createdAt,
-    boardId,
-    columnId,
-    priority,
-}) => {
-
+const SortableTask = ({task, id}) => {
     const {
         setNodeRef,
         attributes,
@@ -38,19 +25,7 @@ const SortableTask = ({
 
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            <TaskCard
-                task={task}
-                taskName ={taskName}
-                taskComments = {taskComments}
-                tags = {tags}
-                assignedUserIds = {assignedUserIds}
-                columnName = {columnName}
-                createdAt= {createdAt}
-                boardId= {boardId}
-                columnId= {columnId}
-                priority= {priority}
-            />
-
+            <TaskCard task={task} />
         </div>
     );
 };

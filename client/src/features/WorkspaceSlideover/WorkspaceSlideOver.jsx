@@ -200,7 +200,7 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                     <div className='bg-gray-50 px-4 py-6 sm:px-6'>
                                                         <div className='flex items-start justify-between space-x-3'>
                                                             <div className='space-y-1'>
-                                                                <Dialog.Title className='text-2xl font-semibold leading-6 text-gray-900'>
+                                                                <Dialog.Title className='text-2xl font-semibold leading-6 max-w-sm text-gray-900'>
                                                                     {editingMode ? (
                                                                         <input
                                                                             type='text'
@@ -214,7 +214,7 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                                             }
                                                                         />
                                                                     ) : (
-                                                                        <div className='text-2xl font-semibold leading-6 text-gray-900'>
+                                                                        <div className='text-2xl font-semibold leading-6 truncate text-gray-900'>
                                                                             {
                                                                                 formData.taskName
                                                                             }
@@ -337,8 +337,7 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                         />
 
                                                         {/* Priority */}
-                                                        {editingMode ===
-                                                            true && (
+                                                        {editingMode && (
                                                             <fieldset className='space-y-2 px-4 sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
                                                                 <legend className='sr-only'>
                                                                     Priority

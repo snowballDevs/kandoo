@@ -12,8 +12,6 @@ const ColumnHeader = ({
     const [mouseIsOver, setMouseIsOver] = useState(false);
     const [columnName, setColumnName] = useState(column?.title || '');
 
-   
-
     function handleColumnTitle(e) {
         console.log(e);
         const {value} = e.target;
@@ -22,7 +20,7 @@ const ColumnHeader = ({
 
     return (
         <div
-            className='bg-primaryLight text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold border-primaryLight border-4 flex items-center justify-between'
+            className='bg-primaryLight text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold  border-4 flex items-center justify-between'
             onMouseEnter={() => {
                 setMouseIsOver(true);
             }}
@@ -30,28 +28,29 @@ const ColumnHeader = ({
                 setMouseIsOver(false);
             }}
         >
-            <div className='flex items-center  gap-2'>
-                <div className=' h-6 w-6 flex items-center justify-center p-4 bg-infoLight  text-md rounded-full ring-2 '>
+            <div className='flex items-center   gap-2'>
+                <div className=' h-5 w-5 flex items-center justify-center p-4  text-md rounded-full ring-2 ring-gray-900 '>
                     {items.length}
                 </div>
 
                 {!editMode && (
-                    <div
+                    <p
                         className='hover:ring-secondaryLight rounded px-1 py-2 hover:ring-2'
                         onClick={() => {
                             setEditMode(true);
                         }}
                     >
                         {columnName}
-                    </div>
+                    </p>
                 )}
 
                 {editMode && (
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 '>
                         <input
-                            className='bg-primaryLight focus:border-redLight border rounded outline-none px-2 max-w-[200px]'
+                            className='bg-primaryLight border rounded outline-none  px-2 max-w-[200px]  '
                             value={columnName}
                             autoFocus
+                            required
                             onChange={handleColumnTitle}
                             onBlur={() => {
                                 setEditMode(false);
@@ -68,6 +67,7 @@ const ColumnHeader = ({
                         <button
                             className='stroke-gray-500 hover:stroke-white hover:bg-successLight
             rounded px-1 py-2 '
+                            type='button'
                             onMouseDown={(e) => {
                                 e.stopPropagation();
                                 updateColumn(column._id, columnName);

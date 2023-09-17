@@ -218,7 +218,7 @@ const KanbanBoard = ({boardInfo}) => {
     // },[selectedTask])
 
     return (
-        <div className=' bg-tertiaryLight flex mx-auto py-8 min-h-[700px]'>
+        <div className=' bg-tertiaryLight flex mx-auto p-8  min-h-[700px]'>
             <DndContext
                 sensors={sensors}
                 onDragStart={(e) => handleDragStart(e, setActiveId)}
@@ -240,8 +240,8 @@ const KanbanBoard = ({boardInfo}) => {
                 >
                     <div
                         className='      
-                                px-8
-                                py-8        
+                                py-8
+                px-4
                                 gap-4
                                 flex
                                 max-h-kanban
