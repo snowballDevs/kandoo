@@ -38,6 +38,7 @@ const KanbanBoard = ({boardInfo}) => {
         selectedColumnId,
         setSelectedColumn,
         selectedBoard,
+        setSelectedBoard,
         items,
         setItems,
         containers,
@@ -57,8 +58,7 @@ const KanbanBoard = ({boardInfo}) => {
         },
     });
     const touchSensor = useSensor(TouchSensor);
-    const keyboardSensor = useSensor(KeyboardSensor);
-    const sensors = useSensors(pointerSensor, touchSensor, keyboardSensor);
+    const sensors = useSensors(pointerSensor, touchSensor);
 
     function renderSortableItemDragOverlay(itemId) {
         const containerId = findContainer(itemId, items);
@@ -85,26 +85,96 @@ const KanbanBoard = ({boardInfo}) => {
         );
     }
 
-    function handleAddColumn() {
-        const newContainerId = getNextContainerId(items);
-        const column = {
-            title: `Column ${newContainerId}`,
-            tasks: [],
-        };
-        setContainers((prevContainers) => [...prevContainers, newContainerId]);
-        setItems((prevItems) => [...prevItems, column]);
-    }
-
-    function handleRemoveColumn(containerId) {
-        setContainers((prevContainers) =>
-            prevContainers.filter((id) => id !== containerId)
-        );
-    }
-
-    async function handleAddTask(containerId) {
+    async function handleAddColumn() {
         const boardId = selectedBoard._id;
-        const columnId = selectedBoard.columns[containerId]._id;
+        const columnTitle = `Column ${items.length + 1}`;
 
+        const response = await dataService.createColumn(boardId, {
+            columnTitle,
+        });
+
+        const newContainerId = getNextContainerId(items);
+        console.log(newContainerId);
+        console.log(response);
+        const column = response.data;
+
+        setSelectedBoard((prev) => ({
+            ...prev,
+            columns: [...prev.columns, column],
+        }));
+
+        // setContainers((prev) => [...prev, newContainerId]);
+        // setItems((prev) => [...prev, column]);
+    }
+
+    async function handleRemoveColumn(id, containerId) {
+        const boardId = selectedBoard._id;
+        const columnId = id;
+
+        console.log(containerId);
+
+        const response = await dataService.deleteColumn(boardId, columnId);
+        console.log(response);
+
+        console.log(containers);
+
+        setSelectedBoard((prev) => ({
+            ...prev,
+            columns: prev.columns.filter((col) => col._id !== columnId),
+        }));
+
+        // setContainers((prev) =>
+        //     prev.filter((contIdx) => contIdx !== containerId)
+        // );
+
+        // setItems((prev) => prev.filter((col) => col._id !== columnId));
+
+        // setItems((prev) => {
+        //     const copiedItems = [...prev];
+
+        //     const updatedItems = copiedItems.filter(
+        //         (col) => col._id !== columnId
+        //     );
+
+        //     console.log(updatedItems);
+        //     return updatedItems;
+        // });
+    }
+
+    async function handleColumnUpdate(id, title) {
+        const boardId = selectedBoard._id;
+        const columnId = id;
+
+        const response = await dataService.updateColumn(boardId, columnId, {
+            title,
+        });
+
+        console.log(response);
+
+        const column = response.data;
+
+        setSelectedBoard((prev) => ({
+            ...prev,
+            columns: prev.columns.map((col) =>
+                col._id === columnId ? column : col
+            ),
+        }));
+
+        // setItems((prev) => {
+        //     const copiedItems = [...prev];
+
+        //     const updatedItems = copiedItems.map((col) =>
+        //         col._id === column._id ? column : col
+        //     );
+
+        //     return updatedItems;
+        // });
+
+        console.log(column);
+    }
+
+    async function handleAddTask(columnId, containerId) {
+        const boardId = selectedBoard._id;
         const taskName = `Task ${items[containerId].tasks.length + 1}`;
 
         console.log(taskName);
@@ -114,16 +184,25 @@ const KanbanBoard = ({boardInfo}) => {
 
         const task = response.data;
 
-        setItems((prevItems) => {
-            const updatedContainer = {
-                ...prevItems[containerId],
-                tasks: [...prevItems[containerId].tasks, task],
-            };
-            const updatedItems = [...prevItems];
-            updatedItems[containerId] = updatedContainer;
+        setSelectedBoard((prev) => ({
+            ...prev,
+            columns: prev.columns.map((col) =>
+                col._id === columnId
+                    ? {...col, tasks: [...col.tasks, task]}
+                    : col
+            ),
+        }));
 
-            return updatedItems;
-        });
+        // setItems((prevItems) => {
+        //     const updatedContainer = {
+        //         ...prevItems[containerId],
+        //         tasks: [...prevItems[containerId].tasks, task],
+        //     };
+        //     const updatedItems = [...prevItems];
+        //     updatedItems[containerId] = updatedContainer;
+
+        //     return updatedItems;
+        // });
     }
 
     const handleTaskSlideOver = (task, column) => {
@@ -139,7 +218,7 @@ const KanbanBoard = ({boardInfo}) => {
     // },[selectedTask])
 
     return (
-        <div className=' bg-tertiaryLight flex mx-auto py-8'>
+        <div className=' bg-tertiaryLight flex mx-auto py-8 min-h-[700px]'>
             <DndContext
                 sensors={sensors}
                 onDragStart={(e) => handleDragStart(e, setActiveId)}
@@ -170,46 +249,54 @@ const KanbanBoard = ({boardInfo}) => {
                                 items-stretch
                                 justify-stretch'
                     >
-                        {containers.map((containerId) => {
+                        {containers.map((containerId, index) => {
                             // Array of tasksIds for each container
-                            const taskIds = getTaskIds(items, containerId);
 
+                            const taskIds = getTaskIds(items, containerId);
+                            console.log(containerId);
+                            console.log(items[containerId]);
+                            console.log(items[containerId]?._id);
                             return (
                                 <SortableColumn
                                     column={items[containerId]}
-                                    key={containerId}
-                                    containerId={containerId}
-                                    id={`${containerId}`}
+                                    key={items[containerId]?._id}
+                                    containerId={`${containerId}`}
+                                    id={containerId}
                                     items={taskIds}
                                     addTask={handleAddTask}
                                     removeColumn={handleRemoveColumn}
+                                    updateColumn={handleColumnUpdate}
                                 >
                                     <SortableContext
                                         items={taskIds}
                                         strategy={verticalListSortingStrategy}
                                     >
-                                        {taskIds.map((task, index) => (
-                                            <button
-                                                type='button'
-                                                key={task}
-                                                onClick={() =>
-                                                    handleTaskSlideOver(
-                                                        items[containerId]
-                                                            .tasks[index]._id,
-                                                        items[containerId]._id
-                                                    )
-                                                }
-                                            >
-                                                <SortableTask
-                                                    id={task}
+                                        {getTaskIds(items, containerId).map(
+                                            (task, index) => (
+                                                <button
+                                                    type='button'
                                                     key={task}
-                                                    task={
-                                                        items[containerId]
-                                                            .tasks[index]
+                                                    onClick={() =>
+                                                        handleTaskSlideOver(
+                                                            items[containerId]
+                                                                .tasks[index]
+                                                                ._id,
+                                                            items[containerId]
+                                                                ._id
+                                                        )
                                                     }
-                                                />
-                                            </button>
-                                        ))}
+                                                >
+                                                    <SortableTask
+                                                        id={task}
+                                                        key={task}
+                                                        task={
+                                                            items[containerId]
+                                                                .tasks[index]
+                                                        }
+                                                    />
+                                                </button>
+                                            )
+                                        )}
                                     </SortableContext>
                                 </SortableColumn>
                             );

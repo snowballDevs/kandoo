@@ -7,8 +7,8 @@ const logger = require('morgan');
 const connectDB = require('./config/database');
 const mainRoutes = require('./routes/main');
 const boardRoutes = require('./routes/boards');
+const columnRoutes = require('./routes/columns');
 const taskRoutes = require('./routes/tasks');
-const columnRoutes = require('./routes/tasks');
 const commentRoutes = require('./routes/comments');
 require('dotenv').config({path: './config/.env'});
 
@@ -55,8 +55,6 @@ app.use(
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-
-
 
 // Setup Routes For Which The Server Is Listening
 app.use('/', mainRoutes);

@@ -8,6 +8,7 @@ const SortableColumn = ({
     items,
     addTask,
     removeColumn,
+    updateColumn,
     containerId,
     children,
 }) => {
@@ -40,6 +41,7 @@ const SortableColumn = ({
                 addTask={addTask}
                 containerId={containerId}
                 removeColumn={removeColumn}
+                updateColumn={updateColumn}
             >
                 {children}
             </Column>

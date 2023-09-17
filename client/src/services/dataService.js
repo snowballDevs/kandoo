@@ -28,13 +28,13 @@ function DataService() {
     this.deleteBoard = (boardId) => instance.delete(`/boards/${boardId}`);
 
     // Column
-    this.createColumn = (data) =>
+    this.createColumn = (boardId, data) =>
         instance.post(`boards/${boardId}/columns`, data);
 
-    this.updateColumn = (data) =>
+    this.updateColumn = (boardId, columnId, data) =>
         instance.put(`/boards/${boardId}/columns/${columnId}`, data);
 
-    this.deleteColumn = () =>
+    this.deleteColumn = (boardId, columnId) =>
         instance.delete(`/boards/${boardId}/columns/${columnId}`);
 
     // Task
