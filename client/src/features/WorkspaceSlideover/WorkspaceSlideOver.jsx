@@ -272,7 +272,7 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                         <div className='space-y-2 px-4 flex sm:items-center sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
                                                             <div>
                                                                 <h3 className='text-sm font-medium leading-6 text-gray-900'>
-                                                                    Assignees
+                                                                    Assignees:
                                                                 </h3>
                                                             </div>
                                                             <div className='sm:col-span-2 text-sm font-medium leading-6 text-gray-900 '>
