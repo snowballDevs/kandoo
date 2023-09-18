@@ -12,6 +12,8 @@ import PriorityDisplay from './PriorityDisplay';
 import TaskDescription from './TaskDescription';
 import EditActionButtons from './EditActionButtons';
 import ActionButtons from './ActionButtons';
+import AssigneesList from './AssigneesList';
+import ProfileIcon from '../../components/ProfileIcon';
 
 const WorkspaceSlideOver = ({boardInfo}) => {
     const {isSlideOverOpen, setIsSlideOverOpen, handleSlideOver} =
@@ -29,8 +31,12 @@ const WorkspaceSlideOver = ({boardInfo}) => {
     const [editingMode, setEditingMode] = useState(false);
     console.log(selectedTaskId);
     console.log(items.find((col) => col._id === selectedColumnId));
+
     const column = items.find((column) => column._id === selectedColumnId);
     const task = column?.tasks.find((task) => task._id === selectedTaskId);
+    const assignedUsers = selectedBoard.users.filter((user) =>
+        task?.assignedUserIds.includes(user._id)
+    );
 
     console.log(task);
 
@@ -40,6 +46,7 @@ const WorkspaceSlideOver = ({boardInfo}) => {
         taskName: task?.taskName || '',
         taskDetail: task?.taskDetail || '',
         priority: task?.priority || '',
+        assignedUserIds: task?.assignedUserIds || [],
     });
 
     const toggleEditingMode = () => {
@@ -154,10 +161,30 @@ const WorkspaceSlideOver = ({boardInfo}) => {
         // setIsDirty(true);
         console.log(event);
         const {name, value, type, checked} = event.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
+
+        // Handle Assignee box input
+        if (type === 'checkbox') {
+            if (checked) {
+                // add the user to the assignedUserIds array
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    assignedUserIds: [...prevFormData.assignedUserIds, value],
+                }));
+            } else {
+                //  remove the user from the assignedUserIds array
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    assignedUserIds: prevFormData.assignedUserIds.filter(
+                        (id) => id !== value
+                    ),
+                }));
+            }
+        } else {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: value,
+            }));
+        }
     }
 
     return (
@@ -269,57 +296,44 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                     {/* Divider container */}
                                                     <div className='space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0'>
                                                         {/* Assignees */}
-                                                        <div className='space-y-2 px-4 flex sm:items-center sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
-                                                            <div>
-                                                                <h3 className='text-sm font-medium leading-6 text-gray-900'>
-                                                                    Assignees:
-                                                                </h3>
-                                                            </div>
-                                                            <div className='sm:col-span-2 text-sm font-medium leading-6 text-gray-900 '>
-                                                                <div className='flex space-x-2'>
-                                                                    {task?.assignedUserIds &&
-                                                                        task.assignedUserIds.map(
-                                                                            (
-                                                                                person
-                                                                            ) => (
-                                                                                <a
-                                                                                    key={
-                                                                                        person.email
-                                                                                    }
-                                                                                    href={
-                                                                                        person.href
-                                                                                    }
-                                                                                    className='flex-shrink-0 rounded-full hover:opacity-75'
-                                                                                >
-                                                                                    <img
-                                                                                        className='inline-block h-8 w-8 rounded-full'
-                                                                                        src={
-                                                                                            person.imageUrl
-                                                                                        }
-                                                                                        alt={
-                                                                                            person.name
+                                                        <div className='space-y-2 px-4 flex  sm:items-center sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
+                                                            <h3 className='text-sm font-semibold leading-6 text-gray-900'>
+                                                                Assignees:
+                                                            </h3>
+
+                                                            <div className=' text-sm font-medium leading-6 text-gray-900 '>
+                                                                {!editingMode ? (
+                                                                    <div className=' text-sm font-medium leading-6 text-gray-900 '>
+                                                                        <div className='flex space-x-2'>
+                                                                            {assignedUsers.map(
+                                                                                (
+                                                                                    user
+                                                                                ) => (
+                                                                                    <ProfileIcon
+                                                                                        fullName={
+                                                                                            user.fullName
                                                                                         }
                                                                                     />
-                                                                                </a>
-                                                                            )
-                                                                        )}
-
-                                                                    <button
-                                                                        type='button'
-                                                                        className='relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-infoLight focus:ring-offset-2'
-                                                                    >
-                                                                        <span className='absolute -inset-2' />
-                                                                        <span className='sr-only'>
-                                                                            Add
-                                                                            team
-                                                                            member
-                                                                        </span>
-                                                                        <BsPlus
-                                                                            className='h-5 w-5'
-                                                                            aria-hidden='true'
-                                                                        />
-                                                                    </button>
-                                                                </div>
+                                                                                )
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <AssigneesList
+                                                                        users={
+                                                                            selectedBoard.users
+                                                                        }
+                                                                        assignedUsers={
+                                                                            task?.assignedUserIds
+                                                                        }
+                                                                        formData={
+                                                                            formData
+                                                                        }
+                                                                        onChange={
+                                                                            handleTaskChange
+                                                                        }
+                                                                    />
+                                                                )}
                                                             </div>
                                                         </div>
 
@@ -343,10 +357,10 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                                     Priority
                                                                 </legend>
                                                                 <div
-                                                                    className='text-sm font-medium leading-6 text-gray-900'
+                                                                    className='text-sm font-semibold leading-6 text-gray-900'
                                                                     aria-hidden='true'
                                                                 >
-                                                                    Priority
+                                                                    Priority:
                                                                 </div>
                                                                 <div className='space-y-5 sm:col-span-2'>
                                                                     <div className=' flex sm:mt-0'>
