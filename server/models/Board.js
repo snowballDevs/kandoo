@@ -19,7 +19,7 @@ const taskSchema = new mongoose.Schema({
 
     created_at: {type: Date, default: Date.now},
 
-    // changed from a Number -> String to accommodate High/Medium/Low client selection 
+    // changed from a Number -> String to accommodate High/Medium/Low client selection
     priority: {type: String, required: false},
 
     // column: {columnSchema},
@@ -31,10 +31,10 @@ const taskSchema = new mongoose.Schema({
 });
 
 const columnSchema = new mongoose.Schema({
-  title: {type: String, required:true},
-  
-  tasks: [taskSchema],
-})
+    title: {type: String, required: true},
+
+    tasks: [taskSchema],
+});
 
 const BoardSchema = new mongoose.Schema({
     users: [

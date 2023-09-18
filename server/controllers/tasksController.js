@@ -60,7 +60,7 @@ module.exports = {
     updateTask: async (req, res) => {
         try {
             const {boardId, columnId, taskId} = req.params;
-            const {taskName, priority, taskDetail} = req.body;
+            const {taskName, priority, taskDetail, assignedUserIds} = req.body;
             // const board = await Board.findById(boardId)
             console.log(boardId);
 
@@ -86,6 +86,7 @@ module.exports = {
             task.taskName = taskName;
             task.priority = priority;
             task.taskDetail = taskDetail;
+            task.assignedUserIds = assignedUserIds;
             await board.save();
 
             console.log(task);

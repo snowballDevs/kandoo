@@ -4,7 +4,7 @@ const TaskDescription = ({taskDetail, handleTaskChange, editingMode}) => {
             <div>
                 <label
                     htmlFor='project-description'
-                    className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5'
+                    className='block text-sm font-semibold leading-6 text-gray-900 sm:mt-1.5'
                 >
                     Description:
                 </label>
