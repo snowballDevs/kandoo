@@ -21,7 +21,7 @@ const ProfileIcon = ({fullName}) => {
             className='inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-500'
             style={{backgroundColor: hslString}}
         >
-            <span className='text-xs font-medium leading-none text-white'>
+            <span className='text-sm font-medium leading-none text-white'>
                 {initials}
             </span>
         </span>

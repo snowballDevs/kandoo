@@ -1,6 +1,5 @@
 import {useContext, useState} from 'react';
-import {useModalContext} from '../../contexts/ModalContext/ModalContext';
-import AssigneeAvatar from './AvatarList';
+
 import ProfileIcon from '../../components/ProfileIcon';
 import {useSelectedBoardContext} from '../../contexts/BoardContext/boardContext';
 
