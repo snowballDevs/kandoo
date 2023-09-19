@@ -11,12 +11,8 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
-const CommentFeed = ({taskComments, task, board, column, setItems}) => {
+const CommentFeed = ({taskComments, taskId, boardId, columnId, setSelectedBoard}) => {
     const {user} = useAuthContext();
-    // const {setSelectedBoard} = 
-    // const [allComments, setAllComments] = useState(taskComments);
-
-    // console.log(user);
 
     // comment input form data
     const [commentInput, setCommentInput] = useState({
@@ -26,39 +22,42 @@ const CommentFeed = ({taskComments, task, board, column, setItems}) => {
     const addLike = async (commentid) => {
         try {
             const response = await dataService.likeComment(
-                board._id,
-                column._id,
-                task._id,
+                boardId,
+                columnId,
+                taskId,
                 commentid
             );
-            const updatedComment= response.data
+            const updatedComment = response.data;
+            console.log(updatedComment)
             // console.log('addLike fxn')
             // const updatedComment = response.data
 
-            setItems((prevColumns) => {
-                const updatedItems = [...prevColumns];
-                const columnIndex = updatedItems.findIndex(
-                    (col) => col._id === column._id
-                );
+            // setItems((prevColumns) => {
+            //     const updatedItems = [...prevColumns];
+            //     const columnIndex = updatedItems.findIndex(
+            //         (col) => col._id === column._id
+            //     );
 
-                const taskIndex = updatedItems[columnIndex].tasks.findIndex(
-                    (tsk) => tsk._id === task._id
-                );
-                
-              //   const updatedTask = {
-              //     ...updatedItems[columnIndex].tasks[taskIndex],
-              //     comments: [
-              //         ...updatedItems[columnIndex].tasks[taskIndex].comments,
-              //         newComment,
-              //     ],
-              // };
+            //     const taskIndex = updatedItems[columnIndex].tasks.findIndex(
+            //         (tsk) => tsk._id === task._id
+            //     );
 
-              // updatedItems[columnIndex].tasks[taskIndex] = updatedTask;
-              // return updatedItems;
-                const updatedTask = {
-                    ...updatedItems[columnIndex].tasks[taskIndex].comments.map((cmt) => cmt._id === commentid ? updatedComment : cmt)
-                }
-                
+                //   const updatedTask = {
+                //     ...updatedItems[columnIndex].tasks[taskIndex],
+                //     comments: [
+                //         ...updatedItems[columnIndex].tasks[taskIndex].comments,
+                //         newComment,
+                //     ],
+                // };
+
+                // updatedItems[columnIndex].tasks[taskIndex] = updatedTask;
+                // return updatedItems;
+                // const updatedTask = {
+                //     ...updatedItems[columnIndex].tasks[taskIndex].comments.map(
+                //         (cmt) => (cmt._id === commentid ? updatedComment : cmt)
+                //     ),
+                // };
+
                 // updatedItems[columnIndex].tasks[taskIndex].comments =
                 //     updatedItems[columnIndex].tasks[taskIndex].comments.map(
                 //         (cmt) =>
@@ -66,11 +65,12 @@ const CommentFeed = ({taskComments, task, board, column, setItems}) => {
                 //                 ? updatedComment
                 //                 // ? {...cmt, likes: cmt.likes + 1}
                 //                 : cmt
-                        
+
                 //     );
                 // console.log(updatedItems);
                 // return updatedItems;
-            });
+            // }
+            // );
         } catch (error) {
             console.error(error);
         }
@@ -79,9 +79,9 @@ const CommentFeed = ({taskComments, task, board, column, setItems}) => {
     const deleteComment = async (commentid) => {
         try {
             const response = await dataService.deleteComment(
-                board._id,
-                column._id,
-                task._id,
+              boardId,
+              columnId,
+              taskId,
                 commentid
             );
             console.log(response);
@@ -93,50 +93,71 @@ const CommentFeed = ({taskComments, task, board, column, setItems}) => {
         }
     };
 
+    // tracking comment input
     const handleCommentChange = (event) => {
         const {name, value} = event.target;
         setCommentInput((prevComment) => ({
             ...prevComment,
             [name]: value,
         }));
-        // console.log(event.target.value);
     };
 
-    // return the new comment
-    // add new comment to the task.comments array
+    // new comment submission event
     const handleCommentSubmit = async (event) => {
         event.preventDefault();
         try {
             const response = await dataService.createComment(
-                board._id,
-                column._id,
-                task._id,
+              boardId,
+              columnId,
+              taskId,
                 commentInput
             );
 
             console.log(response.data);
             const newComment = response.data;
-            setItems((prevColumns) => {
-                const updatedItems = [...prevColumns];
-                const columnIndex = updatedItems.findIndex(
-                    (col) => col._id === column._id
-                );
 
-                const taskIndex = updatedItems[columnIndex].tasks.findIndex(
-                    (tsk) => tsk._id === task._id
-                );
+            setSelectedBoard((prevBoard) => ({
+                ...prevBoard,
+                columns: prevBoard.columns.map((col) =>
+                    col._id === columnId
+                        ? {
+                              ...col,
+                              tasks: col.tasks.map((tsk) =>
+                                  tsk._id === taskId
+                                      ? {
+                                            ...tsk,
+                                            comments: [
+                                                ...tsk.comments,
+                                                newComment,
+                                            ],
+                                        }
+                                      : tsk
+                              ),
+                          }
+                        : col
+                ),
+            }));
+            // setItems((prevColumns) => {
+            //     const updatedItems = [...prevColumns];
+            //     const columnIndex = updatedItems.findIndex(
+            //         (col) => col._id === column._id
+            //     );
 
-                const updatedTask = {
-                    ...updatedItems[columnIndex].tasks[taskIndex],
-                    comments: [
-                        ...updatedItems[columnIndex].tasks[taskIndex].comments,
-                        newComment,
-                    ],
-                };
+            //     const taskIndex = updatedItems[columnIndex].tasks.findIndex(
+            //         (tsk) => tsk._id === task._id
+            //     );
 
-                updatedItems[columnIndex].tasks[taskIndex] = updatedTask;
-                return updatedItems;
-            });
+            //     const updatedTask = {
+            //         ...updatedItems[columnIndex].tasks[taskIndex],
+            //         comments: [
+            //             ...updatedItems[columnIndex].tasks[taskIndex].comments,
+            //             newComment,
+            //         ],
+            //     };
+
+            //     updatedItems[columnIndex].tasks[taskIndex] = updatedTask;
+            //     return updatedItems;
+            // });
 
             setCommentInput({
                 description: '',
@@ -183,11 +204,8 @@ const CommentFeed = ({taskComments, task, board, column, setItems}) => {
                                 <div className='w-px bg-gray-200' />
                             </div>
                             <div>
-                                <div className='ml-8'>
-                                    <ProfileIcon
-                                        firstName={user.firstName}
-                                        lastName={user.lastName}
-                                    />
+                                <div className='ml-7'>
+                                    <ProfileIcon fullName={user.fullName} />
                                 </div>
                                 <div className='flex'>
                                     <div className='flex-col ml-7 mt-2 justify-center content-center'>
@@ -274,10 +292,7 @@ const CommentFeed = ({taskComments, task, board, column, setItems}) => {
 
             {/* New comment form */}
             <div className='mt-6 flex gap-x-3 pt-4'>
-                <ProfileIcon
-                    firstName={user.firstName}
-                    lastName={user.lastName}
-                />
+                <ProfileIcon fullName={user.fullName} />
 
                 <form
                     onSubmit={handleCommentSubmit}
