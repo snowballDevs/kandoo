@@ -367,14 +367,14 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                     </div>
                                                 </form>
                                                 {/* Comments */}
-                                                {/* {!editingMode && (
+                                                {!editingMode && (
                                                 <CommentFeed
                                                     taskId={task._id}
                                                     taskComments={task.comments}
                                                     boardId={selectedBoard._id}
                                                     columnId={column._id}
                                                 />
-                                            )} */}
+                                            )}
                                             </div>
                                         </div>
                                     </Dialog.Panel>

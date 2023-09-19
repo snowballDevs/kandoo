@@ -4,39 +4,73 @@ import {useAuthContext} from '../contexts/AuthContext/authContext';
 import dataService from '../services/dataService';
 import formattedDate from '../utils/formatDate';
 
+// TODO: Pull state up to selectedBoard Context
+// TODO: or replace whole comment with +1
+
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
-const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
+const CommentFeed = ({taskComments, task, board, column, setItems}) => {
     const {user} = useAuthContext();
-    const [allComments, setAllComments] = useState(taskComments);
+    // const {setSelectedBoard} = 
+    // const [allComments, setAllComments] = useState(taskComments);
 
-    console.log(user);
+    // console.log(user);
 
     // comment input form data
     const [commentInput, setCommentInput] = useState({
         description: '',
     });
 
-    // currently as of 8-27, users who make comments and like their own comments will not see their likes being saved until the board is saved and they like their own comments.
     const addLike = async (commentid) => {
         try {
             const response = await dataService.likeComment(
-                boardId,
-                columnId,
-                taskId,
+                board._id,
+                column._id,
+                task._id,
                 commentid
             );
-            // console.log(response);
+            const updatedComment= response.data
+            // console.log('addLike fxn')
+            // const updatedComment = response.data
 
-            setAllComments((prevComments) =>
-                prevComments.map((comment) =>
-                    comment._id === commentid
-                        ? {...comment, likes: comment.likes + 1}
-                        : comment
-                )
-            );
+            setItems((prevColumns) => {
+                const updatedItems = [...prevColumns];
+                const columnIndex = updatedItems.findIndex(
+                    (col) => col._id === column._id
+                );
+
+                const taskIndex = updatedItems[columnIndex].tasks.findIndex(
+                    (tsk) => tsk._id === task._id
+                );
+                
+              //   const updatedTask = {
+              //     ...updatedItems[columnIndex].tasks[taskIndex],
+              //     comments: [
+              //         ...updatedItems[columnIndex].tasks[taskIndex].comments,
+              //         newComment,
+              //     ],
+              // };
+
+              // updatedItems[columnIndex].tasks[taskIndex] = updatedTask;
+              // return updatedItems;
+                const updatedTask = {
+                    ...updatedItems[columnIndex].tasks[taskIndex].comments.map((cmt) => cmt._id === commentid ? updatedComment : cmt)
+                }
+                
+                // updatedItems[columnIndex].tasks[taskIndex].comments =
+                //     updatedItems[columnIndex].tasks[taskIndex].comments.map(
+                //         (cmt) =>
+                //             cmt._id === commentid
+                //                 ? updatedComment
+                //                 // ? {...cmt, likes: cmt.likes + 1}
+                //                 : cmt
+                        
+                //     );
+                // console.log(updatedItems);
+                // return updatedItems;
+            });
         } catch (error) {
             console.error(error);
         }
@@ -45,15 +79,15 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
     const deleteComment = async (commentid) => {
         try {
             const response = await dataService.deleteComment(
-                boardId,
-                columnId,
-                taskId,
+                board._id,
+                column._id,
+                task._id,
                 commentid
             );
             console.log(response);
-            setAllComments((oldComments) =>
-                oldComments.filter((cmts) => cmts._id !== commentid)
-            );
+            // setAllComments((oldComments) =>
+            //     oldComments.filter((cmts) => cmts._id !== commentid)
+            // );
         } catch (error) {
             console.error(error);
         }
@@ -68,22 +102,41 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
         // console.log(event.target.value);
     };
 
+    // return the new comment
+    // add new comment to the task.comments array
     const handleCommentSubmit = async (event) => {
         event.preventDefault();
         try {
             const response = await dataService.createComment(
-                boardId,
-                columnId,
-                taskId,
+                board._id,
+                column._id,
+                task._id,
                 commentInput
             );
 
-            console.log(response);
+            console.log(response.data);
+            const newComment = response.data;
+            setItems((prevColumns) => {
+                const updatedItems = [...prevColumns];
+                const columnIndex = updatedItems.findIndex(
+                    (col) => col._id === column._id
+                );
 
-            const comment = response.data;
-            // resets comment textarea
+                const taskIndex = updatedItems[columnIndex].tasks.findIndex(
+                    (tsk) => tsk._id === task._id
+                );
 
-            setAllComments((prevComments) => [...prevComments, comment]);
+                const updatedTask = {
+                    ...updatedItems[columnIndex].tasks[taskIndex],
+                    comments: [
+                        ...updatedItems[columnIndex].tasks[taskIndex].comments,
+                        newComment,
+                    ],
+                };
+
+                updatedItems[columnIndex].tasks[taskIndex] = updatedTask;
+                return updatedItems;
+            });
 
             setCommentInput({
                 description: '',
@@ -102,23 +155,26 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                     htmlFor='project-comments'
                     className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5 mb-3'
                 >
-                    {allComments.length > 0
-                        ? `${allComments.length} Comment${
-                              allComments.length === 1 ? '' : 's'
+                    {taskComments.length > 0
+                        ? `${taskComments.length} Comment${
+                              taskComments.length === 1 ? '' : 's'
                           }`
                         : 'No Comments (Yet)'}
                 </h3>
             </div>
-            {allComments.length > 0 ? (
-                <ul className=' space-y-6 mt-3 overflow-y-auto'key={allComments}>
-                    {allComments.map((comment, commentIdx) => (
+            {taskComments.length > 0 ? (
+                <ul
+                    className=' space-y-6 mt-3 overflow-y-auto'
+                    key={taskComments}
+                >
+                    {taskComments.map((comment, commentIdx) => (
                         <li
                             key={comment._id}
                             className='relative flex gap-x-4 my-2'
                         >
                             <div
                                 className={classNames(
-                                    commentIdx === allComments.length - 1
+                                    commentIdx === taskComments.length - 1
                                         ? 'h-6'
                                         : '-bottom-6',
                                     'absolute left-0 top-0 flex w-6 justify-center'
