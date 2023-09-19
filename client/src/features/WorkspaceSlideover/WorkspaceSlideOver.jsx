@@ -1,8 +1,5 @@
-import {Fragment, useState, useEffect, forwardRef} from 'react';
+import {useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
-// import {ToastContainer, toast} from 'react-toastify';
-import {BsPlus, BsXLg} from 'react-icons/bs';
-import {MdModeEdit} from 'react-icons/md';
 import dataService from '../../services/dataService';
 import formatDate from '../../utils/formatDate';
 import {useModalContext} from '../../contexts/ModalContext/ModalContext';
@@ -14,6 +11,7 @@ import EditActionButtons from './EditActionButtons';
 import ActionButtons from './ActionButtons';
 import AssigneesList from './AssigneesList';
 import ProfileIcon from '../../components/ProfileIcon';
+import PriorityList from './PriorityList';
 
 const WorkspaceSlideOver = ({boardInfo}) => {
     const {isSlideOverOpen, setIsSlideOverOpen, handleSlideOver} =
@@ -24,8 +22,7 @@ const WorkspaceSlideOver = ({boardInfo}) => {
         selectedBoard,
         setSelectedTask,
         items,
-        setItems,
-        setSelectedColumn,
+
         setSelectedBoard,
     } = useSelectedBoardContext();
     const [editingMode, setEditingMode] = useState(false);
@@ -150,12 +147,6 @@ const WorkspaceSlideOver = ({boardInfo}) => {
     function handleClose() {
         handleSlideOver();
     }
-
-    const clearTaskOnClose = () => {
-        setIsSlideOverOpen(false);
-        setSelectedTask(null);
-        setSelectedColumn(null);
-    };
 
     function handleTaskChange(event) {
         // setIsDirty(true);
@@ -352,146 +343,14 @@ const WorkspaceSlideOver = ({boardInfo}) => {
 
                                                         {/* Priority */}
                                                         {editingMode && (
-                                                            <fieldset className='space-y-2 px-4 sm:grid sm:grid-cols-2 sm:items-start sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5'>
-                                                                <legend className='sr-only'>
-                                                                    Priority
-                                                                </legend>
-                                                                <div
-                                                                    className='text-sm font-semibold leading-6 text-gray-900'
-                                                                    aria-hidden='true'
-                                                                >
-                                                                    Priority:
-                                                                </div>
-                                                                <div className='space-y-5 sm:col-span-2'>
-                                                                    <div className=' flex sm:mt-0'>
-                                                                        <div className='relative items-start sm:col-span-3 mr-3'>
-                                                                            <div className='absolute flex h-6 items-center'>
-                                                                                <input
-                                                                                    id='high-priority'
-                                                                                    name='priority'
-                                                                                    aria-describedby='high-priority-description'
-                                                                                    type='radio'
-                                                                                    className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
-                                                                                    value='high'
-                                                                                    checked={
-                                                                                        formData.priority ===
-                                                                                        'high'
-                                                                                    }
-                                                                                    onChange={
-                                                                                        handleTaskChange
-                                                                                    }
-                                                                                />
-                                                                            </div>
-                                                                            <div className='pl-7 text-sm leading-6'>
-                                                                                <label
-                                                                                    htmlFor='high-priority'
-                                                                                    className='font-medium text-gray-900'
-                                                                                >
-                                                                                    <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-red-200 text-xs font-semibold text-red-600 uppercase'>
-                                                                                        High
-                                                                                    </span>
-                                                                                </label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className='relative flex items-start'>
-                                                                            <div className='absolute flex h-6 items-center'>
-                                                                                <input
-                                                                                    id='medium-priority'
-                                                                                    name='priority'
-                                                                                    aria-describedby='medium-priority-description'
-                                                                                    type='radio'
-                                                                                    className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
-                                                                                    value='medium'
-                                                                                    checked={
-                                                                                        formData.priority ===
-                                                                                        'medium'
-                                                                                    }
-                                                                                    onChange={
-                                                                                        handleTaskChange
-                                                                                    }
-                                                                                />
-                                                                            </div>
-                                                                            <div className='pl-7 text-sm leading-6 mr-3'>
-                                                                                <label
-                                                                                    htmlFor='medium-priority'
-                                                                                    className='font-medium text-gray-900'
-                                                                                >
-                                                                                    <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-yellow-200 text-xs font-semibold text-yellow-600 uppercase'>
-                                                                                        Medium
-                                                                                    </span>
-                                                                                </label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className='relative flex items-start'>
-                                                                            <div className='absolute flex h-6 items-center'>
-                                                                                <input
-                                                                                    id='low-priority'
-                                                                                    name='priority'
-                                                                                    aria-describedby='low-priority-description'
-                                                                                    type='radio'
-                                                                                    className='h-4 w-4 border-gray-300 text-tertiaryLight focus:ring-tertiaryLight'
-                                                                                    value='low'
-                                                                                    onChange={
-                                                                                        handleTaskChange
-                                                                                    }
-                                                                                    checked={
-                                                                                        formData.priority ===
-                                                                                        'low'
-                                                                                    }
-                                                                                />
-                                                                            </div>
-                                                                            <div className='pl-7 text-sm leading-6'>
-                                                                                <label
-                                                                                    htmlFor='low-priority'
-                                                                                    className='font-medium text-gray-900'
-                                                                                >
-                                                                                    <span className='inline-block mr-1 last:mr-0 py-1 px-2 rounded-full bg-blue-200 text-xs font-semibold text-blue-600 uppercase'>
-                                                                                        Low
-                                                                                    </span>
-                                                                                </label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {/* Saving for Post MVP */}
-
-                                                                    {/* <hr className='border-gray-200' /> 
-                                                        <div className='flex flex-col items-start space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0'>
-                                                            <div>
-                                                                <a
-                                                                    href='#'
-                                                                    className='group flex items-center space-x-2.5 text-sm font-medium text-tertiaryLight hover:text-secondaryLight'
-                                                                >
-                                                                    <BsLink45Deg
-                                                                        className='h-5 w-5 text-infoLight group-hover:text-secondaryLight'
-                                                                        aria-hidden='true'
-                                                                    />
-                                                                    <span>
-                                                                        Copy
-                                                                        link
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                            <div>
-                                                                <a
-                                                                    href='#'
-                                                                    className='group flex items-center space-x-2.5 text-sm text-gray-500 hover:text-gray-900'
-                                                                >
-                                                                    <BsFillQuestionCircleFill
-                                                                        className='h-5 w-5 text-gray-400 group-hover:text-gray-500'
-                                                                        aria-hidden='true'
-                                                                    />
-                                                                    <span>
-                                                                        Learn
-                                                                        more
-                                                                        about
-                                                                        sharing
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                        </div> */}
-                                                                </div>
-                                                            </fieldset>
+                                                            <PriorityList
+                                                                formData={
+                                                                    formData
+                                                                }
+                                                                onChange={
+                                                                    handleTaskChange
+                                                                }
+                                                            />
                                                         )}
 
                                                         {/* Action buttons */}
