@@ -16,7 +16,7 @@ const PriorityDisplay = ({level}) => {
 
     return (
         <div className='text-sm'>
-            <span className='mr-2'>Priority:</span>
+            <span className='mr-2 font-semibold'>Priority:</span>
             <span
                 className={`inline-block mr-1 last:mr-0 py-1 px-2 rounded-full text-xs font-semibold uppercase ${className}`}
             >

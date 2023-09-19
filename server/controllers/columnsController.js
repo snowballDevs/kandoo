@@ -23,21 +23,20 @@ module.exports = {
         try {
             const {boardId} = req.params;
             console.log(req.params);
-            const {title} = req.body;
+            const {columnTitle} = req.body;
 
-            const column = {
-                title,
-            };
             const board = await Board.findById(boardId);
 
             if (!board) {
-                res.json('Board not found');
+                return res.status(404).json({error: 'Board not found'});
             }
 
-            board.columns.push(column);
+            board.columns.push({title: columnTitle});
             board.save();
 
-            return res.json(board);
+            const column = board.columns[board.columns.length - 1];
+            console.log(column);
+            return res.json(column);
         } catch (error) {
             console.error(error);
         }
@@ -52,30 +51,23 @@ module.exports = {
             // const board = await Board.findById(boardId)
             console.log(boardId);
 
-            const updatedColumn = {
-                // may need to use spread operator to get all of the task properties
-                title,
-                // columnOrder,
-            };
-
             const board = await Board.findById(boardId);
-            // const task = await board.tasks.findByIdAndUpdate(taskId, {taskName,priority}, {new: true} )
-            // const updatedBoard = await Board.findByIdAndUpdate(
-            //   boardId,
-            //   { $set: { tasks: { _id: taskId } } }, // used to remove the task from the tasks array based on its _id property
-            //   { new: true }
-            // )
 
             if (!board) {
-                res.json('Board not found');
+                return res.status(404).json({error: 'Board not found'});
             }
 
             const column = board.columns.id(columnId);
-            column.set(updatedColumn);
+
+            if (!column) {
+                return res.status(404).json({error: 'Column not found'});
+            }
+
+            column.title = title;
             await board.save();
 
-            console.log(board);
-            return res.json(board);
+            console.log(column);
+            return res.json(column);
         } catch (error) {
             console.error(error);
             return res.status(500);
@@ -86,19 +78,27 @@ module.exports = {
     deleteColumn: async (req, res) => {
         try {
             const {boardId, columnId} = req.params;
-            // const updatedBoard = await Board.findByIdAndUpdate(
-            //   boardId,
-            //   { $pull: { tasks: { _id: taskId } } }, // used to remove the task from the tasks array based on its _id property
-            //   { new: true }
-            // )
+
             const board = await Board.findById(boardId);
-            board.columns.id(columnId).deleteOne();
+
+            if (!board) {
+                return res.status(404).json({error: 'Board not found'});
+            }
+
+            const column = board.columns.id(columnId);
+
+            if (!column) {
+                return res.status(404).json({error: 'Column not found'});
+            } else {
+                await column.deleteOne();
+            }
+
             await board.save();
-            console.log(board);
-            return res.json(board);
+
+            return res.json({message: 'Column delete successful'});
         } catch (error) {
             console.error(error);
-            return res.status(500);
+            return res.status(500).json({error: error});
         }
     },
 };

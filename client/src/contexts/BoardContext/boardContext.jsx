@@ -29,6 +29,11 @@ const SelectedBoardProvider = ({children}) => {
         }
     }, [selectedBoard]);
 
+    // So the NO. of containers stay in sync with the NO. items.
+    // useEffect(() => {
+    //     setContainers(Object.keys(items));
+    // }, [items]);
+
     // useMemo is a Hook that lets you cache the result of a calculation between re-renders.
     const boardValue = useMemo(
         () => ({
