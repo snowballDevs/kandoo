@@ -8,7 +8,13 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
-const CommentFeed = ({taskComments, taskId, boardId, columnId, setSelectedBoard}) => {
+const CommentFeed = ({
+    taskComments,
+    taskId,
+    boardId,
+    columnId,
+    setSelectedBoard,
+}) => {
     const {user} = useAuthContext();
 
     // comment input form data
@@ -18,36 +24,33 @@ const CommentFeed = ({taskComments, taskId, boardId, columnId, setSelectedBoard}
 
     const addLike = async (commentid) => {
         try {
-            await dataService.likeComment(
-                boardId,
-                columnId,
-                taskId,
-                commentid
-            );
+            await dataService.likeComment(boardId, columnId, taskId, commentid);
 
             setSelectedBoard((prevBoard) => ({
-                    ...prevBoard,
-                    columns: prevBoard.columns.map((col) =>
-                        col._id === columnId
-                            ? {
-                                  ...col,
-                                  tasks: col.tasks.map((tsk) =>
-                                      tsk._id === taskId
-                                          ? {
-                                                ...tsk,
-                                                comments: tsk.comments.map(
-                                                    (cmt) =>
-                                                        cmt._id === commentid
-                                                            ? {...cmt, likes: cmt.likes+1}
-                                                            : cmt
-                                                ),
-                                            }
-                                          : tsk
-                                  ),
-                              }
-                            : col
-                    ),
-                }))
+                ...prevBoard,
+                columns: prevBoard.columns.map((col) =>
+                    col._id === columnId
+                        ? {
+                              ...col,
+                              tasks: col.tasks.map((tsk) =>
+                                  tsk._id === taskId
+                                      ? {
+                                            ...tsk,
+                                            comments: tsk.comments.map((cmt) =>
+                                                cmt._id === commentid
+                                                    ? {
+                                                          ...cmt,
+                                                          likes: cmt.likes + 1,
+                                                      }
+                                                    : cmt
+                                            ),
+                                        }
+                                      : tsk
+                              ),
+                          }
+                        : col
+                ),
+            }));
         } catch (error) {
             console.error(error);
         }
@@ -56,12 +59,12 @@ const CommentFeed = ({taskComments, taskId, boardId, columnId, setSelectedBoard}
     const deleteComment = async (commentid) => {
         try {
             await dataService.deleteComment(
-              boardId,
-              columnId,
-              taskId,
+                boardId,
+                columnId,
+                taskId,
                 commentid
             );
-            
+
             // Sets the selected board and filters out the deleted comment
             setSelectedBoard((prevBoard) => ({
                 ...prevBoard,
@@ -82,7 +85,7 @@ const CommentFeed = ({taskComments, taskId, boardId, columnId, setSelectedBoard}
                           }
                         : col
                 ),
-            }))
+            }));
         } catch (error) {
             console.error(error);
         }
@@ -102,9 +105,9 @@ const CommentFeed = ({taskComments, taskId, boardId, columnId, setSelectedBoard}
         event.preventDefault();
         try {
             const response = await dataService.createComment(
-              boardId,
-              columnId,
-              taskId,
+                boardId,
+                columnId,
+                taskId,
                 commentInput
             );
 
@@ -179,7 +182,7 @@ const CommentFeed = ({taskComments, taskId, boardId, columnId, setSelectedBoard}
                             </div>
                             <div>
                                 <div className='ml-7'>
-                                    <ProfileIcon fullName={user.fullName} />
+                                    <ProfileIcon fullName={comment.createdBy} />
                                 </div>
                                 <div className='flex'>
                                     <div className='flex-col ml-7 mt-2 justify-center content-center'>
