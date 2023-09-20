@@ -1,11 +1,8 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import ProfileIcon from '../components/ProfileIcon';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
 import dataService from '../services/dataService';
 import formattedDate from '../utils/formatDate';
-
-// TODO: Pull state up to selectedBoard Context
-// TODO: or replace whole comment with +1
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
@@ -21,14 +18,12 @@ const CommentFeed = ({taskComments, taskId, boardId, columnId, setSelectedBoard}
 
     const addLike = async (commentid) => {
         try {
-            const response = await dataService.likeComment(
+            await dataService.likeComment(
                 boardId,
                 columnId,
                 taskId,
                 commentid
             );
-            const updatedComment = response.data;
-            console.log(updatedComment)
 
             setSelectedBoard((prevBoard) => ({
                     ...prevBoard,
