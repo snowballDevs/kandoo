@@ -29,14 +29,13 @@ const WorkspaceSlideOver = ({boardInfo}) => {
     console.log(selectedTaskId);
     console.log(items.find((col) => col._id === selectedColumnId));
 
-    const column = items.find((column) => column._id === selectedColumnId);
-    const task = column?.tasks.find((task) => task._id === selectedTaskId);
+    const column = items.find((col) => col._id === selectedColumnId);
+    const task = column?.tasks.find((tsk) => tsk._id === selectedTaskId);
     const assignedUsers = selectedBoard.users.filter((user) =>
         task?.assignedUserIds.includes(user._id)
     );
-
     console.log(task);
-
+    // console.log(selectedTaskId)
     console.log(column);
 
     const [formData, setFormData] = useState({
@@ -301,6 +300,9 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                                                     user
                                                                                 ) => (
                                                                                     <ProfileIcon
+                                                                                        key={
+                                                                                            user._id
+                                                                                        }
                                                                                         fullName={
                                                                                             user.fullName
                                                                                         }
@@ -367,14 +369,15 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                     </div>
                                                 </form>
                                                 {/* Comments */}
-                                                {/* {!editingMode && (
+                                                {!editingMode && (
                                                 <CommentFeed
-                                                    taskId={task._id}
-                                                    taskComments={task.comments}
-                                                    boardId={selectedBoard._id}
-                                                    columnId={column._id}
+                                                    taskId={task?._id}
+                                                    taskComments={task?.comments}
+                                                    boardId={selectedBoard?._id}
+                                                    columnId={selectedColumnId}
+                                                    setSelectedBoard={setSelectedBoard}
                                                 />
-                                            )} */}
+                                            )}
                                             </div>
                                         </div>
                                     </Dialog.Panel>

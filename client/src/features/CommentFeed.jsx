@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import ProfileIcon from '../components/ProfileIcon';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
 import dataService from '../services/dataService';
@@ -8,35 +8,49 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
-const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
+const CommentFeed = ({
+    taskComments,
+    taskId,
+    boardId,
+    columnId,
+    setSelectedBoard,
+}) => {
     const {user} = useAuthContext();
-    const [allComments, setAllComments] = useState(taskComments);
-
-    console.log(user);
 
     // comment input form data
     const [commentInput, setCommentInput] = useState({
         description: '',
     });
 
-    // currently as of 8-27, users who make comments and like their own comments will not see their likes being saved until the board is saved and they like their own comments.
     const addLike = async (commentid) => {
         try {
-            const response = await dataService.likeComment(
-                boardId,
-                columnId,
-                taskId,
-                commentid
-            );
-            // console.log(response);
+            await dataService.likeComment(boardId, columnId, taskId, commentid);
 
-            setAllComments((prevComments) =>
-                prevComments.map((comment) =>
-                    comment._id === commentid
-                        ? {...comment, likes: comment.likes + 1}
-                        : comment
-                )
-            );
+            setSelectedBoard((prevBoard) => ({
+                ...prevBoard,
+                columns: prevBoard.columns.map((col) =>
+                    col._id === columnId
+                        ? {
+                              ...col,
+                              tasks: col.tasks.map((tsk) =>
+                                  tsk._id === taskId
+                                      ? {
+                                            ...tsk,
+                                            comments: tsk.comments.map((cmt) =>
+                                                cmt._id === commentid
+                                                    ? {
+                                                          ...cmt,
+                                                          likes: cmt.likes + 1,
+                                                      }
+                                                    : cmt
+                                            ),
+                                        }
+                                      : tsk
+                              ),
+                          }
+                        : col
+                ),
+            }));
         } catch (error) {
             console.error(error);
         }
@@ -44,30 +58,49 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
 
     const deleteComment = async (commentid) => {
         try {
-            const response = await dataService.deleteComment(
+            await dataService.deleteComment(
                 boardId,
                 columnId,
                 taskId,
                 commentid
             );
-            console.log(response);
-            setAllComments((oldComments) =>
-                oldComments.filter((cmts) => cmts._id !== commentid)
-            );
+
+            // Sets the selected board and filters out the deleted comment
+            setSelectedBoard((prevBoard) => ({
+                ...prevBoard,
+                columns: prevBoard.columns.map((col) =>
+                    col._id === columnId
+                        ? {
+                              ...col,
+                              tasks: col.tasks.map((tsk) =>
+                                  tsk._id === taskId
+                                      ? {
+                                            ...tsk,
+                                            comments: tsk.comments.filter(
+                                                (cmt) => cmt._id !== commentid
+                                            ),
+                                        }
+                                      : tsk
+                              ),
+                          }
+                        : col
+                ),
+            }));
         } catch (error) {
             console.error(error);
         }
     };
 
+    // tracking comment input
     const handleCommentChange = (event) => {
         const {name, value} = event.target;
         setCommentInput((prevComment) => ({
             ...prevComment,
             [name]: value,
         }));
-        // console.log(event.target.value);
     };
 
+    // new comment submission event
     const handleCommentSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -78,12 +111,30 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                 commentInput
             );
 
-            console.log(response);
+            const newComment = response.data;
 
-            const comment = response.data;
-            // resets comment textarea
-
-            setAllComments((prevComments) => [...prevComments, comment]);
+            // sets the new selected board with the new Comment from the response from the server
+            setSelectedBoard((prevBoard) => ({
+                ...prevBoard,
+                columns: prevBoard.columns.map((col) =>
+                    col._id === columnId
+                        ? {
+                              ...col,
+                              tasks: col.tasks.map((tsk) =>
+                                  tsk._id === taskId
+                                      ? {
+                                            ...tsk,
+                                            comments: [
+                                                ...tsk.comments,
+                                                newComment,
+                                            ],
+                                        }
+                                      : tsk
+                              ),
+                          }
+                        : col
+                ),
+            }));
 
             setCommentInput({
                 description: '',
@@ -102,23 +153,26 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                     htmlFor='project-comments'
                     className='block text-sm font-medium leading-6 text-gray-900 sm:mt-1.5 mb-3'
                 >
-                    {allComments.length > 0
-                        ? `${allComments.length} Comment${
-                              allComments.length === 1 ? '' : 's'
+                    {taskComments.length > 0
+                        ? `${taskComments.length} Comment${
+                              taskComments.length === 1 ? '' : 's'
                           }`
                         : 'No Comments (Yet)'}
                 </h3>
             </div>
-            {allComments.length > 0 ? (
-                <ul className=' space-y-6 mt-3 overflow-y-auto'key={allComments}>
-                    {allComments.map((comment, commentIdx) => (
+            {taskComments.length > 0 ? (
+                <ul
+                    className=' space-y-6 mt-3 overflow-y-auto'
+                    key={taskComments}
+                >
+                    {taskComments.map((comment, commentIdx) => (
                         <li
                             key={comment._id}
                             className='relative flex gap-x-4 my-2'
                         >
                             <div
                                 className={classNames(
-                                    commentIdx === allComments.length - 1
+                                    commentIdx === taskComments.length - 1
                                         ? 'h-6'
                                         : '-bottom-6',
                                     'absolute left-0 top-0 flex w-6 justify-center'
@@ -127,11 +181,8 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
                                 <div className='w-px bg-gray-200' />
                             </div>
                             <div>
-                                <div className='ml-8'>
-                                    <ProfileIcon
-                                        firstName={user.firstName}
-                                        lastName={user.lastName}
-                                    />
+                                <div className='ml-7'>
+                                    <ProfileIcon fullName={comment.createdBy} />
                                 </div>
                                 <div className='flex'>
                                     <div className='flex-col ml-7 mt-2 justify-center content-center'>
@@ -218,10 +269,7 @@ const CommentFeed = ({taskComments, boardId, columnId, taskId}) => {
 
             {/* New comment form */}
             <div className='mt-6 flex gap-x-3 pt-4'>
-                <ProfileIcon
-                    firstName={user.firstName}
-                    lastName={user.lastName}
-                />
+                <ProfileIcon fullName={user.fullName} />
 
                 <form
                     onSubmit={handleCommentSubmit}
