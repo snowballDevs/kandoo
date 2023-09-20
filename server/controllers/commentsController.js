@@ -1,8 +1,6 @@
 const {Board} = require('../models/Board');
 
 module.exports = {
-    // * this is for testing purposes only
-    // todo Delete getComments before Production
     getComments: async (req, res) => {
         try {
             const {boardId, columnId, taskId} = req.params;
@@ -17,7 +15,7 @@ module.exports = {
                 return res.json(comments);
             }
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             return false;
         }
     },
@@ -49,7 +47,8 @@ module.exports = {
 
             return res.json(addedComment);
         } catch (error) {
-            console.error(error);
+            // console.error(error);
+            return res.json(500)
         }
     },
 
@@ -84,10 +83,9 @@ module.exports = {
             comment.set(updatedComment);
             await board.save();
 
-            console.log(board);
             return res.json(board);
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             return res.status(500);
         }
     },
@@ -96,9 +94,6 @@ module.exports = {
     likeComment: async (req, res) => {
         try {
             const {boardId, columnId, taskId, commentId} = req.params;
-
-            // const board = await Board.findById(boardId)
-            console.log(boardId);
 
             const board = await Board.findById(boardId);
 
@@ -128,7 +123,7 @@ module.exports = {
 
             return res.json(board);
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             return res.status(500);
         }
     },
@@ -147,10 +142,9 @@ module.exports = {
             const column = board.columns.id(columnId);
             column.tasks.id(taskId).comments.id(commentId).deleteOne();
             await board.save();
-            console.log(board);
             return res.json(board);
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             return res.status(500);
         }
     },
