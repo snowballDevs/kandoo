@@ -13,7 +13,7 @@ const taskRoutes = require('./routes/tasks');
 const commentRoutes = require('./routes/comments');
 require('dotenv').config({path: './config/.env'});
 
-const PORT = process.env.SERVER_PORT || 8888;
+const PORT = process.env.SERVER_PORT || 3000;
 const app = express();
 
 
