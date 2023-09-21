@@ -2,14 +2,13 @@
     "name": "kandoo",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
     "scripts": {
         "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\" ",
         "lint": "eslint . --ext .js,.jsx",
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json,html}' --config ./.prettierrc",
         "build": "cd client && npm run build",
         "postinstall": "cd client && npm install && cd ../server && npm install",
-        "start": "cd server npm run start"
+        "start": "cd server && npm run start"
     },
     "author": "",
     "license": "ISC",
