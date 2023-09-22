@@ -64,14 +64,14 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
                     className='btn bg-tertiaryLight text-primaryLight border-tertiaryLight hover:bg-successLight hover:text-secondaryLight'
                     onClick={() => handleDisplayedForm('create')}
                 >
-                    Create New Board
+                    Create New Project
                 </button>
                 <button 
                   className='btn bg-secondaryLight text-primaryLight hover:bg-fuchsia-500 ml-3' 
                   type='button'
                   onClick={() => handleDisplayedForm('join')}
                 >
-                  Join Board
+                  Join Project
                 </button>
             </div>
             

@@ -44,19 +44,19 @@ const RegisterForm = ({formDisplay}) => {
         <body class="h-full">
         ```
       */}
-            <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-6 lg:px-8 bg-primaryLight text-secondaryLight'>
+            <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-primaryLight text-secondaryLight'>
                 <div className='sm:mx-auto sm:w-full sm:max-w-sm '>
                     <img
-                        className='mx-auto h-10 w-auto'
-                        src='/KandooLogoW.png'
-                        alt='Your Company'
+                        className='mx-auto w-40'
+                        src='/kandoologo.png'
+                        alt='Kandoo logo'
                     />
-                    <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight'>
+                    <h2 className='mt-6 text-center text-2xl font-bold leading-9 tracking-tight'>
                         Register for a new account
                     </h2>
                 </div>
 
-                <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
+                <div className='mt-6 sm:mx-auto sm:w-full sm:max-w-sm'>
                     <form
                         className='space-y-6 '
                         action='#'
@@ -139,7 +139,7 @@ const RegisterForm = ({formDisplay}) => {
                         <div>
                             <button
                                 type='submit'
-                                className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                                className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 mt-6 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                             >
                                 Register
                             </button>

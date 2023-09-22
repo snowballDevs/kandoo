@@ -81,23 +81,23 @@ const handleSubmit = async (event) => {
             <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
                 <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
                     <img
-                        className='mx-auto w-32'
-                        src='/KandooLogoW.png'
-                        alt='Your Company'
+                        className='mx-auto w-40'
+                        src='/kandoologo.png'
+                        alt='Kandoo logo'
                     />
                     <h2 className='mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
-                        The start of something special
+                        Join others and collab now
                     </h2>
                 </div>
 
                 <div className='mt-6 sm:mx-auto sm:w-full sm:max-w-sm'>
-                    <form className='space-y-2' onSubmit={handleSubmit}>
+                    <form className='space-y-6' onSubmit={handleSubmit}>
                         <div>
                             <label
                                 htmlFor='boardId'
                                 className='block text-sm font-medium leading-6 text-gray-900'
                             >
-                              Board ID
+                              Project ID
                               <div className='mt-2'>
                                 <input
                                     id='boardId'
@@ -116,7 +116,7 @@ const handleSubmit = async (event) => {
                                 type='submit'
                                 className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                             >
-                                Join Board
+                                Join Project
                             </button>
                         </div>
                     </form>
