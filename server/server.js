@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const path = require('path')
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
@@ -12,11 +13,10 @@ const taskRoutes = require('./routes/tasks');
 const commentRoutes = require('./routes/comments');
 require('dotenv').config({path: './config/.env'});
 
-const PORT = process.env.SERVER_PORT || 8888;
+const PORT = process.env.SERVER_PORT || 3000;
 const app = express();
 
-// connect to database
-connectDB();
+
 
 // Passport config
 require('./config/passport')(passport);
@@ -25,7 +25,7 @@ require('./config/passport')(passport);
 app.use(
     cors({
         // need this while in development, since front/backend are running on seperate origins
-        origin: 'http://localhost:5173',
+        // origin: 'http://localhost:5173',
         credentials: true,
     })
 );
@@ -47,10 +47,13 @@ app.use(
         }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24, // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec),
-            // secure: true  !!!when in production will need to uncomment this!!!
+            // secure: true  /*!!!when in production will need to uncomment this!!!*/
         },
     })
 );
+
+// Render React as View
+app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 
 // Passport middleware
 app.use(passport.initialize());
@@ -69,7 +72,13 @@ app.use(
 
 // app.use('/boards/:boardId/tasks', taskRoutes);
 // app.use('/boards/:boardId/tasks/:taskId/comments', commentRoutes);
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "client", "dist", "index.html"));
+  });
 
-app.listen(PORT, () =>
+// Connect to db befor listening
+connectDB().then(() => {
+    app.listen(PORT, () =>
     console.log(`Server is running on ${PORT}, you better catch it!`)
-);
+)
+})
