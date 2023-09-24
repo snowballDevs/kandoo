@@ -8,7 +8,7 @@
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json,html}' --config ./.prettierrc",
         "build": "cd client && npm run build",
         "start": "cd server && npm run start",
-        "deploy": "cd client && npm install && cd ../server && npm install && cd client && npm run build"
+        "deploy": "pwd && cd client && pwd && npm install && cd ../server && npm install && pwd && cd client && npm run build"
     },
     "author": "",
     "license": "ISC",
