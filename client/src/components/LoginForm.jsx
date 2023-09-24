@@ -42,17 +42,17 @@ const LoginForm = () => {
             <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
                 <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
                     <img
-                        className='mx-auto w-32'
-                        src='/KandooLogoW.png'
-                        alt='Your Company'
+                        className='mx-auto w-40'
+                        src='/kandoologo.png'
+                        alt='Kandoo Logo'
                     />
                     <h2 className='mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-secondaryLight'>
-                        The start of something special
+                        Login to continue
                     </h2>
                 </div>
 
                 <div className='mt-6 sm:mx-auto sm:w-full sm:max-w-sm'>
-                    <form className='space-y-2' onSubmit={handleSubmit}>
+                    <form className='space-y-6' onSubmit={handleSubmit}>
                         <div>
                             <label
                                 htmlFor='email'
@@ -92,9 +92,9 @@ const LoginForm = () => {
                         <div>
                             <button
                                 type='submit'
-                                className='mt-10 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                                className='mt-6 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                             >
-                                login
+                                Login
                             </button>
                         </div>
                     </form>

@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const path = require('path')
+const path = require('path');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
@@ -16,19 +16,18 @@ require('dotenv').config({path: './config/.env'});
 const PORT = process.env.SERVER_PORT || 3000;
 const app = express();
 
-
-
 // Passport config
 require('./config/passport')(passport);
 
-// Enable CORS with specific origin
-app.use(
-    cors({
-        // need this while in development, since front/backend are running on seperate origins
-        // origin: 'http://localhost:5173',
-        credentials: true,
-    })
-);
+// Allow requests from the frontend specifically. Credientials must be true to allow cookies. Should only be needed for development!
+if (process.env.NODE_ENV === 'development') {
+    app.use(
+        cors({
+            origin: 'http://localhost:5173',
+            credentials: true,
+        })
+    );
+}
 
 // body parsing
 app.use(express.json());
@@ -52,9 +51,6 @@ app.use(
     })
 );
 
-// Render React as View
-app.use(express.static(path.join(__dirname, "..", "client", "dist")));
-
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
@@ -68,17 +64,28 @@ app.use(
     '/boards/:boardId/columns/:columnId/tasks/:taskId/comments',
     commentRoutes
 );
-// Should boardid -> column -> task???
 
-// app.use('/boards/:boardId/tasks', taskRoutes);
-// app.use('/boards/:boardId/tasks/:taskId/comments', commentRoutes);
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "client", "dist", "index.html"));
-  });
+// Serve frontend from same server as backend
+if (process.env.NODE_ENV === 'production') {
+    // Render React as the view
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+
+    // Serve the React html file for any non-API routes
+    app.get('*', (req, res) => {
+        res.sendFile(
+            path.join(__dirname, '..', 'client', 'dist', 'index.html')
+        );
+    });
+} else {
+    // A message if trying to access homepage while in dev mode
+    app.get('/', (req, res) => {
+        res.send('Server running in development mode');
+    });
+}
 
 // Connect to db befor listening
 connectDB().then(() => {
     app.listen(PORT, () =>
-    console.log(`Server is running on ${PORT}, you better catch it!`)
-)
-})
+        console.log(`Server is running on ${PORT}, you better catch it!`)
+    );
+});
