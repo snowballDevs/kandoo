@@ -9,7 +9,7 @@
         "build": "cd client && npm run build",
         "prepare": "cd client && npm install && cd ../server && npm install",
         "start": "cd server && npm run start",
-        "deploy": "npm run postinstall && npm run build"
+        "deploy": "npm run prepare && npm run build"
     },
     "author": "",
     "license": "ISC",
