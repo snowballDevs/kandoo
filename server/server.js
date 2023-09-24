@@ -19,7 +19,7 @@ const app = express();
 // Passport config
 require('./config/passport')(passport);
 
-// Allow requests from the frontend specifically. Credientials must be true to allow cookies. Should only be needed for development!
+// Allow requests from the frontend specifically. Credientials must be true to allow cookies. Only be needed for development!
 if (process.env.NODE_ENV === 'development') {
     app.use(
         cors({
@@ -35,6 +35,7 @@ app.use(express.json());
 // logging
 app.use(logger('dev'));
 
+// Set up session store (session data will be stored on MongoDB).
 app.use(
     session({
         secret: 'keyboard cat',
@@ -83,7 +84,7 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-// Connect to db befor listening
+// Connect to db before listening
 connectDB().then(() => {
     app.listen(PORT, () =>
         console.log(`Server is running on ${PORT}, you better catch it!`)
