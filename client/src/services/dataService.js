@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    // baseURL: 'http://localhost:6969', // only need this for development
+    /* In development, we target a separate backend server URL since the front-end and backend run on different servers.
+     */
+    baseURL: import.meta.env.DEV ? 'http://localhost:6969' : '',
     withCredentials: true,
 });
 

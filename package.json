@@ -7,8 +7,9 @@
         "lint": "eslint . --ext .js,.jsx",
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json,html}' --config ./.prettierrc",
         "build": "cd client && npm run build",
-        "postinstall": "cd client && npm install && cd ../server && npm install",
-        "start": "cd server && npm run start"
+        "prepare": "cd client && npm install && cd ../server && npm install",
+        "start": "cd server && npm run start",
+        "deploy": "npm run postinstall && npm run build"
     },
     "author": "",
     "license": "ISC",
