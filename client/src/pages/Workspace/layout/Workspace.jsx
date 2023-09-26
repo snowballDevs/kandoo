@@ -1,8 +1,8 @@
 import Header from '../../../components/Header';
-import WorkspaceHeader from './WorkspaceHeader';
+import WorkspaceHeader from '../components/WorkspaceHeader';
 import KanbanBoard from '../KanbanBoard/KanbanBoard';
 import {useSelectedBoardContext} from '../../../contexts/BoardContext/boardContext';
-import WorkspaceSlideOver from '../components/WorkspaceSlideOver';
+// import WorkspaceSlideOver from '../components/WorkspaceSlideOver';
 import {useModalContext} from '../../../contexts/ModalContext/ModalContext';
 
 const Workspace = () => {

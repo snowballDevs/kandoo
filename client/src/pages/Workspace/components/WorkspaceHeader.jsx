@@ -1,13 +1,12 @@
 import {useState, useContext} from 'react';
 import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
-import {ToastContainer, toast} from 'react-toastify';
+import { toast} from 'react-toastify';
 import {useRoutingContext} from '../../../contexts/RoutingContext/routingContext';
 import {useAuthContext} from '../../../contexts/AuthContext/authContext';
-import {useSelectedBoardContext} from '../../../contexts/BoardContext/boardContext';
 import dataService from '../../../services/dataService';
 import formatDate from '../../../utils/formatDate';
 import 'react-toastify/dist/ReactToastify.css';
-import BoardConfirmDelete from '../../../features/BoardConfirmDelete';
+import BoardConfirmDelete from './BoardConfirmDelete';
 import {ModalContext} from '../../../contexts/ModalContext/ModalContext';
 import Modal from '../../../components/Modal';
 import useEditingMode from '../hooks/useEditingMode';

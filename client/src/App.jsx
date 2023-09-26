@@ -3,10 +3,10 @@ import {useState} from 'react';
 import {ToastContainer, toast} from 'react-toastify';
 import {useAuthContext} from './contexts/AuthContext/authContext';
 import {useRoutingContext} from './contexts/RoutingContext/routingContext';
-import LandingPage from './features/LandingPage';
+import LandingPage from './pages/LandingPage/LandingPage';
 import Footer from './components/Footer';
-import Dashboard from './features/Dashboard';
-import Workspace from './features/Workspace';
+import Dashboard from './pages/Dashboard/Dashboard';
+import Workspace from './pages/Workspace/layout/Workspace';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
