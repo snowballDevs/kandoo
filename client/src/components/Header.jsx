@@ -118,11 +118,10 @@ const Header = ({formDisplay}) => {
                             </div>
                             <div className='hidden sm:ml-6 sm:block'>
                                 <div className='flex items-center'>
-                                    {currentPage!=='landingPage' && (
+                                    {currentPage !== 'landingPage' && (
                                         <div className='sm:inline-block lg:ml-6 lg:flex lg:space-x-8'>
                                             <h3 className='inline-flex capitalize items-center px-1 pt-1 text-md font-semibold text-gray-900'>
-                                                {
-                                                    currentPage}
+                                                {currentPage}
                                             </h3>
                                         </div>
                                     )}
@@ -211,17 +210,11 @@ const Header = ({formDisplay}) => {
 
                     <Disclosure.Panel className='sm:hidden'>
                         <div className='border-t border-gray-700 pb-3 pt-4'>
-                            <div className='flex items-center px-5'>
-                                <div className='flex-shrink-0 '>
+                            <div className='flex items-center px-5 sm:items-end'>
+                                <div className='flex-shrink-0  '>
                                     {user ? (
                                         <ProfileIcon fullName={user.fullName} />
-                                    ) : (
-                                        <img
-                                            src='/userplaceholder.png'
-                                            alt='user profile'
-                                            className='h-8 w-8 rounded-full'
-                                        />
-                                    )}
+                                    ) : null}
                                 </div>
                                 {user && (
                                     <div className='ml-3'>
@@ -239,18 +232,13 @@ const Header = ({formDisplay}) => {
                                             href='#'
                                             className='block rounded-md px-3 py-2 text-base font-medium text-secondaryLight'
                                             key={link.name}
+                                            onClick={
+                                                link.onClick
+                                                    ? link.onClick
+                                                    : null
+                                            }
                                         >
-                                            <button
-                                                type='button'
-                                                className=' text-secondaryLight'
-                                                onClick={
-                                                    link.onClick
-                                                        ? link.onClick
-                                                        : null
-                                                }
-                                            >
-                                                {link.name}
-                                            </button>
+                                            {link.name}
                                         </Disclosure.Button>
                                     ))}
                                 </ul>
