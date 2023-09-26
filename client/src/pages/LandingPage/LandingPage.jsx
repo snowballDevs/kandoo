@@ -1,9 +1,9 @@
 import {useContext, useState} from 'react';
-import {ModalContext} from '../contexts/ModalContext/ModalContext';
-import RegisterForm from './RegisterForm';
-import LoginForm from '../components/LoginForm';
-import Header from '../components/Header';
-import Modal from '../components/Modal';
+import {ModalContext} from '../../contexts/ModalContext/ModalContext';
+import RegisterForm from './Auth/RegisterForm';
+import LoginForm from './Auth/LoginForm';
+import Header from '../../components/Header';
+import Modal from '../../components/Modal';
 
 const LandingPage = () => {
     const {handleOpen} = useContext(ModalContext);

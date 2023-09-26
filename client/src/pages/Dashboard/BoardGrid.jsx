@@ -1,11 +1,11 @@
 import {useContext, useEffect, useState} from 'react';
-import Card from '../components/BoardCard';
-import {ModalContext} from '../contexts/ModalContext/ModalContext';
-import Modal from '../components/Modal';
-import CreateBoardForm from '../components/CreateBoardForm';
-import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
-import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
-import dataService from '../services/dataService';
+import Card from './BoardCard';
+import {ModalContext} from '../../contexts/ModalContext/ModalContext';
+import Modal from '../../components/Modal';
+import CreateBoardForm from './CreateBoardForm';
+import {useRoutingContext} from '../../contexts/RoutingContext/routingContext';
+import {useSelectedBoardContext} from '../../contexts/BoardContext/boardContext';
+import dataService from '../../services/dataService';
 import JoinBoardForm from './JoinBoardForm';
 
 

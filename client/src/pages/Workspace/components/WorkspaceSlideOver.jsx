@@ -1,17 +1,17 @@
 import {useState} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
-import dataService from '../../services/dataService';
-import formatDate from '../../utils/formatDate';
-import {useModalContext} from '../../contexts/ModalContext/ModalContext';
-import {useSelectedBoardContext} from '../../contexts/BoardContext/boardContext';
-import CommentFeed from '../CommentFeed';
-import PriorityDisplay from './PriorityDisplay';
-import TaskDescription from './TaskDescription';
-import EditActionButtons from './EditActionButtons';
+import dataService from '../../../services/dataService';
+import formatDate from '../../../utils/formatDate';
+import {useModalContext} from '../../../contexts/ModalContext/ModalContext';
+import {useSelectedBoardContext} from '../../../contexts/BoardContext/boardContext';
+import CommentFeed from '../Comment/CommentFeed';
+import PriorityDisplay from '../Task/Priority/PriorityDisplay';
+import TaskDescription from '../Task/TaskDescription';
+import EditActionButtons from '../Task/EditActionButtons';
 import ActionButtons from './ActionButtons';
-import AssigneesList from './AssigneesList';
-import ProfileIcon from '../../components/ProfileIcon';
-import PriorityList from './PriorityList';
+import AssigneesList from '../Task/Assignee/AssigneesList';
+import ProfileIcon from '../../../components/ProfileIcon';
+import PriorityList from '../Task/Priority/PriorityList';
 
 const WorkspaceSlideOver = ({boardInfo}) => {
     const {isSlideOverOpen, setIsSlideOverOpen, handleSlideOver} =

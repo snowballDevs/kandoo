@@ -1,9 +1,9 @@
 // this is reusing the BoardForm for Login Form
 import {useState, useContext} from 'react';
-import dataService from '../services/dataService';
-import {ModalContext} from '../contexts/ModalContext/ModalContext';
-import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
-import {useAuthContext} from '../contexts/AuthContext/authContext';
+import dataService from '../../../services/dataService';
+import {ModalContext} from '../../../contexts/ModalContext/ModalContext';
+import {useRoutingContext} from '../../../contexts/RoutingContext/routingContext';
+import {useAuthContext} from '../../../contexts/AuthContext/authContext';
 
 const LoginForm = () => {
     const {handleClose} = useContext(ModalContext);

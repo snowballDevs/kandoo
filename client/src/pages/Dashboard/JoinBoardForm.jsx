@@ -1,9 +1,9 @@
 import {useState, useContext} from 'react'
 import { toast } from 'react-toastify';
-import dataService from '../services/dataService';
-import {ModalContext} from '../contexts/ModalContext/ModalContext'
-import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
-import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
+import dataService from '../../services/dataService';
+import {ModalContext} from '../../contexts/ModalContext/ModalContext'
+import {useRoutingContext} from '../../contexts/RoutingContext/routingContext';
+import {useSelectedBoardContext} from '../../contexts/BoardContext/boardContext';
 
 const JoinBoardForm = () => {
   const {handleModal, isModalOpen, handleClose, handleOpen} =

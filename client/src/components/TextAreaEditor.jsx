@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import useEditingMode from "../hooks/useEditingMode";
+import useEditingMode from "../pages/Workspace/hooks/useEditingMode";
 import dataService from '../services/dataService';
 
 const TextAreaEditor = ({boardInfo, setFormData, formData, isEditing, toggleEditMode}) => {
