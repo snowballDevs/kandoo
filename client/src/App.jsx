@@ -61,7 +61,6 @@ const App = () => {
                 </h1>
                 <Form />
             </div> */}
-            <Footer />
         </div>
     );
 };
