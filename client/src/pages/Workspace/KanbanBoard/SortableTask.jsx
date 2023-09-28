@@ -1,6 +1,6 @@
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import TaskCard from './TaskCard';
+import TaskCard from '../Task/TaskCard';
 
 const SortableTask = ({task, id}) => {
     const {

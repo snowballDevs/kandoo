@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {ModalContext} from '../contexts/ModalContext/ModalContext';
+import {ModalContext} from '../../../contexts/ModalContext/ModalContext';
 
 const Task = ({
     task,

@@ -1,7 +1,7 @@
 import {useContext, useState} from 'react';
 
-import ProfileIcon from '../../components/ProfileIcon';
-import {useSelectedBoardContext} from '../../contexts/BoardContext/boardContext';
+import ProfileIcon from '../../../components/ProfileIcon';
+import {useSelectedBoardContext} from '../../../contexts/BoardContext/boardContext';
 
 const TaskCard = ({task, updateTask}) => {
     const [mouseIsOver, setMouseIsOver] = useState(false);

@@ -1,8 +1,8 @@
 import {useContext, useState} from 'react';
-import dataService from '../services/dataService';
-import {useAuthContext} from '../contexts/AuthContext/authContext';
-import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
-import {ModalContext} from '../contexts/ModalContext/ModalContext';
+import dataService from '../../../services/dataService';
+import {useAuthContext} from '../../../contexts/AuthContext/authContext';
+import {useRoutingContext} from '../../../contexts/RoutingContext/routingContext';
+import {ModalContext} from '../../../contexts/ModalContext/ModalContext';
 
 const RegisterForm = ({formDisplay}) => {
     const [formData, setFormData] = useState({

@@ -1,9 +1,9 @@
-import Header from '../components/Header';
-import WorkspaceHeader from './WorkspaceHeader';
-import KanbanBoard from './kanbanBoard/KanbanBoard';
-import {useSelectedBoardContext} from '../contexts/BoardContext/boardContext';
-import WorkspaceSlideOver from './WorkspaceSlideover/WorkspaceSlideOver';
-import {useModalContext} from '../contexts/ModalContext/ModalContext';
+import Header from '../../../components/Header';
+import WorkspaceHeader from '../components/WorkspaceHeader';
+import KanbanBoard from '../KanbanBoard/KanbanBoard';
+import {useSelectedBoardContext} from '../../../contexts/BoardContext/boardContext';
+// import WorkspaceSlideOver from '../components/WorkspaceSlideOver';
+import {useModalContext} from '../../../contexts/ModalContext/ModalContext';
 
 const Workspace = () => {
     const {selectedBoard, selectedTaskId, selectedColumn} =

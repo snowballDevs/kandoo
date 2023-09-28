@@ -1,8 +1,8 @@
 import {useState} from 'react';
-import ProfileIcon from '../components/ProfileIcon';
-import {useAuthContext} from '../contexts/AuthContext/authContext';
-import dataService from '../services/dataService';
-import formattedDate from '../utils/formatDate';
+import ProfileIcon from '../../../components/ProfileIcon';
+import {useAuthContext} from '../../../contexts/AuthContext/authContext';
+import dataService from '../../../services/dataService';
+import formattedDate from '../../../utils/formatDate';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');

@@ -22,12 +22,12 @@ import {handleDragEnd, handleDragOver, handleDragStart} from './dndHandlers';
 import Column from './Column';
 import SortableTask from './SortableTask';
 import SortableColumn from './SortableColumn';
-import TaskCard from './TaskCard';
+import TaskCard from '../Task/TaskCard';
 import PlaceholderColumn from './PlaceHolderColumn';
-import {useModalContext} from '../../contexts/ModalContext/ModalContext';
-import {useSelectedBoardContext} from '../../contexts/BoardContext/boardContext';
-import WorkspaceSlideOver from '../WorkspaceSlideover/WorkspaceSlideOver';
-import dataService from '../../services/dataService';
+import {useModalContext} from '../../../contexts/ModalContext/ModalContext';
+import {useSelectedBoardContext} from '../../../contexts/BoardContext/boardContext';
+import WorkspaceSlideOver from '../components/WorkspaceSlideOver';
+import dataService from '../../../services/dataService';
 
 const KanbanBoard = ({boardInfo}) => {
     const {handleSlideOver, isSlideOverOpen, setIsSlideOverOpen} =

@@ -1,6 +1,6 @@
 import ColumnHeader from './ColumnHeader';
 
-import AddTask from './AddTask';
+import AddTask from '../Task/AddTask';
 
 const Column = ({
     column,

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
-import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
-import dataService from '../services/dataService';
+import {useRoutingContext} from '../../contexts/RoutingContext/routingContext';
+import dataService from '../../services/dataService';
 
 const Card = ({name, desc, id, onDelete, onClick}) => {
     const [cardId, setCardId] = useState(null);

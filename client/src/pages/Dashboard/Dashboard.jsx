@@ -1,8 +1,8 @@
 import {useState, useEffect} from 'react';
-import Header from '../components/Header';
-import dataService from '../services/dataService';
+import Header from '../../components/Header';
+import dataService from '../../services/dataService';
 import BoardGrid from './BoardGrid';
-import {useAuthContext} from '../contexts/AuthContext/authContext';
+import {useAuthContext} from '../../contexts/AuthContext/authContext';
 
 const Dashboard = ({clickedCardId, setClickedCardId}) => {
     const {
