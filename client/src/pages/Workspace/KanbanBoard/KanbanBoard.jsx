@@ -84,11 +84,9 @@ const KanbanBoard = () => {
         const boardId = selectedBoard._id;
 
         // Tell DB the updated state of the board
-        const response = await dataService.updateBoardItems(boardId, {
+        await dataService.updateBoardItems(boardId, {
             items,
         });
-
-        console.log(response);
     }
 
     async function handleAddColumn() {
@@ -117,7 +115,7 @@ const KanbanBoard = () => {
         const boardId = selectedBoard._id;
         const columnId = id;
 
-        const response = await dataService.deleteColumn(boardId, columnId);
+        await dataService.deleteColumn(boardId, columnId);
 
         setSelectedBoard((prev) => ({
             ...prev,
@@ -150,8 +148,6 @@ const KanbanBoard = () => {
             title,
         });
 
-        console.log(response);
-
         const column = response.data;
 
         setSelectedBoard((prev) => ({
@@ -170,15 +166,12 @@ const KanbanBoard = () => {
 
         //     return updatedItems;
         // });
-
-        console.log(column);
     }
 
     async function handleAddTask(columnId, containerId) {
         const boardId = selectedBoard._id;
         const taskName = `Task ${items[containerId].tasks.length + 1}`;
 
-        console.log(taskName);
         const response = await dataService.createTask(boardId, columnId, {
             taskName,
         });
@@ -252,13 +245,11 @@ const KanbanBoard = () => {
                                 items-stretch
                                 justify-stretch'
                     >
-                        {containers.map((containerId, index) => {
+                        {containers.map((containerId) => {
                             // Array of tasksIds for each container
 
                             const taskIds = getTaskIds(items, containerId);
-                            console.log(containerId);
-                            console.log(items[containerId]);
-                            console.log(items[containerId]?._id);
+
                             return (
                                 <SortableColumn
                                     column={items[containerId]}
