@@ -13,9 +13,8 @@ import AssigneesList from '../Task/Assignee/AssigneesList';
 import ProfileIcon from '../../../components/ProfileIcon';
 import PriorityList from '../Task/Priority/PriorityList';
 
-const WorkspaceSlideOver = ({boardInfo}) => {
-    const {isSlideOverOpen, setIsSlideOverOpen, handleSlideOver} =
-        useModalContext();
+const WorkspaceSlideOver = () => {
+    const {isSlideOverOpen, handleSlideOver} = useModalContext();
     const {
         selectedTaskId,
         selectedColumnId,
@@ -26,17 +25,12 @@ const WorkspaceSlideOver = ({boardInfo}) => {
         setSelectedBoard,
     } = useSelectedBoardContext();
     const [editingMode, setEditingMode] = useState(false);
-    console.log(selectedTaskId);
-    console.log(items.find((col) => col._id === selectedColumnId));
 
     const column = items.find((col) => col._id === selectedColumnId);
     const task = column?.tasks.find((tsk) => tsk._id === selectedTaskId);
     const assignedUsers = selectedBoard.users.filter((user) =>
         task?.assignedUserIds.includes(user._id)
     );
-    console.log(task);
-    // console.log(selectedTaskId)
-    console.log(column);
 
     const [formData, setFormData] = useState({
         taskName: task?.taskName || '',
@@ -49,6 +43,10 @@ const WorkspaceSlideOver = ({boardInfo}) => {
         setEditingMode(!editingMode);
     };
 
+    function handleClose() {
+        handleSlideOver();
+    }
+
     async function handleTaskSubmit(event) {
         event.preventDefault();
         try {
@@ -60,7 +58,6 @@ const WorkspaceSlideOver = ({boardInfo}) => {
             );
 
             const updatedTask = response.data;
-            console.log(updatedTask);
 
             setSelectedBoard((prev) => ({
                 ...prev,
@@ -68,10 +65,8 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                     col._id === column._id
                         ? {
                               ...col,
-                              tasks: col.tasks.map((task) =>
-                                  task._id === updatedTask._id
-                                      ? updatedTask
-                                      : task
+                              tasks: col.tasks.map((t) =>
+                                  task._id === updatedTask._id ? updatedTask : t
                               ),
                           }
                         : col
@@ -102,12 +97,11 @@ const WorkspaceSlideOver = ({boardInfo}) => {
     async function handleTaskDelete() {
         try {
             handleClose();
-            const response = await dataService.deleteTask(
+            await dataService.deleteTask(
                 selectedBoard._id,
                 column._id,
                 task._id
             );
-            console.log(response);
 
             setSelectedBoard((prev) => ({
                 ...prev,
@@ -143,12 +137,7 @@ const WorkspaceSlideOver = ({boardInfo}) => {
         }
     }
 
-    function handleClose() {
-        handleSlideOver();
-    }
-
     function handleTaskChange(event) {
-        // setIsDirty(true);
         console.log(event);
         const {name, value, type, checked} = event.target;
 
@@ -370,14 +359,22 @@ const WorkspaceSlideOver = ({boardInfo}) => {
                                                 </form>
                                                 {/* Comments */}
                                                 {!editingMode && (
-                                                <CommentFeed
-                                                    taskId={task?._id}
-                                                    taskComments={task?.comments}
-                                                    boardId={selectedBoard?._id}
-                                                    columnId={selectedColumnId}
-                                                    setSelectedBoard={setSelectedBoard}
-                                                />
-                                            )}
+                                                    <CommentFeed
+                                                        taskId={task?._id}
+                                                        taskComments={
+                                                            task?.comments
+                                                        }
+                                                        boardId={
+                                                            selectedBoard?._id
+                                                        }
+                                                        columnId={
+                                                            selectedColumnId
+                                                        }
+                                                        setSelectedBoard={
+                                                            setSelectedBoard
+                                                        }
+                                                    />
+                                                )}
                                             </div>
                                         </div>
                                     </Dialog.Panel>

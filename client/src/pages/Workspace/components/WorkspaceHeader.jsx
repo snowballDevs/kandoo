@@ -1,6 +1,6 @@
 import {useState, useContext} from 'react';
 import {MdDelete, MdModeEdit, MdFileCopy} from 'react-icons/md';
-import { toast} from 'react-toastify';
+import {toast} from 'react-toastify';
 import {useRoutingContext} from '../../../contexts/RoutingContext/routingContext';
 import {useAuthContext} from '../../../contexts/AuthContext/authContext';
 import dataService from '../../../services/dataService';
@@ -14,28 +14,22 @@ import TextAreaEditor from '../../../components/TextAreaEditor';
 
 const WorkspaceHeader = ({boardInfo}) => {
     const {setCurrentPage} = useRoutingContext();
-    const {handleModal, isModalOpen, handleClose, handleOpen} =
-        useContext(ModalContext);
+    const {handleClose, handleOpen} = useContext(ModalContext);
     const {user} = useAuthContext();
 
-    const [displayedModal, setDisplayedModal] = useState(null);
     const [formData, setFormData] = useState({
         boardName: boardInfo.boardName,
         description: boardInfo.description,
     });
 
     const {isEditing, toggleEditMode} = useEditingMode();
-    const handleDisplayedModal = (modalContent) => {
-        setDisplayedModal(modalContent);
-        handleOpen();
-    };
 
     const deleteProject = async (id) => {
         try {
             const userId = user._id;
             if (userId === boardInfo.createdBy) {
-                const deletedProject = await dataService.deleteBoard(id);
-                console.log(deletedProject);
+                await dataService.deleteBoard(id);
+
                 setCurrentPage('dashboard');
                 handleClose();
             } else {
@@ -57,7 +51,6 @@ const WorkspaceHeader = ({boardInfo}) => {
 
     const copyID = async (id) => {
         try {
-            console.log('id to be copied: ', id);
             await navigator.clipboard.writeText(id);
             toast.success('Board ID Copied!', {
                 position: 'top-center',
@@ -110,10 +103,10 @@ const WorkspaceHeader = ({boardInfo}) => {
                     >
                         <MdFileCopy className='mr-2' /> Copy ID
                     </button>
-                    {isEditing === false && (
+                    {!isEditing && (
                         <button
                             type='button'
-                            className='flex items-center justify-center font-semibold dark:bg-gray-900 bg-tertiaryLight text-gray-100 dark:bg-gray-600 dark:hover:bg-blue-500 dark:text-gray-100 rounded w-min-content py-2 px-2'
+                            className='flex items-center justify-center font-semibold dark:bg-gray-900 bg-tertiaryLight text-gray-100  dark:hover:bg-blue-500 dark:text-gray-100 rounded w-min-content py-2 px-2'
                             onClick={toggleEditMode}
                         >
                             <MdModeEdit className='text-xl mr-2' />
@@ -122,7 +115,7 @@ const WorkspaceHeader = ({boardInfo}) => {
                     )}
                     <button
                         type='button'
-                        onClick={() => handleDisplayedModal('confirmDelete')}
+                        onClick={handleOpen}
                         className='flex items-center justify-center font-semibold hover:bg-red-700 text-gray-100 bg-dangerLight dark:hover:bg-red-500 dark:text-gray-100 rounded px-2 w-min-content py-2'
                     >
                         <MdDelete className='text-xl' />
