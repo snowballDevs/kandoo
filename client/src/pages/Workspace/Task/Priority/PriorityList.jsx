@@ -19,6 +19,7 @@ const PriorityList = ({formData, onChange}) => {
                             onChange={onChange}
                             formData={formData}
                             priority={priority}
+                            key={priority}
                         />
                     ))}
                 </div>

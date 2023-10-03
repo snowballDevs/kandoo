@@ -1,5 +1,6 @@
 const PriorityDisplay = ({level}) => {
-    let className, text;
+    let className;
+    let text;
     switch (level) {
         case 'high':
             className = 'bg-red-200 text-red-600';
