@@ -43,6 +43,12 @@ module.exports = {
         'react/prop-types': 0,
         'no-underscore-dangle': ['error', {allow: ['_id']}],
         'consistent-return': 'off',
+        'import/no-extraneous-dependencies': [
+            'error',
+            {
+                devDependencies: true,
+            },
+        ],
     },
     settings: {
         react: {
