@@ -4,12 +4,11 @@ const User = require('../models/User');
 
 module.exports = {
     getUser: (req, res) => {
-        console.log(req.isAuthenticated());
         if (req.isAuthenticated()) {
             console.log('responding from server, the user is: ', req.user);
             return res.json(req.user.toJSON());
         }
-        console.log('Not signed in');
+
         return res.json(null);
     },
 
@@ -65,7 +64,7 @@ module.exports = {
                     return res.status(500).json({error: 'Login error'});
                 }
                 // User is logged in
-                console.log(user);
+
                 return res.status(200).json({
                     message: 'Signup and login successful',
                     user: user.toJSON(),
@@ -83,8 +82,8 @@ module.exports = {
             });
 
             res.json({message: 'Logged out successfully'});
-        } catch (e) {
-            console.log('This E', e);
+        } catch (err) {
+            console.log(err);
         }
     },
 };

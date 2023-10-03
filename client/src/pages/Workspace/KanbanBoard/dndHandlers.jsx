@@ -139,7 +139,7 @@ function handleDragEnd(
 
     // Keeping db in sync with the state of the ui
     handleDND(items);
-    
+
     setActiveId(null);
 }
 

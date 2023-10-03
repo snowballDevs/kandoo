@@ -15,8 +15,7 @@ module.exports = {
                 return res.json(comments);
             }
         } catch (error) {
-            // console.error(error);
-            return false;
+            return res.status(500).json({error});
         }
     },
 
@@ -47,8 +46,7 @@ module.exports = {
 
             return res.json(addedComment);
         } catch (error) {
-            // console.error(error);
-            return res.json(500)
+            return res.status(500).json({error});
         }
     },
 
@@ -64,12 +62,6 @@ module.exports = {
             };
 
             const board = await Board.findById(boardId);
-            // const task = await board.tasks.findByIdAndUpdate(taskId, {taskName,priority}, {new: true} )
-            // const updatedBoard = await Board.findByIdAndUpdate(
-            //   boardId,
-            //   { $set: { tasks: { _id: taskId } } }, // used to remove the task from the tasks array based on its _id property
-            //   { new: true }
-            // )
 
             if (!board) {
                 res.json('Board not found');
@@ -85,8 +77,7 @@ module.exports = {
 
             return res.json(board);
         } catch (error) {
-            // console.error(error);
-            return res.status(500);
+            return res.status(500).json({error});
         }
     },
 
@@ -123,8 +114,7 @@ module.exports = {
 
             return res.json(board);
         } catch (error) {
-            // console.error(error);
-            return res.status(500);
+            return res.status(500).json({error});
         }
     },
 
@@ -145,7 +135,7 @@ module.exports = {
             return res.json(board);
         } catch (error) {
             // console.error(error);
-            return res.status(500);
+            return res.status(500).json({error});
         }
     },
 };

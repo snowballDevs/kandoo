@@ -18,6 +18,7 @@ const SelectedBoardProvider = ({children}) => {
     const [selectedTaskId, setSelectedTask] = useState(null);
 
     useEffect(() => {
+        console.log('One');
         // Check if selectedBoard and its columns are available
         if (selectedBoard && selectedBoard.columns) {
             setItems(selectedBoard.columns);
@@ -28,6 +29,19 @@ const SelectedBoardProvider = ({children}) => {
             setContainers([]);
         }
     }, [selectedBoard]);
+
+    // update the board when
+    // useEffect(() => {
+    //     console.log('hi');
+    //     // Check if selectedBoard and its columns are available
+    //     if (selectedBoard && selectedBoard.columns) {
+    //         // Update selectedBoard with the modified columns
+    //         setSelectedBoard((prevSelectedBoard) => ({
+    //             ...prevSelectedBoard,
+    //             columns: items,
+    //         }));
+    //     }
+    // }, [items]);
 
     // So the NO. of containers stay in sync with the NO. items.
     // useEffect(() => {

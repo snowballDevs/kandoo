@@ -16,8 +16,7 @@ module.exports = {
                 return res.json(tasks);
             }
         } catch (error) {
-            console.error(error);
-            return false;
+            return res.status(500).json({error});
         }
     },
 
@@ -48,7 +47,7 @@ module.exports = {
 
             return res.json(task);
         } catch (error) {
-            console.error(error);
+            return res.status(500).json({error});
         }
     },
 
@@ -84,11 +83,9 @@ module.exports = {
             task.assignedUserIds = assignedUserIds;
             await board.save();
 
-            console.log(task);
             return res.json(task);
         } catch (error) {
-            console.error(error);
-            return res.status(500);
+            return res.status(500).json({error});
         }
     },
     // deleteTask
@@ -121,8 +118,7 @@ module.exports = {
 
             return res.json(board);
         } catch (error) {
-            console.error(error);
-            return res.status(500);
+            return res.status(500).json({error});
         }
     },
 };
