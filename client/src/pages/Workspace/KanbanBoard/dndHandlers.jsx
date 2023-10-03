@@ -1,6 +1,5 @@
 import {arrayMove} from '@dnd-kit/sortable';
 import {findContainer} from './dndUtils';
-// Fires when drag event is initiated.
 
 function handleDragStart({active}, setActiveId) {
     setActiveId(active.id);
@@ -87,10 +86,13 @@ function handleDragEnd(
     {active, over},
     items,
     setItems,
+    containers,
     setContainers,
-    setActiveId
+    setActiveId,
+    handleDND
 ) {
     if (active.id in items && over?.id) {
+        console.log('Bye');
         setContainers((containers) => {
             const activeIndex = containers.indexOf(active.id);
             const overIndex = containers.indexOf(over.id);
@@ -134,6 +136,10 @@ function handleDragEnd(
             });
         }
     }
+
+    // Keeping db in sync with the state of the ui
+    handleDND(items);
+    
     setActiveId(null);
 }
 
