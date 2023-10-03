@@ -66,7 +66,7 @@ const WorkspaceSlideOver = () => {
                         ? {
                               ...col,
                               tasks: col.tasks.map((t) =>
-                                  task._id === updatedTask._id ? updatedTask : t
+                                  t._id === updatedTask._id ? updatedTask : t
                               ),
                           }
                         : col
