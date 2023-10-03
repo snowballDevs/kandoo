@@ -85,6 +85,18 @@ const KanbanBoard = ({boardInfo}) => {
         );
     }
 
+    // For keeping db up to date with the ui
+    async function handleDND(items) {
+        const boardId = selectedBoard._id;
+
+        // Tell DB the updated state of the board
+        const response = await dataService.updateBoardItems(boardId, {
+            items,
+        });
+
+        console.log(response);
+    }
+
     async function handleAddColumn() {
         const boardId = selectedBoard._id;
         const columnTitle = `Column ${items.length + 1}`;
@@ -228,8 +240,10 @@ const KanbanBoard = ({boardInfo}) => {
                         e,
                         items,
                         setItems,
+                        containers,
                         setContainers,
-                        setActiveId
+                        setActiveId,
+                        handleDND
                     )
                 }
                 collisionDetection={closestCorners}

@@ -89,6 +89,7 @@ module.exports = {
         }
     },
 
+    // using this to update board description and board items
     updateBoard: async (req, res) => {
         try {
             const {boardId} = req.params;
@@ -104,6 +105,22 @@ module.exports = {
             console.error(error);
         }
     },
+
+    updateBoardItems: async (req, res) => {
+        try {
+            const {boardId} = req.params;
+            const {items} = req.body;
+            const board = await Board.findById(boardId);
+            if (board) {
+                board.columns = items;
+                await board.save();
+                return res.json({board, message: 'Board updated'});
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    },
+
     // to delete a board on dashboard
     deleteBoard: async (req, res) => {
         try {
