@@ -1,10 +1,9 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {createPortal} from 'react-dom';
 import {
     DndContext,
     DragOverlay,
     PointerSensor,
-    KeyboardSensor,
     TouchSensor,
     useSensor,
     useSensors,
@@ -29,13 +28,11 @@ import {useSelectedBoardContext} from '../../../contexts/BoardContext/boardConte
 import WorkspaceSlideOver from '../components/WorkspaceSlideOver';
 import dataService from '../../../services/dataService';
 
-const KanbanBoard = ({boardInfo}) => {
-    const {handleSlideOver, isSlideOverOpen, setIsSlideOverOpen} =
-        useModalContext();
+const KanbanBoard = () => {
+    const {setIsSlideOverOpen} = useModalContext();
     const {
         selectedTaskId,
         setSelectedTask,
-        selectedColumnId,
         setSelectedColumn,
         selectedBoard,
         setSelectedBoard,
@@ -46,9 +43,6 @@ const KanbanBoard = ({boardInfo}) => {
     } = useSelectedBoardContext();
 
     const [activeId, setActiveId] = useState(null);
-    // console.log(boardInfo)
-
-    console.log(items);
 
     const PLACEHOLDER_ID = 'placeholder';
 
@@ -105,9 +99,9 @@ const KanbanBoard = ({boardInfo}) => {
             columnTitle,
         });
 
-        const newContainerId = getNextContainerId(items);
-        console.log(newContainerId);
-        console.log(response);
+        // const newContainerId = getNextContainerId(items);
+        // console.log('Container ID', newContainerId);
+        // console.log(response);
         const column = response.data;
 
         setSelectedBoard((prev) => ({
@@ -119,16 +113,11 @@ const KanbanBoard = ({boardInfo}) => {
         // setItems((prev) => [...prev, column]);
     }
 
-    async function handleRemoveColumn(id, containerId) {
+    async function handleRemoveColumn(id) {
         const boardId = selectedBoard._id;
         const columnId = id;
 
-        console.log(containerId);
-
         const response = await dataService.deleteColumn(boardId, columnId);
-        console.log(response);
-
-        console.log(containers);
 
         setSelectedBoard((prev) => ({
             ...prev,

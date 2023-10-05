@@ -1,10 +1,8 @@
-import {useState, useEffect} from 'react';
 import Header from '../../components/Header';
-import dataService from '../../services/dataService';
 import BoardGrid from './BoardGrid';
 import {useAuthContext} from '../../contexts/AuthContext/authContext';
 
-const Dashboard = ({clickedCardId, setClickedCardId}) => {
+const Dashboard = () => {
     const {
         user: {firstName},
     } = useAuthContext();
@@ -21,10 +19,7 @@ const Dashboard = ({clickedCardId, setClickedCardId}) => {
                     <h1 className='text-4xl font-bold'>Your Projects</h1>
                 </div>
             </div>
-            <BoardGrid
-                clickedCardId={clickedCardId}
-                setClickedCardId={setClickedCardId}
-            />
+            <BoardGrid />
         </div>
     );
 };

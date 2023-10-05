@@ -1,16 +1,8 @@
-// this is reusing the BoardForm for Login Form
-import {useState, useContext} from 'react';
-import dataService from '../../../services/dataService';
-import {ModalContext} from '../../../contexts/ModalContext/ModalContext';
-import {useRoutingContext} from '../../../contexts/RoutingContext/routingContext';
+import {useState} from 'react';
 import {useAuthContext} from '../../../contexts/AuthContext/authContext';
 
 const LoginForm = () => {
-    const {handleClose} = useContext(ModalContext);
-
-    const {setUser, login, logout} = useAuthContext();
-
-    const {setCurrentPage} = useRoutingContext();
+    const {login} = useAuthContext();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -23,15 +15,14 @@ const LoginForm = () => {
             ...prevFormData,
             [name]: value,
         }));
-        console.log(event.target.value);
     };
 
     const handleSubmit = async (event) => {
         // prevent refreshing the form
         event.preventDefault();
         try {
-            const response = await login(formData);
-            
+            await login(formData);
+
             // handle response
         } catch (error) {
             console.error('Error: ', error.message);

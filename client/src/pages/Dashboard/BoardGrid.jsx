@@ -8,51 +8,46 @@ import {useSelectedBoardContext} from '../../contexts/BoardContext/boardContext'
 import dataService from '../../services/dataService';
 import JoinBoardForm from './JoinBoardForm';
 
-
-const BoardGrid = ({clickedCardId, setClickedCardId}) => {
+const BoardGrid = () => {
     // this should capture an array of objects(boards)
-    const {handleModal, isModalOpen, handleClose, handleOpen} =
-        useContext(ModalContext);
+    const {handleOpen} = useContext(ModalContext);
 
     const {setSelectedBoard} = useSelectedBoardContext();
 
     const {setCurrentPage} = useRoutingContext();
 
     const [boards, setBoards] = useState([]);
-    const [displayedForm, setDisplayedForm] = useState(null)
+    const [displayedForm, setDisplayedForm] = useState(null);
 
     const handleDisplayedForm = (formToDisplay) => {
-      setDisplayedForm(formToDisplay)
-      handleOpen();
-    }
-
-    useEffect(() => {
-        getBoards();
-    }, []);
+        setDisplayedForm(formToDisplay);
+        handleOpen();
+    };
 
     const getBoards = async () => {
         try {
-            console.log('Sending Request');
             const response = await dataService.getBoards();
-            console.log(response);
             setBoards(response.data.boards);
         } catch (err) {
             console.log(err);
         }
     };
 
-    const onDelete = async (e, id) => {
-        e.stopPropagation();
-        const deletedBoard = await dataService.deleteBoard(id);
-        console.log(deletedBoard);
-        await getBoards();
-    };
+    useEffect(() => {
+        getBoards();
+    }, []);
+
+    // Deleting a board happens within a the workspace now.
+    // const onDelete = async (e, id) => {
+    //     e.stopPropagation();
+    //     const deletedBoard = await dataService.deleteBoard(id);
+    //     await getBoards();
+    // };
 
     const navigateToBoard = (e) => {
         const {id} = e.currentTarget;
-        const board = boards.find((board) => board._id === id);
-        console.log(board);
-        setSelectedBoard(board);
+        const selectedBoard = boards.find((board) => board._id === id);
+        setSelectedBoard(selectedBoard);
         setCurrentPage('workspace');
     };
 
@@ -66,15 +61,15 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
                 >
                     Create New Project
                 </button>
-                <button 
-                  className='btn bg-secondaryLight text-primaryLight hover:bg-fuchsia-500 ml-3' 
-                  type='button'
-                  onClick={() => handleDisplayedForm('join')}
+                <button
+                    className='btn bg-secondaryLight text-primaryLight hover:bg-fuchsia-500 ml-3'
+                    type='button'
+                    onClick={() => handleDisplayedForm('join')}
                 >
-                  Join Project
+                    Join Project
                 </button>
             </div>
-            
+
             <div className='grid grid-cols-fluid justify-items-center gap-6 '>
                 {boards.map((board) => (
                     <Card
@@ -88,8 +83,8 @@ const BoardGrid = ({clickedCardId, setClickedCardId}) => {
                 ))}
 
                 <Modal>
-                  {displayedForm === 'create' && <CreateBoardForm />}
-                  {displayedForm === 'join' && <JoinBoardForm />}
+                    {displayedForm === 'create' && <CreateBoardForm />}
+                    {displayedForm === 'join' && <JoinBoardForm />}
                 </Modal>
             </div>
         </div>

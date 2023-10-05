@@ -13,7 +13,6 @@ const ColumnHeader = ({
     const [columnName, setColumnName] = useState(column?.title || '');
 
     function handleColumnTitle(e) {
-        console.log(e);
         const {value} = e.target;
         setColumnName(value);
     }
@@ -57,7 +56,6 @@ const ColumnHeader = ({
                             }}
                             onKeyDown={(e) => {
                                 if (e.key !== 'Enter') {
-                                    console.log(e);
                                     return;
                                 }
                                 setEditMode(false);
