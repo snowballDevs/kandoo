@@ -5,8 +5,7 @@ import {useRoutingContext} from '../../contexts/RoutingContext/routingContext';
 import {useSelectedBoardContext} from '../../contexts/BoardContext/boardContext';
 
 const BoardForm = () => {
-    const {handleModal, isModalOpen, handleClose, handleOpen} =
-        useContext(ModalContext);
+    const {handleClose} = useContext(ModalContext);
 
     const {setCurrentPage} = useRoutingContext();
 
@@ -23,19 +22,15 @@ const BoardForm = () => {
             ...prevFormData,
             [name]: value,
         }));
-        console.log(event.target.value);
     };
 
     const handleSubmit = async (event) => {
         // prevent refreshing the form
         event.preventDefault();
         try {
-            
             const response = await dataService.createBoard(formData);
-            console.log(response);
             // handle response
             if (response.status >= 200 && response.status < 300) {
-                console.log('Request Successful', response);
                 const {board} = response.data;
                 setSelectedBoard(board);
                 setCurrentPage('workspace');
@@ -97,7 +92,7 @@ const BoardForm = () => {
                                         onChange={handleChange}
                                         required
                                         className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                                     />
+                                    />
                                 </div>
                                 <p className='mt-3 text-sm leading-6 text-gray-600'>
                                     Write a few sentences about your project.

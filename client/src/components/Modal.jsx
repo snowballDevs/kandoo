@@ -1,4 +1,4 @@
-import {useContext, useEffect, Fragment, useState} from 'react';
+import {useContext, useEffect, Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import {XMarkIcon} from '@heroicons/react/24/outline';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
@@ -7,10 +7,9 @@ const Modal = ({children}) => {
     const {isModalOpen, handleClose, setIsModalOpen} = useContext(ModalContext);
 
     useEffect(() => {
-        console.log('Rendered');
+        
 
         function handleEscapeKey(event) {
-            console.log(event);
             if (event.code === 'Escape') {
                 handleClose();
             }
@@ -19,7 +18,7 @@ const Modal = ({children}) => {
 
         // cleanup when unmounting/removing this component
         return () => {
-            console.log('removed');
+           
             document.removeEventListener('keydown', handleEscapeKey);
         };
     }, []);

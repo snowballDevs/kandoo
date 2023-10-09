@@ -5,7 +5,7 @@ const PriorityInput = ({formData, onChange, priority}) => {
         low: 'bg-blue-200 text-blue-600',
     };
 
-    let priorityStyle = priorityStyles[priority];
+    const priorityStyle = priorityStyles[priority];
 
     return (
         <div className='relative items-start sm:col-span-3 mr-3'>

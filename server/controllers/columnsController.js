@@ -4,8 +4,7 @@ module.exports = {
     getColumns: async (req, res) => {
         try {
             const {boardId} = req.params;
-            // const board = await Board.findById(boardId)
-            console.log(boardId);
+
             const board = await Board.findById(boardId);
 
             if (board) {
@@ -13,8 +12,7 @@ module.exports = {
                 return res.json(columns);
             }
         } catch (error) {
-            console.error(error);
-            return false;
+            return res.status(500).json({error});
         }
     },
 
@@ -22,7 +20,7 @@ module.exports = {
     createColumn: async (req, res) => {
         try {
             const {boardId} = req.params;
-            console.log(req.params);
+
             const {columnTitle} = req.body;
 
             const board = await Board.findById(boardId);
@@ -32,13 +30,14 @@ module.exports = {
             }
 
             board.columns.push({title: columnTitle});
+
             board.save();
 
             const column = board.columns[board.columns.length - 1];
-            console.log(column);
+
             return res.json(column);
         } catch (error) {
-            console.error(error);
+            return res.status(500).json({error});
         }
     },
 
@@ -47,9 +46,7 @@ module.exports = {
     updateColumn: async (req, res) => {
         try {
             const {boardId, columnId} = req.params;
-            const {title} = req.body; // took out column order
-            // const board = await Board.findById(boardId)
-            console.log(boardId);
+            const {title} = req.body;
 
             const board = await Board.findById(boardId);
 
@@ -65,12 +62,9 @@ module.exports = {
 
             column.title = title;
             await board.save();
-
-            console.log(column);
             return res.json(column);
         } catch (error) {
-            console.error(error);
-            return res.status(500);
+            return res.status(500).json({error});
         }
     },
     // deleteColumn
@@ -89,16 +83,15 @@ module.exports = {
 
             if (!column) {
                 return res.status(404).json({error: 'Column not found'});
-            } else {
-                await column.deleteOne();
             }
+
+            await column.deleteOne();
 
             await board.save();
 
             return res.json({message: 'Column delete successful'});
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({error: error});
+            return res.status(500).json({error});
         }
     },
 };

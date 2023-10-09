@@ -1,14 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/jsx-fragments */
-import {useContext} from 'react';
-import {Fragment} from 'react';
-import {Bars3Icon, BellIcon, XMarkIcon} from '@heroicons/react/24/outline';
+import {useContext, Fragment} from 'react';
+import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline';
 import {Disclosure, Menu, Transition} from '@headlessui/react';
 import {useAuthContext} from '../contexts/AuthContext/authContext';
 import {ModalContext} from '../contexts/ModalContext/ModalContext';
 import {useRoutingContext} from '../contexts/RoutingContext/routingContext';
 import ProfileIcon from './ProfileIcon';
-// import PageHeading from './PageHeading';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
@@ -32,70 +30,70 @@ const Header = ({formDisplay}) => {
         Links.push({
             name: 'DASHBOARD',
             onClick: () => setCurrentPage('dashboard'),
-        }),
-            Links.push({name: 'LOGOUT', onClick: logout});
+        });
+        Links.push({name: 'LOGOUT', onClick: logout});
     } else {
         Links.push({name: 'LOGIN', onClick: () => handleLogin('login')});
     }
 
-    const oldCode = () => (
-        <header className='bg-tertiaryLight'>
-            <nav className='navbar max-w-7xl mx-auto'>
-                <div className='flex-1'>
-                    <button
-                        type='button'
-                        className='btn btn-ghost normal-case text-xl text-primaryLight'
-                        onClick={() => setCurrentPage('landingPage')}
-                    >
-                        KANDOO
-                    </button>
-                </div>
-                <div className='hidden lg:ml-6 lg:flex lg:space-x-8'>
-                    {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                    <h3 className='inline-flex capitalize items-center px-1 pt-1 text-md font-semibold text-gray-900'>
-                        {currentPage !== 'landingPage' && currentPage}
-                    </h3>
-                </div>
-                {/* user profile icon */}
-                <div className='flex-none px-4'>
-                    <div className='dropdown dropdown-end'>
-                        <button
-                            type='button'
-                            tabIndex={0}
-                            className='btn px-2 btn-ghost btn-circle avatar'
-                        >
-                            <div className='w-8 rounded-full '>
-                                {user ? (
-                                    <ProfileIcon fullName={user.fullName} />
-                                ) : (
-                                    <img
-                                        src='/userplaceholder.png'
-                                        alt='user profile'
-                                    />
-                                )}
-                            </div>
-                        </button>
-                        <ul className='menu menu-sm dropdown-content mt-3 p-2 shadow bg-primaryLight rounded-box w-52'>
-                            {Links.map((link) => (
-                                <li key={link.name}>
-                                    <button
-                                        data-modal='modal-login'
-                                        type='button'
-                                        className='btn btn-sm btn-ghost text-secondaryLight'
-                                        onClick={
-                                            link.onClick ? link.onClick : null
-                                        }
-                                    >
-                                        {link.name}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-    );
+    // const oldCode = () => (
+    //     <header className='bg-tertiaryLight'>
+    //         <nav className='navbar max-w-7xl mx-auto'>
+    //             <div className='flex-1'>
+    //                 <button
+    //                     type='button'
+    //                     className='btn btn-ghost normal-case text-xl text-primaryLight'
+    //                     onClick={() => setCurrentPage('landingPage')}
+    //                 >
+    //                     KANDOO
+    //                 </button>
+    //             </div>
+    //             <div className='hidden lg:ml-6 lg:flex lg:space-x-8'>
+    //                 {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
+    //                 <h3 className='inline-flex capitalize items-center px-1 pt-1 text-md font-semibold text-gray-900'>
+    //                     {currentPage !== 'landingPage' && currentPage}
+    //                 </h3>
+    //             </div>
+    //             {/* user profile icon */}
+    //             <div className='flex-none px-4'>
+    //                 <div className='dropdown dropdown-end'>
+    //                     <button
+    //                         type='button'
+    //                         tabIndex={0}
+    //                         className='btn px-2 btn-ghost btn-circle avatar'
+    //                     >
+    //                         <div className='w-8 rounded-full '>
+    //                             {user ? (
+    //                                 <ProfileIcon fullName={user.fullName} />
+    //                             ) : (
+    //                                 <img
+    //                                     src='/userplaceholder.png'
+    //                                     alt='user profile'
+    //                                 />
+    //                             )}
+    //                         </div>
+    //                     </button>
+    //                     <ul className='menu menu-sm dropdown-content mt-3 p-2 shadow bg-primaryLight rounded-box w-52'>
+    //                         {Links.map((link) => (
+    //                             <li key={link.name}>
+    //                                 <button
+    //                                     data-modal='modal-login'
+    //                                     type='button'
+    //                                     className='btn btn-sm btn-ghost text-secondaryLight'
+    //                                     onClick={
+    //                                         link.onClick ? link.onClick : null
+    //                                     }
+    //                                 >
+    //                                     {link.name}
+    //                                 </button>
+    //                             </li>
+    //                         ))}
+    //                     </ul>
+    //                 </div>
+    //             </div>
+    //         </nav>
+    //     </header>
+    // );
 
     return (
         <Disclosure as='nav' className='bg-tertiaryLight'>

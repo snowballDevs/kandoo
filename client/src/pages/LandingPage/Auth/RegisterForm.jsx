@@ -1,8 +1,6 @@
-import {useContext, useState} from 'react';
-import dataService from '../../../services/dataService';
+import {useState} from 'react';
+
 import {useAuthContext} from '../../../contexts/AuthContext/authContext';
-import {useRoutingContext} from '../../../contexts/RoutingContext/routingContext';
-import {ModalContext} from '../../../contexts/ModalContext/ModalContext';
 
 const RegisterForm = ({formDisplay}) => {
     const [formData, setFormData] = useState({
@@ -10,11 +8,7 @@ const RegisterForm = ({formDisplay}) => {
         password: '',
     });
 
-    const {handleClose} = useContext(ModalContext);
-
-    const {setUser, signUp} = useAuthContext();
-
-    const {setCurrentPage} = useRoutingContext();
+    const {signUp} = useAuthContext();
 
     const handleChange = (event) => {
         const {name, value} = event.target;
@@ -22,13 +16,12 @@ const RegisterForm = ({formDisplay}) => {
             ...prevFormData,
             [name]: value,
         }));
-        console.log(event.target.value);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await signUp(formData);
+            await signUp(formData);
         } catch (e) {
             console.log(e);
         }
@@ -36,14 +29,6 @@ const RegisterForm = ({formDisplay}) => {
 
     return (
         <div>
-            {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
             <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-primaryLight text-secondaryLight'>
                 <div className='sm:mx-auto sm:w-full sm:max-w-sm '>
                     <img

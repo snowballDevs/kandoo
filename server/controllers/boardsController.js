@@ -6,13 +6,11 @@ module.exports = {
     getAllBoards: async (req, res) => {
         try {
             const userId = req.user.id;
-            console.log(userId);
             const boards = await Board.find({users: userId}).populate('users');
 
             return res.json({boards});
         } catch (error) {
-            console.error(error);
-            return false;
+            res.status(500).json({error});
         }
     },
 
@@ -20,7 +18,6 @@ module.exports = {
     createBoard: async (req, res) => {
         try {
             const {boardName, description} = req.body;
-            console.log(req.body);
             const user = req.user.id;
 
             const defaultColumns = [
@@ -47,12 +44,11 @@ module.exports = {
                 description,
                 createdBy: user,
             });
-            console.log('board created successfully!');
 
             console.log(board);
             res.json({board});
         } catch (error) {
-            console.error(error);
+            res.status(500).json({error});
         }
     },
 
@@ -77,15 +73,13 @@ module.exports = {
 
             const populatedBoard = await board.populate('users');
 
-            console.log(populatedBoard);
-
             // Need to ensure that we are sending back the board so that the user can automatically open the board on joining
             return res.json({
                 board: populatedBoard,
                 message: 'User successfully joined the board',
             });
         } catch (error) {
-            console.log('Error joining a board:', error);
+            res.status(500).json({error});
         }
     },
 
@@ -102,7 +96,7 @@ module.exports = {
                 return res.json({board, message: 'Board updated'});
             }
         } catch (error) {
-            console.error(error);
+            res.status(500).json({error});
         }
     },
 
@@ -117,7 +111,7 @@ module.exports = {
                 return res.json({board, message: 'Board updated'});
             }
         } catch (error) {
-            console.error(error);
+            res.status(500).json({error});
         }
     },
 
@@ -129,7 +123,7 @@ module.exports = {
             console.log(board);
             res.json('Board successfully deleted');
         } catch (error) {
-            console.error(error);
+            res.status(500).json({error});
         }
     },
 };

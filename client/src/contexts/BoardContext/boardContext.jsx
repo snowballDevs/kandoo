@@ -10,10 +10,8 @@ const useSelectedBoardContext = () => useContext(SelectedBoardContext);
 // a provider is a component that allows you to share context with its nested components
 const SelectedBoardProvider = ({children}) => {
     const [selectedBoard, setSelectedBoard] = useState(null);
-    console.log(selectedBoard);
     const [items, setItems] = useState(selectedBoard?.columns || []);
     const [containers, setContainers] = useState(Object.keys(items));
-
     const [selectedColumnId, setSelectedColumn] = useState(null);
     const [selectedTaskId, setSelectedTask] = useState(null);
 
@@ -28,6 +26,19 @@ const SelectedBoardProvider = ({children}) => {
             setContainers([]);
         }
     }, [selectedBoard]);
+
+    // update the board when
+    // useEffect(() => {
+    //     console.log('hi');
+    //     // Check if selectedBoard and its columns are available
+    //     if (selectedBoard && selectedBoard.columns) {
+    //         // Update selectedBoard with the modified columns
+    //         setSelectedBoard((prevSelectedBoard) => ({
+    //             ...prevSelectedBoard,
+    //             columns: items,
+    //         }));
+    //     }
+    // }, [items]);
 
     // So the NO. of containers stay in sync with the NO. items.
     // useEffect(() => {

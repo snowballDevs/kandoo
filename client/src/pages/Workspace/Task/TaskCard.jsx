@@ -1,11 +1,7 @@
-import {useContext, useState} from 'react';
-
 import ProfileIcon from '../../../components/ProfileIcon';
 import {useSelectedBoardContext} from '../../../contexts/BoardContext/boardContext';
 
-const TaskCard = ({task, updateTask}) => {
-    const [mouseIsOver, setMouseIsOver] = useState(false);
-    const [editMode, setEditMode] = useState(false);
+const TaskCard = ({task}) => {
     const {selectedBoard} = useSelectedBoardContext();
 
     const priorityColorMap = {
@@ -21,12 +17,6 @@ const TaskCard = ({task, updateTask}) => {
         <div className=' hover:ring-gray-900 hover:ring-2 rounded'>
             <div
                 className={`bg-gray-700 h-full min-h-[70px]  px-2 py-4 flex gap-2 items-center  justify-between  text-left rounded cursor-grab  border-l-8 ${priorityColor}`}
-                onMouseEnter={() => {
-                    setMouseIsOver(true);
-                }}
-                onMouseLeave={() => {
-                    setMouseIsOver(false);
-                }}
             >
                 <p className='my-auto shrink overflow-y-auto overflow-x-hidden  truncate text-white'>
                     {task.taskName}

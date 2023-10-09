@@ -21,14 +21,11 @@ const AuthProvider = ({children}) => {
         async function authCheck() {
             try {
                 const response = await dataService.getUser();
-                console.log(response);
                 const userData = response.data;
-                console.log('Get User', user);
 
                 setUser(userData);
                 // is user session, save user's info to the context
                 if (userData instanceof Object) {
-                    console.log(user);
                     setCurrentPage('dashboard');
                 } else {
                     setCurrentPage('landingPage');
@@ -41,13 +38,10 @@ const AuthProvider = ({children}) => {
     }, []);
 
     const login = async (data) => {
-        console.log('Clicked');
-
         try {
             const response = await dataService.login(data);
-            console.log(response);
             if (response.status >= 200 && response.status < 300) {
-                const user = response.data.user;
+                const {user} = response.data;
                 setUser(user);
                 handleClose();
                 setCurrentPage('dashboard');
@@ -58,10 +52,8 @@ const AuthProvider = ({children}) => {
     };
 
     const logout = async () => {
-        console.log('Clicked');
-
         try {
-            const response = await dataService.logout();
+            await dataService.logout();
             setUser(null);
             setCurrentPage('landingPage');
         } catch (err) {
@@ -73,7 +65,7 @@ const AuthProvider = ({children}) => {
         try {
             const response = await dataService.signup(data);
             if (response.status >= 200 && response.status < 300) {
-                const user = response.data.user;
+                const {user} = response.data;
                 setUser(user);
                 handleClose();
                 setCurrentPage('dashboard');

@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 const ProfileIcon = ({fullName}) => {
     const generateHSL = (str) => {
         const hashCode = str

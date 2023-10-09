@@ -43,7 +43,6 @@ function getNextContainerId(items) {
 
     const containerIds = Object.keys(items);
     const lastContainerId = containerIds[containerIds.length - 1];
-    console.log(lastContainerId);
     return String.fromCharCode(lastContainerId.charCodeAt(0) + 1);
 
     // const containerIds = Object.keys(items);

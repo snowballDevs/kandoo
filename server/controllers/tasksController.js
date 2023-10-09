@@ -12,13 +12,11 @@ module.exports = {
             const column = board.columns.id(columnId);
 
             if (column) {
-                console.log(column);
                 const {tasks} = column;
                 return res.json(tasks);
             }
         } catch (error) {
-            console.error(error);
-            return false;
+            return res.status(500).json({error});
         }
     },
 
@@ -29,7 +27,6 @@ module.exports = {
             // console.log(req.params);
             const {taskName} = req.body;
             const priority = 'low'; // default for a newly created task
-            console.log(taskName);
             const board = await Board.findById(boardId);
 
             if (!board) {
@@ -42,16 +39,15 @@ module.exports = {
                 return res.status(404).json({error: 'Column not found'});
             }
 
-            column.tasks.push({taskName: taskName, priority: priority});
+            column.tasks.push({taskName, priority});
 
             board.save();
 
             const task = column.tasks[column.tasks.length - 1];
 
-            console.log(task);
             return res.json(task);
         } catch (error) {
-            console.error(error);
+            return res.status(500).json({error});
         }
     },
 
@@ -61,8 +57,6 @@ module.exports = {
         try {
             const {boardId, columnId, taskId} = req.params;
             const {taskName, priority, taskDetail, assignedUserIds} = req.body;
-            // const board = await Board.findById(boardId)
-            console.log(boardId);
 
             const board = await Board.findById(boardId);
 
@@ -89,11 +83,9 @@ module.exports = {
             task.assignedUserIds = assignedUserIds;
             await board.save();
 
-            console.log(task);
             return res.json(task);
         } catch (error) {
-            console.error(error);
-            return res.status(500);
+            return res.status(500).json({error});
         }
     },
     // deleteTask
@@ -103,14 +95,30 @@ module.exports = {
             const {boardId, columnId, taskId} = req.params;
 
             const board = await Board.findById(boardId);
+
+            if (!board) {
+                return res.status(404).json({error: 'Board not found'});
+            }
+
             const column = board.columns.id(columnId);
+
+            if (!column) {
+                return res.status(404).json({error: 'Column not found'});
+            }
+
+            const task = column.tasks.id(taskId);
+
+            if (!task) {
+                return res.status(404).json({error: 'Task not found'});
+            }
+
             column.tasks.id(taskId).deleteOne();
+
             await board.save();
-            console.log(board);
+
             return res.json(board);
         } catch (error) {
-            console.error(error);
-            return res.status(500);
+            return res.status(500).json({error});
         }
     },
 };
